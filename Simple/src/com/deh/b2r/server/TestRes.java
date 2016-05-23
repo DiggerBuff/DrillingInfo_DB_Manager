@@ -17,7 +17,6 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.JSONP;
 
-
 /**
  * Utility methods.
  *
@@ -45,6 +44,7 @@ public class TestRes
     List<SharedRep.Address> streets = new ArrayList<>();
     // TODO replace with call to storage mechanism
     streets.add(new SharedRep.Address("Street1"));
+    streets.add(new SharedRep.Address("Street2"));
     return streets;
   }
 
