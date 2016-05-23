@@ -7,6 +7,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
@@ -14,6 +20,7 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.client.*;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 import java.util.Scanner;
@@ -26,8 +33,16 @@ public class Fred
     String input = "";
     
     HttpServer server = fred.startServer();
-    //System.out.println(server.getListener("grizzly").toString());
     server.getListener("grizzly").createManagementObject();
+    
+    while(!server.isStarted()){}
+    
+    /*Client client = JerseyClientBuilder.createClient();
+    WebTarget webTarget = client.target("http://localhost:9898/utility").path("test");
+    Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
+    Response response = invocationBuilder.post(Entity.entity("Alan", "text/plain"));
+    System.out.println(response.getStatus());
+    System.out.println(response.readEntity(String.class));*/
     
     System.out.println("Type \"kill\" to quit server.");
     while (!input.equals("kill")) {
@@ -58,15 +73,18 @@ public class Fred
   private HttpServer startServer() {
     try {
       int port = getPort();
+      
       URI baseUri = UriBuilder.fromUri("http://localhost/").port(port).build();
       ResourceConfig config = new ResourceConfig(getClasses());
+      
       config.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);
       config.register(new ObjectMapperResolver());
       GenericExceptionMapper.register(config);
       config.register(new CORSResponseFilter());
       HttpServer serve = GrizzlyHttpServerFactory.createHttpServer(baseUri, config, false);
       serve.start();
-      System.out.println(getClasses().toString());
+      //System.out.println(getClasses().toString());
+      
       return serve;
     }
     catch(Throwable exp) {

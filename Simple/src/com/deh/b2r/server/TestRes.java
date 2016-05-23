@@ -44,7 +44,6 @@ public class TestRes
     List<SharedRep.Address> streets = new ArrayList<>();
     // TODO replace with call to storage mechanism
     streets.add(new SharedRep.Address("Street1"));
-    streets.add(new SharedRep.Address("Street2"));
     return streets;
   }
 
@@ -57,5 +56,16 @@ public class TestRes
     System.out.println("Add Street: " + street);
     // TODO storage mechanism
     return street;
+  }
+  
+  @POST
+  @Path("test")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response test(String testing) throws Exception
+  {
+	  System.out.println("Test: " + testing);
+	  
+	  return Response.created(new URI("test/"+testing)).build();
   }
 }
