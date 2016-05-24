@@ -60,8 +60,8 @@ public class TestRes
   
   @POST
   @Path("test")
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
+  @Consumes("text/plain")
+  //@Produces(MediaType.APPLICATION_JSON)
   public Response test(String testing) throws Exception
   {
 	  System.out.println("Test: " + testing);

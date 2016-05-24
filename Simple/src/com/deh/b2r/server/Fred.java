@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -19,8 +19,9 @@ import javax.ws.rs.ext.MessageBodyWriter;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.client.ClientResponse;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.client.*;
+//import org.glassfish.jersey.client.*;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 import java.util.Scanner;
@@ -37,12 +38,19 @@ public class Fred
     
     while(!server.isStarted()){}
     
-    /*Client client = JerseyClientBuilder.createClient();
-    WebTarget webTarget = client.target("http://localhost:9898/utility").path("test");
-    Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
-    Response response = invocationBuilder.post(Entity.entity("Alan", "text/plain"));
-    System.out.println(response.getStatus());
-    System.out.println(response.readEntity(String.class));*/
+    /*Client client = ClientBuilder.newClient();
+    WebTarget target = client.target("http://localhost:9898/utility/streets");
+    //SharedRep.Address address = new SharedRep.Address("Street");
+    //Response response = target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity("Street", MediaType.APPLICATION_JSON));
+    ClientResponse response = target.request().get(ClientResponse.class);
+    System.out.println(response.getClass().toString());
+    System.out.println(response.toString());*/
+    
+    Client client = ClientBuilder.newClient();
+    WebTarget target = client.target("http://localhost:9898/utility/test");
+    String text = "Alan";
+    Response response = target.request().post(Entity.text(text));
+    System.out.println(response.toString());
     
     System.out.println("Type \"kill\" to quit server.");
     while (!input.equals("kill")) {
