@@ -1,5 +1,8 @@
 package com.deh.b2r.server;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,10 +57,25 @@ public class TestRes
   @Consumes(MediaType.TEXT_PLAIN)
   public String putStreet(String streetName)
   {
+	 //Create a file and write street to it
+	  PrintWriter writer;
+		try {
+			writer = new PrintWriter("StreetsFile.txt", "UTF-8");
+			  writer.println(streetName);
+			
+			  writer.close();
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			
+			System.out.println("Cannot create file...");
+		}
+	  
+	  
 	  String street = new String();
 	  street = streetName;
 	return street;
   }
+    
+  
 
   @POST
   @Path("addstreet")
