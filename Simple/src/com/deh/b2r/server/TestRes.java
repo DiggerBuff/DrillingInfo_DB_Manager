@@ -26,36 +26,32 @@ import org.glassfish.jersey.server.JSONP;
 @Path("utility")
 public class TestRes
 {
-  @GET
-  @Path("{system}")
-  @Produces(MediaType.TEXT_PLAIN)
-  public String getDatatype(@PathParam("system") String system) throws Exception
-  {
-    if (system.equals("shutdown")) {
-      System.exit(0);
-    }
-    return "Unknown System Command";
-  }
+	@GET
+	@Path("{system}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getDatatype(@PathParam("system") String system) throws Exception
+	{
+		if (system.equals("shutdown")) {
+			System.exit(0);
+		}
+		return "Unknown System Command";
+	}
 
-  @GET
-  @Path("streets")
-  @Produces(MediaType.APPLICATION_JSON)
-  public List<SharedRep.Address> getQuantities() throws Exception
-  {
-    List<SharedRep.Address> streets = new ArrayList<>();
-    // TODO replace with call to storage mechanism
-    streets.add(new SharedRep.Address("Street1"));
-    return streets;
-  }
+	@GET
+	@Path("streets")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<SharedRep.Address> getQuantities() throws Exception
+	{
+		// TODO replace with call to storage mechanism
+		return SharedRep.Address.getAllStreets();
+	}
 
-  @POST
-  @Path("addstreet")
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public SharedRep.Address addStreet(SharedRep.Address street) throws Exception
-  {
-    System.out.println("Add Street: " + street);
-    // TODO storage mechanism
-    return street;
-  }
+	@POST
+	@Path("addstreet")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public SharedRep.Address addStreet(SharedRep.Address street) throws Exception
+	{
+		return street;
+	}
 }
