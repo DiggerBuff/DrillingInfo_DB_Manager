@@ -8,22 +8,68 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.client.ClientResponse;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+
+import java.util.Scanner;
 
 public class Fred
 {
   public static void main(String... args) {
-    Fred fred = new Fred();
-    fred.startServer();
+    
+	  Fred fred = new Fred();
+	 // fred.startServer();
+	  
+	  Scanner kb = new Scanner(System.in);
+	    String input = "";
+	    
+	    HttpServer server = fred.startServer();
+	    server.getListener("grizzly").createManagementObject();
+	    
+	    while(!server.isStarted()){}
+	    
+	    Client client = ClientBuilder.newClient();
+	    WebTarget target = client.target("http://localhost:9898/utility/test");
+	    String text = "Adam";
+	    Response response = target.request().post(Entity.text(text));
+	    System.out.println(response.toString());
+	  
+	    
+	    System.out.println("Type \"kill\" to quit server.");
+	    while (!input.equals("kill")) {
+	    	input = kb.next();
+	    	System.out.println(input);
+	    }
+	    
+	    System.out.println();
+	    server.shutdown();
+	    
+	  //It takes time to shut down. This ensures it shuts down before continuing.
+	    while(!server.shutdown().isDone()){}
+	    
+	    System.out.println("Type \"end\" to quit program.");
+	    while (!input.equals("end")) {
+	    	input = kb.next();
+	    }
+	    
+	    kb.close();
+	    
 
     System.out.println("Hi");
+   
 
     while (true) {
     }
@@ -57,7 +103,7 @@ public class Fred
   /**
    * Register the resources.
    *
-   * @return     A Set of resource classes.
+   * @return  A Set of resource classes.
    */
 
   private Set<Class<?>> getClasses() {
@@ -74,7 +120,7 @@ public class Fred
    * <P/>
    * This should be smarter!
    *
-   * @return    The port.
+   * @return   The port.
    */
 
   private int getPort() {

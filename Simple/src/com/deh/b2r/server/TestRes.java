@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -47,6 +48,16 @@ public class TestRes
     streets.add(new SharedRep.Address("Street1"));
     return streets;
   }
+  
+  @PUT
+  @Path("putStreet")
+  @Consumes(MediaType.TEXT_PLAIN)
+  public String putStreet(String streetName)
+  {
+	  String street = new String();
+	  street = streetName;
+	return street;
+  }
 
   @POST
   @Path("addstreet")
@@ -56,6 +67,39 @@ public class TestRes
   {
     System.out.println("Add Street: " + street);
     // TODO storage mechanism
+    
+    String result = ("Street saved : " + street);
     return street;
   }
+  
+  @POST
+  @Path("test")
+  @Consumes("text/plain")
+  //@Produces(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.TEXT_PLAIN)
+  public Response test(String testing) throws Exception
+  {
+	  System.out.println("Test: " + testing);
+	  
+	  return Response.created(new URI("test/"+testing)).build();
+  }
+  
+  @POST
+  @Path("test2")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String testPost()
+  {
+	  return "POST works";
+  }
+  
+  
+  
+   
+  
+  
 }
+
+
+
+
+
