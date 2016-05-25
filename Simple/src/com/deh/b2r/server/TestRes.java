@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.JSONP;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Utility methods.
@@ -26,32 +27,48 @@ import org.glassfish.jersey.server.JSONP;
 @Path("utility")
 public class TestRes
 {
-	@GET
-	@Path("{system}")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getDatatype(@PathParam("system") String system) throws Exception
-	{
-		if (system.equals("shutdown")) {
-			System.exit(0);
-		}
-		return "Unknown System Command";
-	}
+	static List<SharedRep.Address> streets = new ArrayList<>();
+	
+  @GET
+  @Path("{system}")
+  @Produces(MediaType.TEXT_PLAIN)
+  public String getDatatype(@PathParam("system") String system) throws Exception
+  {
+    if (system.equals("shutdown")) {
+      System.exit(0);
+    }
+    return "Unknown System Command";
+  }
 
-	@GET
-	@Path("streets")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<SharedRep.Address> getQuantities() throws Exception
-	{
-		// TODO replace with call to storage mechanism
-		return SharedRep.Address.getAllStreets();
-	}
+  @GET
+  @Path("streets")
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<SharedRep.Address> getQuantities() throws Exception
+  {
+    // TODO replace with call to storage mechanism
+    return streets;
+  }
 
-	@POST
-	@Path("addstreet")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public SharedRep.Address addStreet(SharedRep.Address street) throws Exception
-	{
-		return street;
-	}
+  @POST
+  @Path("addstreet")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public SharedRep.Address addStreet(SharedRep.Address street) throws Exception
+  {
+    System.out.println("Add Street: " + street);
+    streets.add(street);
+    
+    return street;
+  }
+  
+  @POST
+  @Path("test")
+  @Consumes("text/plain")
+  //@Produces("text/plain")
+  public void test(String testing) throws Exception
+  {
+	  System.out.println("Test: " + testing);
+	  
+	  //return testing;
+  }
 }
