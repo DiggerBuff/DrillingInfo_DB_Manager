@@ -76,14 +76,18 @@ public final class AddressBook
             	FileWriter writer = new FileWriter(file, true);
             	BufferedWriter bufferedWriter = new BufferedWriter(writer);
                 
-            	streets.add(street);
-                
-            	bufferedWriter.write(street.toString());
-            	bufferedWriter.newLine();
-            	bufferedWriter.close();
-	            
-            	System.out.println("Updating the object in S3 from a file\n");
-	            s3client.putObject(new PutObjectRequest(bucketName, keyName, file));
+            	if (!streets.contains(street)){
+            		System.out.println("Add Street: " + street);
+            		
+	            	streets.add(street);
+	                
+	            	bufferedWriter.write(street.toString());
+	            	bufferedWriter.newLine();
+	            	bufferedWriter.close();
+		            
+	            	System.out.println("Updating the object in S3 from a file\n");
+		            s3client.putObject(new PutObjectRequest(bucketName, keyName, file));
+	            }
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }catch (AmazonServiceException ase) {
@@ -97,7 +101,7 @@ public final class AddressBook
 	            System.out.println("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
 	            System.out.println("Error Message: " + ace.getMessage());
 	        }
-	  }
+		  }
 	  
 	  public List<SharedRep.Address> getStreets()
 	  {

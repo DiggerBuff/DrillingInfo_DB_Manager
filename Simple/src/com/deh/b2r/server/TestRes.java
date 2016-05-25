@@ -55,7 +55,6 @@ public class TestRes
   @Produces(MediaType.APPLICATION_JSON)
   public SharedRep.Address addStreet(SharedRep.Address street) throws Exception
   {
-    System.out.println("Add Street: " + street);
     book.addStreet(street);
     
     return street;
