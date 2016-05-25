@@ -55,13 +55,6 @@ public class Fred
     Response response2 = target2.request(MediaType.APPLICATION_JSON_TYPE).get();*/
     //System.out.println(response2.toString());
     
-    /*Client client = ClientBuilder.newClient();
-    WebTarget target = client.target("http://localhost:9898/utility").path("test");
-    String text = "Alan";
-    Response response = target.request().post(Entity.text(text));*/
-    //System.out.println(response.toString());
-    
-    
     while (!input.equals("kill")) {
     	input = kb.next();
     }
