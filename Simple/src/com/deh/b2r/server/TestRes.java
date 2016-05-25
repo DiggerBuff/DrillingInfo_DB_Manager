@@ -36,7 +36,7 @@ public class TestRes
 		}
 		return "Unknown System Command";
 	}
-
+/*
 	@GET
 	@Path("streets")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -44,6 +44,15 @@ public class TestRes
 	{
 		// TODO replace with call to storage mechanism
 		return SharedRep.Address.getAllStreets();
+	}
+*/	
+	@GET
+	@Path("streets")
+	@Produces(MediaType.TEXT_PLAIN)
+	public List<String> getQuantities() throws Exception
+	{
+		// TODO replace with call to storage mechanism
+		return SharedRep.Address.getStreets();
 	}
 
 	@POST

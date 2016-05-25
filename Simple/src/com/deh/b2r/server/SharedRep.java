@@ -45,12 +45,12 @@ public final class SharedRep
 		public static List<Address> getAllStreets(){
 			List<Address> streets = null;
 			try {
-				File file = new File("Streets.dat");
+				File file = new File("Streets.txt");
 				if (!file.exists()) {
 					Address street = new Address("Default Street");
 					streets = new ArrayList<>();
 					streets.add(street);
-					saveStreetList(streets);		
+					//saveStreetList(streets);		
 				}
 				else{
 					FileInputStream fis = new FileInputStream(file);
@@ -65,10 +65,51 @@ public final class SharedRep
 			}		
 			return streets;
 		}
-
+		
+		public static List<String> getStreets(){
+			List<String> streets = null;
+			try {
+				File file = new File("Streets.txt");
+				if (!file.exists()) {
+					String street = "Default Street";
+					streets = new ArrayList<>();
+					streets.add(street);
+					saveStreetList(streets);		
+				}
+				else{
+					FileInputStream fis = new FileInputStream(file);
+					ObjectInputStream ois = new ObjectInputStream(fis);
+					streets = (List<String>) ois.readObject();
+					ois.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}		
+			return streets;
+		}
+/*
 		private static void saveStreetList(List<Address> streets) {
 			try {
 				File file = new File("Streets.dat");
+				FileOutputStream fos;
+
+				fos = new FileOutputStream(file);
+
+				ObjectOutputStream oos = new ObjectOutputStream(fos);
+				oos.writeObject(streets);
+				oos.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+*/		
+		private static void saveStreetList(List<String> streets) {
+			try {
+				File file = new File("Streets.txt");
 				FileOutputStream fos;
 
 				fos = new FileOutputStream(file);
