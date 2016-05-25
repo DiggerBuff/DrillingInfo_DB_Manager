@@ -67,8 +67,7 @@ public class TestRes
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			
 			System.out.println("Cannot create file...");
-		}
-	  
+		}	  
 	  
 	  String street = new String();
 	  street = streetName;
