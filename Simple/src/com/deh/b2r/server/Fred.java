@@ -1,9 +1,11 @@
 package com.deh.b2r.server;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,6 +26,13 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 //import org.glassfish.jersey.client.*;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
+/*import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;*/
+
 import java.util.Scanner;
 
 public class Fred
@@ -37,25 +46,24 @@ public class Fred
     server.getListener("grizzly").createManagementObject();
     
     while(!server.isStarted()){}
+    System.out.println("Type \"kill\" to quit server.");
     
     /*Client client = ClientBuilder.newClient();
-    WebTarget target = client.target("http://localhost:9898/utility/streets");
-    //SharedRep.Address address = new SharedRep.Address("Street");
-    //Response response = target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity("Street", MediaType.APPLICATION_JSON));
-    ClientResponse response = target.request().get(ClientResponse.class);
-    System.out.println(response.getClass().toString());
-    System.out.println(response.toString());*/
+    WebTarget target = client.target("http://localhost:9898/utility/addstreet");
+    WebTarget target2 = client.target("http://localhost:9898/utility/streets");
+    Response response = target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity("{\"street\":\"aoeu\"}", MediaType.APPLICATION_JSON));
+    Response response2 = target2.request(MediaType.APPLICATION_JSON_TYPE).get();*/
+    //System.out.println(response2.toString());
     
-    Client client = ClientBuilder.newClient();
-    WebTarget target = client.target("http://localhost:9898/utility/test");
+    /*Client client = ClientBuilder.newClient();
+    WebTarget target = client.target("http://localhost:9898/utility").path("test");
     String text = "Alan";
-    Response response = target.request().post(Entity.text(text));
-    System.out.println(response.toString());
+    Response response = target.request().post(Entity.text(text));*/
+    //System.out.println(response.toString());
     
-    System.out.println("Type \"kill\" to quit server.");
+    
     while (!input.equals("kill")) {
     	input = kb.next();
-    	System.out.println(input);
     }
     
     System.out.println();
@@ -82,7 +90,7 @@ public class Fred
     try {
       int port = getPort();
       
-      URI baseUri = UriBuilder.fromUri("http://localhost/").port(port).build();
+      URI baseUri = UriBuilder.fromUri("http://138.67.186.222/").port(port).build();
       ResourceConfig config = new ResourceConfig(getClasses());
       
       config.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);

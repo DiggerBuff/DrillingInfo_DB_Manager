@@ -17,6 +17,8 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.JSONP;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Utility methods.
  *
@@ -25,6 +27,8 @@ import org.glassfish.jersey.server.JSONP;
 @Path("utility")
 public class TestRes
 {
+	static List<SharedRep.Address> streets = new ArrayList<>();
+	
   @GET
   @Path("{system}")
   @Produces(MediaType.TEXT_PLAIN)
@@ -41,9 +45,7 @@ public class TestRes
   @Produces(MediaType.APPLICATION_JSON)
   public List<SharedRep.Address> getQuantities() throws Exception
   {
-    List<SharedRep.Address> streets = new ArrayList<>();
     // TODO replace with call to storage mechanism
-    streets.add(new SharedRep.Address("Street1"));
     return streets;
   }
 
@@ -54,18 +56,19 @@ public class TestRes
   public SharedRep.Address addStreet(SharedRep.Address street) throws Exception
   {
     System.out.println("Add Street: " + street);
-    // TODO storage mechanism
+    streets.add(street);
+    
     return street;
   }
   
   @POST
   @Path("test")
   @Consumes("text/plain")
-  //@Produces(MediaType.APPLICATION_JSON)
-  public Response test(String testing) throws Exception
+  //@Produces("text/plain")
+  public void test(String testing) throws Exception
   {
 	  System.out.println("Test: " + testing);
 	  
-	  return Response.created(new URI("test/"+testing)).build();
+	  //return testing;
   }
 }
