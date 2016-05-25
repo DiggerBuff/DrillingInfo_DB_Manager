@@ -6,6 +6,7 @@ public final class SharedRep
 {
   public static final class Address
   {
+	//Added overrides so that the comparison of Addresses works on the contents, not the object.
     @Override
 	public int hashCode() {
 		final int prime = 31;
@@ -13,7 +14,7 @@ public final class SharedRep
 		result = prime * result + ((street == null) ? 0 : street.hashCode());
 		return result;
 	}
-
+    
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

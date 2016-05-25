@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,11 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 
+/**
+ * Used to store the data types.
+ *
+ */
+
 public final class AddressBook
 {
 	  private List<SharedRep.Address> streets = new ArrayList<>();
@@ -28,11 +34,18 @@ public final class AddressBook
 	  private static String uploadFileName = "AddressBook.txt";
 	  private final AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
 	  
+	  /**
+	   * Initializer pulls the file from AmazonS3 and creates a local copy.
+	   * This local copy is removed when the program ends.
+	   * 
+	   */
+	  
 	  public AddressBook()
 	  {		  
 		  try {
 			  	File file = new File(uploadFileName);
 			  	file.createNewFile();
+			  	file.deleteOnExit();
 			  	FileWriter writer = new FileWriter(file);            	
             	BufferedWriter bufferedWriter = new BufferedWriter(writer);
 	            
@@ -69,6 +82,13 @@ public final class AddressBook
 	        }
 	  }
 	  
+	  /**
+	   * Adds a street to the list, local file, and AmazonS3.
+	   * Called for POST
+	   * 
+	   * @param street	The <code>SharedRep.Address</code> to add.
+	   */
+	  
 	  public void addStreet(SharedRep.Address street)
 	  {
 		  try {
@@ -103,9 +123,20 @@ public final class AddressBook
 	        }
 		  }
 	  
+	  /**
+	   * Passes a copy of the list of streets.
+	   * 
+	   * @return	List{@literal<SharedRep.Address>} of streets.
+	   */
+	  
 	  public List<SharedRep.Address> getStreets()
 	  {
 		  List<SharedRep.Address> temp = new ArrayList<>(streets);
 		  return temp;
 	  }
+
+	public void cleanUp() {
+		File file = new File(uploadFileName);
+		
+	}
 }

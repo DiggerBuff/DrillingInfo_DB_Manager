@@ -61,6 +61,7 @@ public class Fred
     
     System.out.println();
     server.shutdown();
+    //TestRes.book.cleanUp();
     
     //It takes time to shut down. This ensures it shuts down before continuing.
     while(!server.shutdown().isDone()){}

@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Path("utility")
 public class TestRes
 {
-	static AddressBook book = new AddressBook();
+	static final AddressBook book = new AddressBook();
 	
   @GET
   @Path("{system}")
