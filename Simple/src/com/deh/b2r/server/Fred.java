@@ -61,22 +61,23 @@ public class Fred
     //client.get("streets");
     while (true){
     	System.out.print("Where do you want to go: ");
-    	location = kb.next();
+    	location = kb.nextLine();
     	if (location.equals("utility/shutdown")) break;
     	System.out.print("What do you want to do (l to list options): ");
-    	request = kb.next();
+    	request = kb.nextLine();
     	while (!request.equals("g") && !request.equals("p")) {
     		System.out.println("g - GET\np - POST\nl - List options");
     		System.out.print("What do you want to do: ");
-        	request = kb.next();
+        	request = kb.nextLine();
     	}
     	if (request.equals("p")){
     		System.out.print("Where do you want to post: ");
-        	input = kb.next();
+        	input = kb.nextLine();
         	client.post(location, "{\"street\":\""+input+" \"}");
     	}
     	if (request.equals("g")) {
-    		client.get(location);
+    		System.out.println(client.get(location));
+    		//client.post(location, "{\"street\":\""+input+" \"}");
     	}
     	
     }
