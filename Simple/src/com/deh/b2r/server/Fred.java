@@ -6,14 +6,15 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+//import java.util.ArrayList;
+//import java.util.Collections;
+//import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+//import java.util.List;
+//import java.util.Map;
 import java.util.Set;
 
+<<<<<<< HEAD
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -22,6 +23,14 @@ import javax.ws.rs.core.MediaType;
 
 import javax.ws.rs.core.Response;
 
+=======
+//import javax.ws.rs.client.Client;
+//import javax.ws.rs.client.ClientBuilder;
+//import javax.ws.rs.client.Entity;
+//import javax.ws.rs.client.WebTarget;
+//import javax.ws.rs.core.MediaType;
+//import javax.ws.rs.core.Response;
+>>>>>>> b65c14760cd20dc1ce79586ff9826807e0c02c57
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -29,7 +38,7 @@ import javax.ws.rs.ext.MessageBodyWriter;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.client.ClientResponse;
+//import org.glassfish.jersey.client.ClientResponse;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 //import org.glassfish.jersey.client.*;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
@@ -102,6 +111,7 @@ public class Fred
     Response response2 = target2.request(MediaType.APPLICATION_JSON_TYPE).get();*/
     //System.out.println(response2.toString());
     
+<<<<<<< HEAD
     /*Client client = ClientBuilder.newClient();
     WebTarget target = client.target("http://localhost:9898/utility").path("test");
     String text = "Alan";
@@ -110,6 +120,24 @@ public class Fred
   
     }  
   
+=======
+    while (!input.equals("kill")) {
+    	input = kb.next();
+    }
+    
+    System.out.println();
+    server.shutdown();
+    
+    //It takes time to shut down. This ensures it shuts down before continuing.
+    while(!server.shutdown().isDone()){}
+    
+    System.out.println("Type \"end\" to quit program.");
+    while (!input.equals("end")) {
+    	input = kb.next();
+    }
+    
+    kb.close();
+>>>>>>> b65c14760cd20dc1ce79586ff9826807e0c02c57
   }
 
   /**
