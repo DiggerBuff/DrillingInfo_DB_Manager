@@ -9,8 +9,8 @@ import javax.ws.rs.core.Response;
 
 public class AddressBookClient {
     
-	private Client client;
-	private WebTarget target;
+	private static Client client;
+	private static WebTarget target;
 	
     public AddressBookClient(){
     	client = ClientBuilder.newClient();
@@ -35,7 +35,7 @@ public class AddressBookClient {
     }
     
     public String post(String location, String input) {
-    	Response response = target.path(location).request(MediaType.APPLICATION_JSON_TYPE).get();
+    	Response response = target.path(location).request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(input, MediaType.APPLICATION_JSON));
     	return response.toString();
     }
 }
