@@ -14,7 +14,7 @@ public class AddressBookClient {
 	
     public AddressBookClient(){
     	client = ClientBuilder.newClient();
-    	target = client.target("http://138.67.186.222:9898/");
+    	target = client.target("http://138.67.186.220:9898/");
     	//System.out.println(target.toString());
     	
 	    //Response response = target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity("{\"street\":\"aoeu\"}", MediaType.APPLICATION_JSON));
