@@ -42,7 +42,7 @@ public class TestRes
 	static AddressBook book = new AddressBook();
 	
   @GET
-  @Path("{system}")
+  @Path("utility/{system}")
   @Produces(MediaType.TEXT_PLAIN)
   public String getDatatype(@PathParam("system") String system) throws Exception
   {

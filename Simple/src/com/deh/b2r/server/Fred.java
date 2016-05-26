@@ -19,7 +19,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-
 import javax.ws.rs.core.Response;
 
 //import javax.ws.rs.client.Client;
@@ -28,6 +27,9 @@ import javax.ws.rs.core.Response;
 //import javax.ws.rs.client.WebTarget;
 //import javax.ws.rs.core.MediaType;
 //import javax.ws.rs.core.Response;
+
+
+import javax.ws.rs.core.Response;
 
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response;
@@ -52,114 +54,130 @@ import java.util.Scanner;
 
 public class Fred
 {
-  public static void main(String... args) {
-    	  
-	  Fred fred = new Fred();
-	 // fred.startServer();
-	  
-	  Scanner kb = new Scanner(System.in);
-	    String input = "";
-	    
-	    HttpServer server = fred.startServer();
-	    server.getListener("grizzly").createManagementObject();
-	    
-	    while(!server.isStarted()){}
-	    
-	    Client client = ClientBuilder.newClient();
-	    WebTarget target = client.target("http://localhost:9898//test");
-	    String text = "Adam";
-	    Response response = target.request().post(Entity.text(text));
-	    System.out.println(response.toString());	  
-	    
-	    System.out.println("Type \"kill\" to quit server.");   
-    
-    /*Client client = ClientBuilder.newClient();
-    WebTarget target = client.target("http://localhost:9898/utility/addstreet");
-    WebTarget target2 = client.target("http://localhost:9898/utility/streets");
-    Response response = target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity("{\"street\":\"aoeu\"}", MediaType.APPLICATION_JSON));
-    Response response2 = target2.request(MediaType.APPLICATION_JSON_TYPE).get();*/
-    //System.out.println(response2.toString());
-    
+	public static void main(String... args) {
 
-    /*Client client = ClientBuilder.newClient();
-    WebTarget target = client.target("http://localhost:9898/utility").path("test");
-    String text = "Alan";
-    Response response = target.request().post(Entity.text(text));*/
-    //System.out.println(response.toString());     
-
-    while (!input.equals("kill")) {
-    	input = kb.next();
-    }
-    
-    System.out.println();
-    server.shutdown();
-    
-    //It takes time to shut down. This ensures it shuts down before continuing.
-    while(!server.shutdown().isDone()){}
-    
-    System.out.println("Type \"end\" to quit program.");
-    while (!input.equals("end")) {
-    	input = kb.next();
-    }    
-    kb.close();
-    System.out.println("Hi"); 
-  }
-
-  /**
-   * Start the HTTP Server.
-   *
-   * @return    The <code>HttpServer</code>.
-   */
-
-  private HttpServer startServer() {
-    try {
-      int port = getPort();
-      //Alans machine
-    //  URI baseUri = UriBuilder.fromUri("http://138.67.186.222/").port(port).build();
-      
-      URI baseUri = UriBuilder.fromUri("http://localhost:9898").port(port).build();
-      ResourceConfig config = new ResourceConfig(getClasses());
-      
-      config.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);
-      config.register(new ObjectMapperResolver());
-      GenericExceptionMapper.register(config);
-      config.register(new CORSResponseFilter());
-      HttpServer serve = GrizzlyHttpServerFactory.createHttpServer(baseUri, config, false);
-      serve.start();
-      //System.out.println(getClasses().toString());
-      
-      return serve;
-    }
-    catch(Throwable exp) {
-      exp.printStackTrace();
-    }
-    return null;
-  }
-
-  /**
-   * Register the resources.
-   *
-   * @return  A Set of resource classes.
-   */
-
-  private Set<Class<?>> getClasses() {
-    Set<Class<?>> classes = new HashSet<>();
-
-    classes.add(TestRes.class);
-
-    return classes;
-  }
+		Fred fred = new Fred();
+		Scanner kb = new Scanner(System.in);
+		String location = "";
+		String request = "";
+		String input = "";
 
 
-  /**
-   * Return the port to use for the service.
-   * <P/>
-   * This should be smarter!
-   *
-   * @return   The port.
-   */
+		HttpServer server = fred.startServer();
+		server.getListener("grizzly").createManagementObject();
 
-  private int getPort() {
-    return 9898;
-  }
-}
+		while(!server.isStarted()){}
+
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://localhost:9898//test");
+		String text = "Adam";
+		Response response = target.request().post(Entity.text(text));
+		System.out.println(response.toString());	  
+
+			
+		System.out.println("Type \"utility/shutdown\" to quit server.");
+		
+		/* Client client2 = ClientBuilder.newClient();
+    WebTarget target = client2.target("http://138.67.186.222:9898/");
+    //Response response = target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity("{\"street\":\"aoeu\"}", MediaType.APPLICATION_JSON));
+    Response response = target.path("streets").request(MediaType.APPLICATION_JSON_TYPE).get();
+    System.out.println(response.toString());*/
+
+
+	
+					//client.get("streets");
+					while (true){
+						System.out.print("Where do you want to go: ");
+						location = kb.next();
+						if (location.equals("utility/shutdown")) break;
+						System.out.print("What do you want to do (l to list options): ");
+						request = kb.next();
+						while (!request.equals("g") && !request.equals("p")) {
+							System.out.println("g - GET\np - POST\nl - List options");
+							System.out.print("What do you want to do: ");
+							request = kb.next();
+						}
+						if (request.equals("p")){
+							System.out.print("Where do you want to post: ");
+							input = kb.next();
+							client.post(location, "{\"street\":\""+input+" \"}");
+						}
+						if (request.equals("g")) {
+							client.get(location);
+						}						
+					}
+
+			System.out.println();
+			server.shutdown();
+
+			//It takes time to shut down. This ensures it shuts down before continuing.
+			while(!server.shutdown().isDone()){}
+
+			System.out.println("Type \"end\" to quit program.");
+
+			while (!location.equals("end")) {
+				location = kb.next();
+			}
+		
+			kb.close();
+			System.out.println("Hi"); 
+		}
+
+		/**
+		 * Start the HTTP Server.
+		 *
+		 * @return    The <code>HttpServer</code>.
+		 */
+
+		private HttpServer startServer() {
+			try {
+				int port = getPort();
+				//Alans machine
+				//  URI baseUri = UriBuilder.fromUri("http://138.67.186.222/").port(port).build();
+
+				URI baseUri = UriBuilder.fromUri("http://localhost:9898").port(port).build();
+				ResourceConfig config = new ResourceConfig(getClasses());
+
+				config.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);
+				config.register(new ObjectMapperResolver());
+				GenericExceptionMapper.register(config);
+				config.register(new CORSResponseFilter());
+				HttpServer serve = GrizzlyHttpServerFactory.createHttpServer(baseUri, config, false);
+				serve.start();
+
+				return serve;
+			}
+			catch(Throwable exp) {
+				exp.printStackTrace();
+			}
+			return null;
+		}
+
+		/**
+		 * Register the resources.
+		 *
+		 * @return  A Set of resource classes.
+		 */
+
+		private Set<Class<?>> getClasses() {
+			Set<Class<?>> classes = new HashSet<>();
+
+			classes.add(TestRes.class);
+
+			return classes;
+		}
+
+
+		/**
+		 * Return the port to use for the service.
+		 * <P/>
+		 * This should be smarter!
+		 *
+		 * @return   The port.
+		 */
+
+		private int getPort() {
+			//return 0;
+			return 9898;
+		}
+	}
