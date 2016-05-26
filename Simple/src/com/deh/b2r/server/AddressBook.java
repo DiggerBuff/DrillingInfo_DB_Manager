@@ -3,11 +3,11 @@ package com.deh.b2r.server;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
+//import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.File;
+//import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,12 +70,34 @@ public final class AddressBook
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        } catch (AmazonServiceException ase) {
-	            System.out.println("Caught an AmazonServiceException, which means your request made it to Amazon S3, but was rejected with an error response for some reason.");
-	            System.out.println("Error Message:    " + ase.getMessage());
-	            System.out.println("HTTP Status Code: " + ase.getStatusCode());
-	            System.out.println("AWS Error Code:   " + ase.getErrorCode());
-	            System.out.println("Error Type:       " + ase.getErrorType());
-	            System.out.println("Request ID:       " + ase.getRequestId());
+	        	if (ase.getStatusCode() == 404)
+	        	{
+	        		System.out.println("No Address Book found. Creating...");
+	        		
+	        		try{
+	        			File file = new File(uploadFileName);
+	        			System.out.println("Updating the object in S3 from a file\n");
+	        			s3client.putObject(new PutObjectRequest(bucketName, keyName, file));
+	        		} catch (AmazonServiceException ase2) {
+	    	            System.out.println("Caught an AmazonServiceException, which means your request made it to Amazon S3, but was rejected with an error response for some reason.");
+	    	            System.out.println("Error Message:    " + ase2.getMessage());
+	    	            System.out.println("HTTP Status Code: " + ase2.getStatusCode());
+	    	            System.out.println("AWS Error Code:   " + ase2.getErrorCode());
+	    	            System.out.println("Error Type:       " + ase2.getErrorType());
+	    	            System.out.println("Request ID:       " + ase2.getRequestId());
+	    	        } catch (AmazonClientException ace2) {
+	    	            System.out.println("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
+	    	            System.out.println("Error Message: " + ace2.getMessage());
+	    	        }
+	        	}
+	        	else {
+		            System.out.println("Caught an AmazonServiceException, which means your request made it to Amazon S3, but was rejected with an error response for some reason.");
+		            System.out.println("Error Message:    " + ase.getMessage());
+		            System.out.println("HTTP Status Code: " + ase.getStatusCode());
+		            System.out.println("AWS Error Code:   " + ase.getErrorCode());
+		            System.out.println("Error Type:       " + ase.getErrorType());
+		            System.out.println("Request ID:       " + ase.getRequestId());
+	        	}
 	        } catch (AmazonClientException ace) {
 	            System.out.println("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
 	            System.out.println("Error Message: " + ace.getMessage());
@@ -134,9 +156,4 @@ public final class AddressBook
 		  List<SharedRep.Address> temp = new ArrayList<>(streets);
 		  return temp;
 	  }
-
-	public void cleanUp() {
-		File file = new File(uploadFileName);
-		
-	}
 }
