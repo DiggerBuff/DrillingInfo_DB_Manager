@@ -14,7 +14,6 @@ import java.util.HashSet;
 //import java.util.Map;
 import java.util.Set;
 
-<<<<<<< HEAD
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -23,14 +22,13 @@ import javax.ws.rs.core.MediaType;
 
 import javax.ws.rs.core.Response;
 
-=======
 //import javax.ws.rs.client.Client;
 //import javax.ws.rs.client.ClientBuilder;
 //import javax.ws.rs.client.Entity;
 //import javax.ws.rs.client.WebTarget;
 //import javax.ws.rs.core.MediaType;
 //import javax.ws.rs.core.Response;
->>>>>>> b65c14760cd20dc1ce79586ff9826807e0c02c57
+
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -50,16 +48,12 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;*/
 
-
 import java.util.Scanner;
 
 public class Fred
 {
   public static void main(String... args) {
-    
-	
-	
-	  
+    	  
 	  Fred fred = new Fred();
 	 // fred.startServer();
 	  
@@ -72,37 +66,12 @@ public class Fred
 	    while(!server.isStarted()){}
 	    
 	    Client client = ClientBuilder.newClient();
-	    WebTarget target = client.target("http://localhost:9898/utility/test");
+	    WebTarget target = client.target("http://localhost:9898//test");
 	    String text = "Adam";
 	    Response response = target.request().post(Entity.text(text));
-	    System.out.println(response.toString());
-	  
+	    System.out.println(response.toString());	  
 	    
-	    System.out.println("Type \"kill\" to quit server.");
-	    while (!input.equals("kill")) {
-	    	input = kb.next();
-	    	System.out.println(input);
-	    }
-	    
-	    System.out.println();
-	    server.shutdown();
-	    
-	  //It takes time to shut down. This ensures it shuts down before continuing.
-	    while(!server.shutdown().isDone()){}
-	    
-	    System.out.println("Type \"end\" to quit program.");
-	    while (!input.equals("end")) {
-	    	input = kb.next();
-	    }
-	    
-	    kb.close();
-	    
-
-    System.out.println("Hi");
-   
-
-    while (true) {  
- 
+	    System.out.println("Type \"kill\" to quit server.");   
     
     /*Client client = ClientBuilder.newClient();
     WebTarget target = client.target("http://localhost:9898/utility/addstreet");
@@ -111,16 +80,13 @@ public class Fred
     Response response2 = target2.request(MediaType.APPLICATION_JSON_TYPE).get();*/
     //System.out.println(response2.toString());
     
-<<<<<<< HEAD
+
     /*Client client = ClientBuilder.newClient();
     WebTarget target = client.target("http://localhost:9898/utility").path("test");
     String text = "Alan";
     Response response = target.request().post(Entity.text(text));*/
-    //System.out.println(response.toString());   
-  
-    }  
-  
-=======
+    //System.out.println(response.toString());     
+
     while (!input.equals("kill")) {
     	input = kb.next();
     }
@@ -134,10 +100,9 @@ public class Fred
     System.out.println("Type \"end\" to quit program.");
     while (!input.equals("end")) {
     	input = kb.next();
-    }
-    
+    }    
     kb.close();
->>>>>>> b65c14760cd20dc1ce79586ff9826807e0c02c57
+    System.out.println("Hi"); 
   }
 
   /**
