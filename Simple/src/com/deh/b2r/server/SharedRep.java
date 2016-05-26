@@ -14,73 +14,43 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public final class SharedRep
 {
-	public static final class Address
-	{
-		@JsonProperty("street")
-		public final String street;
-
-		public Address(@JsonProperty("street") String street) {
-			this.street = street;
-		}
-
-		public String toString() {
-			return street;
-		}
-
-		@Override
-		public boolean equals(Object object){
-			if(object == null){
-				return false;
-			}else if(!(object instanceof Address)){
-				return false;
-			}else {
-				Address address = (Address)object;
-				if(street.equals(address.street)){
-					return true;
-				}			
-			}
-			return false;
-		}	
-
-		public static List<Address> getAllStreets(){
-			List<Address> streets = null;
-			try {
-				File file = new File("Streets.dat");
-				if (!file.exists()) {
-					Address street = new Address("Default Street");
-					streets = new ArrayList<>();
-					streets.add(street);
-					saveStreetList(streets);		
-				}
-				else{
-					FileInputStream fis = new FileInputStream(file);
-					ObjectInputStream ois = new ObjectInputStream(fis);
-					streets = (List<Address>) ois.readObject();
-					ois.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}		
-			return streets;
-		}
-
-		private static void saveStreetList(List<Address> streets) {
-			try {
-				File file = new File("Streets.dat");
-				FileOutputStream fos;
-
-				fos = new FileOutputStream(file);
-
-				ObjectOutputStream oos = new ObjectOutputStream(fos);
-				oos.writeObject(streets);
-				oos.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+  public static final class Address
+  {
+	//Added overrides so that the comparison of Addresses works on the contents, not the object.
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((street == null) ? 0 : street.hashCode());
+		return result;
 	}
+    
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Address other = (Address) obj;
+		if (street == null) {
+			if (other.street != null)
+				return false;
+		} else if (!street.equals(other.street))
+			return false;
+		return true;
+	}
+
+	@JsonProperty("street")
+    public final String street;
+
+    public Address(@JsonProperty("street") String street) {
+      this.street = street;
+    }
+
+    public String toString() {
+      return street;
+    }
+  }
 }

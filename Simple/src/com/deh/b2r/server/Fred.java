@@ -55,19 +55,13 @@ public class Fred
     Response response2 = target2.request(MediaType.APPLICATION_JSON_TYPE).get();*/
     //System.out.println(response2.toString());
     
-    /*Client client = ClientBuilder.newClient();
-    WebTarget target = client.target("http://localhost:9898/utility").path("test");
-    String text = "Alan";
-    Response response = target.request().post(Entity.text(text));*/
-    //System.out.println(response.toString());
-    
-    
     while (!input.equals("kill")) {
     	input = kb.next();
     }
     
     System.out.println();
     server.shutdown();
+    //TestRes.book.cleanUp();
     
     //It takes time to shut down. This ensures it shuts down before continuing.
     while(!server.shutdown().isDone()){}
@@ -90,7 +84,7 @@ public class Fred
     try {
       int port = getPort();
       
-      URI baseUri = UriBuilder.fromUri("http://138.67.186.222/").port(port).build();
+      URI baseUri = UriBuilder.fromUri("http://138.67.186.221/").port(port).build();
       ResourceConfig config = new ResourceConfig(getClasses());
       
       config.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);

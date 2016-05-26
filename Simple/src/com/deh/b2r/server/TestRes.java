@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.JSONP;
 
+import com.deh.b2r.server.AddressBook;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -27,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Path("utility")
 public class TestRes
 {
-	static List<SharedRep.Address> streets = new ArrayList<>();
+	static final AddressBook book = new AddressBook();
 	
   @GET
   @Path("{system}")
@@ -45,30 +46,17 @@ public class TestRes
   @Produces(MediaType.APPLICATION_JSON)
   public List<SharedRep.Address> getQuantities() throws Exception
   {
-    // TODO replace with call to storage mechanism
-    return streets;
+    return book.getStreets();
   }
 
   @POST
-  @Path("addstreet")
+  @Path("streets")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public SharedRep.Address addStreet(SharedRep.Address street) throws Exception
   {
-    System.out.println("Add Street: " + street);
-    streets.add(street);
+    book.addStreet(street);
     
     return street;
-  }
-  
-  @POST
-  @Path("test")
-  @Consumes("text/plain")
-  //@Produces("text/plain")
-  public void test(String testing) throws Exception
-  {
-	  System.out.println("Test: " + testing);
-	  
-	  //return testing;
   }
 }
