@@ -1,17 +1,11 @@
 package com.deh.b2r.server;
 
 import java.net.URI;
-//import java.util.ArrayList;
-//import java.util.Collections;
-//import java.util.HashMap;
 import java.util.HashSet;
-//import java.util.List;
-//import java.util.Map;
 import java.util.Set;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -21,17 +15,9 @@ import javax.ws.rs.ext.MessageBodyWriter;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
-//import org.glassfish.jersey.client.ClientResponse;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-//import org.glassfish.jersey.client.*;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
-/*import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;*/
 
 import java.util.Scanner;
 
@@ -41,8 +27,6 @@ public class Fred
     Fred fred = new Fred();
     Scanner kb = new Scanner(System.in);
     String location = "";
-    //String request = "";
-    //String input = "";
     
     HttpServer server = fred.startServer();
     server.getListener("grizzly").createManagementObject();
@@ -52,9 +36,6 @@ public class Fred
     
     Client client = ClientBuilder.newClient();
     WebTarget target = client.target("http://138.67.186.222:9898/");
-    //Response response = target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity("{\"street\":\"aoeu\"}", MediaType.APPLICATION_JSON));
-    
-    //AddressBookClient client = new AddressBookClient();
     
     //TODO Add place in URI to get jars
     //TODO Add way to check jar version
@@ -66,25 +47,9 @@ public class Fred
     	location = kb.nextLine();
     	if (location.equals("shutdown")) break;
     	else {
-    		Response response = target.path("update").request(MediaType.APPLICATION_JSON_TYPE).get();
-    	    System.out.println(response.toString());
+    		Response response = target.path(location + ".jar").request(MediaType.APPLICATION_JSON_TYPE).get();
+    	    //System.out.println(response.toString());
     	}
-    	/*System.out.print("What do you want to do (l to list options): ");
-    	request = kb.nextLine();
-    	while (!request.equals("g") && !request.equals("p")) {
-    		System.out.println("g - GET\np - POST\nl - List options");
-    		System.out.print("What do you want to do: ");
-        	request = kb.nextLine();
-    	}
-    	if (request.equals("p")){
-    		System.out.print("Where do you want to post: ");
-        	input = kb.nextLine();
-        	client.post(location, "{\"street\":\""+input+"\"}");
-    	}
-    	if (request.equals("g")) {
-    		System.out.println(client.get(location));
-       	}*/
-    	
     }
     
     System.out.println();

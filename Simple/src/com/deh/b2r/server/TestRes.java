@@ -1,23 +1,11 @@
 package com.deh.b2r.server;
 
-//import java.net.URI;
-//import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-//import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-//import javax.ws.rs.core.GenericEntity;
-//import javax.ws.rs.core.Response;
 
-//import org.glassfish.jersey.server.JSONP;
-
-//import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Utility methods.
@@ -27,7 +15,6 @@ import javax.ws.rs.core.MediaType;
 @Path("/")
 public class TestRes
 {
-	//static AddressBook book = new AddressBook();
 	static Updater updater = new Updater();
 	
   @GET
@@ -42,29 +29,10 @@ public class TestRes
   }
   
   @GET
-  @Path("update")
+  @Path("update/{jar}")
   //@Produces(MediaType.APPLICATION_JSON)
-  public void getUpdate() throws Exception
+  public void getUpdate(@PathParam("jar") String jar) throws Exception
   {
-    updater.get("hello.jar");
+    updater.get(jar);
   }
-  
-  /*@GET
-  @Path("streets")
-  @Produces(MediaType.APPLICATION_JSON)
-  public List<SharedRep.Address> getQuantities() throws Exception
-  {
-    return book.getStreets();
-  }
-
-  @POST
-  @Path("streets")
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public SharedRep.Address addStreet(SharedRep.Address street) throws Exception
-  {
-    book.addStreet(street);
-    
-    return street;
-  }*/
 }
