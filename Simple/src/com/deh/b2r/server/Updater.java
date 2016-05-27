@@ -23,26 +23,35 @@ public class Updater {
 	private static String updatedJarName = "";
 	private final AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
 	
+	/**
+	 * TODO make a better initializer
+	 */
 	public Updater() {
 		
 	}
-
+	
+	/**
+	 * This pulls a jar from Amazon S3 and places a copy in the local directory
+	 * 
+	 * @param jar The name of the jar to get
+	 */
 	public void get(String jar) {
 		// TODO Get the updated jar
 		updatedJarName = jar;
 		
 		try {
+			//Creates the local jar file
 		  	File file = new File(updatedJarName);
 		  	file.createNewFile();
             
+		  	//Downloads the file from S3 and puts it's contents into a output stream
+		  	//TODO What if file is not found?
 		  	System.out.println("Downloading an object\n");
             S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, updatedJarName));
             InputStream reader = new BufferedInputStream(s3object.getObjectContent());
-            
             OutputStream writer = new BufferedOutputStream(new FileOutputStream(file));
             
-            System.out.println(s3object.getObjectContent().getClass());
-            
+            //Pumps the file into the local file
             int read = -1;
             while (( read = reader.read() ) != -1) {
             	writer.write(read);

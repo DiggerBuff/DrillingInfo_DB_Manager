@@ -42,6 +42,7 @@ public class Fred
     //TODO Add pulling of correct jar
     //TODO Add security check for jars
 
+    //Only allows for "update/JARNAMEHERE"
     while (true){
     	System.out.print("Where do you want to go: ");
     	location = kb.nextLine();

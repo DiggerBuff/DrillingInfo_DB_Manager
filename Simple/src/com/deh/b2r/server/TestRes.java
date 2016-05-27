@@ -17,17 +17,19 @@ public class TestRes
 {
 	static Updater updater = new Updater();
 	
+	//This is the path for shutdown
   @GET
   @Path("{system}")
   @Produces(MediaType.TEXT_PLAIN)
   public String getDatatype(@PathParam("system") String system) throws Exception
   {
-    if (system.equals("shutdown")) {
-      System.exit(0);
-    }
-    return "Unknown System Command";
+	  	if (system.equals("shutdown")) {
+    		System.exit(0);
+    	}
+    	return "Unknown System Command";
   }
   
+  //This is the path that gets jars
   @GET
   @Path("update/{jar}")
   //@Produces(MediaType.APPLICATION_JSON)
