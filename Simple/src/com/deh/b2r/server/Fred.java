@@ -76,7 +76,8 @@ public class Fred
         	client.post(location, "{\"street\":\""+input+" \"}");
     	}
     	if (request.equals("g")) {
-    		client.get(location);
+    		System.out.println(client.get(location));
+    		//client.post(location, "{\"street\":\""+input+" \"}");
     	}
     	
     }
@@ -105,7 +106,7 @@ public class Fred
     try {
       int port = getPort();
       
-      URI baseUri = UriBuilder.fromUri("http://138.67.186.222/").port(port).build();
+      URI baseUri = UriBuilder.fromUri("http://138.67.186.221/").port(port).build();
       ResourceConfig config = new ResourceConfig(getClasses());
       
       config.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);
