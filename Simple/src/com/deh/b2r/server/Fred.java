@@ -73,8 +73,7 @@ public class Fred
     	if (request.equals("p")){
     		System.out.print("Where do you want to post: ");
         	input = kb.nextLine();
-        	input = input.substring(0,input.length()-1);
-        	client.post(location, "{\"street\":\""+input+" \"}");
+        	client.post(location, "{\"street\":\""+input+"\"}");
     	}
     	if (request.equals("g")) {
     		System.out.println(client.get(location));
