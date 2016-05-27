@@ -17,7 +17,6 @@ import javax.ws.rs.core.MediaType;
 
 //import org.glassfish.jersey.server.JSONP;
 
-import com.deh.b2r.server.AddressBook;
 //import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -28,10 +27,11 @@ import com.deh.b2r.server.AddressBook;
 @Path("/")
 public class TestRes
 {
-	static AddressBook book = new AddressBook();
+	//static AddressBook book = new AddressBook();
+	static Updater updater = new Updater();
 	
   @GET
-  @Path("utility/{system}")
+  @Path("{system}")
   @Produces(MediaType.TEXT_PLAIN)
   public String getDatatype(@PathParam("system") String system) throws Exception
   {
@@ -40,8 +40,16 @@ public class TestRes
     }
     return "Unknown System Command";
   }
-
+  
   @GET
+  @Path("update")
+  //@Produces(MediaType.APPLICATION_JSON)
+  public void getUpdate() throws Exception
+  {
+    updater.get("hello.jar");
+  }
+  
+  /*@GET
   @Path("streets")
   @Produces(MediaType.APPLICATION_JSON)
   public List<SharedRep.Address> getQuantities() throws Exception
@@ -58,5 +66,5 @@ public class TestRes
     book.addStreet(street);
     
     return street;
-  }
+  }*/
 }

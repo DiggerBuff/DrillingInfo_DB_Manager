@@ -41,29 +41,35 @@ public class Fred
     Fred fred = new Fred();
     Scanner kb = new Scanner(System.in);
     String location = "";
-    String request = "";
-    String input = "";
+    //String request = "";
+    //String input = "";
     
     HttpServer server = fred.startServer();
     server.getListener("grizzly").createManagementObject();
     
     while(!server.isStarted()){}
-    System.out.println("Type \"utility/shutdown\" to quit server.");
+    System.out.println("Type \"shutdown\" to quit server.");
     
-    AddressBookClient client = new AddressBookClient();
-   /* Client client2 = ClientBuilder.newClient();
-    WebTarget target = client2.target("http://138.67.186.222:9898/");
+    Client client = ClientBuilder.newClient();
+    WebTarget target = client.target("http://138.67.186.222:9898/");
     //Response response = target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity("{\"street\":\"aoeu\"}", MediaType.APPLICATION_JSON));
-    Response response = target.path("streets").request(MediaType.APPLICATION_JSON_TYPE).get();
-    System.out.println(response.toString());*/
-     
     
-    //client.get("streets");
+    //AddressBookClient client = new AddressBookClient();
+    
+    //TODO Add place in URI to get jars
+    //TODO Add way to check jar version
+    //TODO Add pulling of correct jar
+    //TODO Add security check for jars
+
     while (true){
     	System.out.print("Where do you want to go: ");
     	location = kb.nextLine();
-    	if (location.equals("utility/shutdown")) break;
-    	System.out.print("What do you want to do (l to list options): ");
+    	if (location.equals("shutdown")) break;
+    	else {
+    		Response response = target.path("update").request(MediaType.APPLICATION_JSON_TYPE).get();
+    	    System.out.println(response.toString());
+    	}
+    	/*System.out.print("What do you want to do (l to list options): ");
     	request = kb.nextLine();
     	while (!request.equals("g") && !request.equals("p")) {
     		System.out.println("g - GET\np - POST\nl - List options");
@@ -77,8 +83,7 @@ public class Fred
     	}
     	if (request.equals("g")) {
     		System.out.println(client.get(location));
-    		//client.post(location, "{\"street\":\""+input+" \"}");
-    	}
+       	}*/
     	
     }
     
@@ -88,10 +93,6 @@ public class Fred
     //It takes time to shut down. This ensures it shuts down before continuing.
     while(!server.shutdown().isDone()){}
     
-   /* System.out.println("Type \"end\" to quit program.");
-    while (!location.equals("end")) {
-    	location = kb.next();
-    }*/
     
     kb.close();
   }
