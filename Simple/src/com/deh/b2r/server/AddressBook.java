@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.NoSuchAlgorithmException;
 //import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,6 +155,7 @@ public final class AddressBook
 	  public List<SharedRep.Address> getStreets()
 	  {
 		  List<SharedRep.Address> temp = new ArrayList<>(streets);
+		  		  
 		  return temp;
 	  }
 }

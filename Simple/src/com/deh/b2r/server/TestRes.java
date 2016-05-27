@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 //import java.net.URI;
@@ -40,92 +41,93 @@ import com.deh.b2r.server.AddressBook;
 public class TestRes
 {
 	static AddressBook book = new AddressBook();
-	
-  @GET
-  @Path("utility/{system}")
-  @Produces(MediaType.TEXT_PLAIN)
-  public String getDatatype(@PathParam("system") String system) throws Exception
-  {
-    if (system.equals("shutdown")) {
-      System.exit(0);
-    }
-    return "Unknown System Command";
-  }
 
-  @GET
-  @Path("streets")
-  @Produces(MediaType.APPLICATION_JSON)
-  public List<SharedRep.Address> getQuantities() throws Exception
-  {
-    return book.getStreets();
-  }
-  
-  @PUT
-  @Path("putStreet")
-  @Consumes(MediaType.TEXT_PLAIN)
-  public String putStreet(String streetName)
-  {
-	 //Create a file and write street to it
-	  PrintWriter writer;
+	@GET
+	@Path("utility/{system}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getDatatype(@PathParam("system") String system) throws Exception
+	{
+		if (system.equals("shutdown")) {
+			System.exit(0);
+		}
+		return "Unknown System Command";
+	}
+
+	@GET
+	@Path("streets")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<SharedRep.Address> getQuantities() throws Exception
+	{
+	
+		return book.getStreets();
+	}
+
+	@PUT
+	@Path("putStreet")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public String putStreet(String streetName)
+	{
+		//Create a file and write street to it
+		PrintWriter writer;
 		try {
 			writer = new PrintWriter("StreetsFile.txt", "UTF-8");
-			  writer.println(streetName);
-			
-			  writer.close();
+			writer.println(streetName);
+
+			writer.close();
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
-			
+
 			System.out.println("Cannot create file...");
 		}	  
-	  
-	  String street = new String();
-	  street = streetName;
-	return street;
-  }
-    
-  
 
-  @POST
-  @Path("streets")
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public SharedRep.Address addStreet(SharedRep.Address street) throws Exception
-  {
+		String street = new String();
+		street = streetName;
+		return street;
+	}
 
-    book.addStreet(street);   
 
-    return street;
-  }
 
-  
-  @POST
-  @Path("test")
-  @Consumes("text/plain")
+	@POST
+	@Path("streets")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public SharedRep.Address addStreet(SharedRep.Address street) throws Exception
+	{
 
-  //@Produces(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.TEXT_PLAIN)
-  public Response test(String testing) throws Exception
-  {
-	  System.out.println("Test: " + testing);
-	  
-	  return Response.created(new URI("test/"+testing)).build();
-  }
-  
-  @POST
-  @Path("test2")
-  @Produces(MediaType.APPLICATION_JSON)
-  public String testPost()
-  {
-	  return "POST works";
-  } 
-  
+		book.addStreet(street);   
 
-  //@Produces("text/plain")
-  public void testString(String testing) throws Exception
-  {
-	  System.out.println("Test: " + testing);
-	  
-	  //return testing;
-  }
+		return street;
+	}
+
+
+	@POST
+	@Path("test")
+	@Consumes("text/plain")
+
+	//@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response test(String testing) throws Exception
+	{
+		System.out.println("Test: " + testing);
+
+		return Response.created(new URI("test/"+testing)).build();
+	}
+
+	@POST
+	@Path("test2")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String testPost()
+	{
+		return "POST works";
+	} 
+
+
+	//@Produces("text/plain")
+	public void testString(String testing) throws Exception
+	{
+		System.out.println("Test: " + testing);
+
+		//return testing;
+	}
 
 
 
