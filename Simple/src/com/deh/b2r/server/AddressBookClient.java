@@ -30,7 +30,7 @@ public class AddressBookClient {
     }
     
     public String get(String location) {
-    	Response response = target.path("streets").request(MediaType.APPLICATION_JSON_TYPE).get();
+    	Response response = target.path(location).request(MediaType.APPLICATION_JSON_TYPE).get();
     	return response.toString();
     }
     
