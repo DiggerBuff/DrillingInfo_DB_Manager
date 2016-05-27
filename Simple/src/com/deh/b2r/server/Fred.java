@@ -1,83 +1,82 @@
 package com.deh.b2r.server;
 
-
 import java.net.URI;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
-
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import com.deh.b2r.server.resources.PeopleResource;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 public class Fred
 {
-  public static void main(String... args) {
-    Fred fred = new Fred();
-    fred.startServer();
+	public static void main(String... args) {
+		Fred fred = new Fred();
+		HttpServer server = fred.startServer();
+		server.getListener("grizzly").createManagementObject();
 
-    System.out.println("Hi");
+		while (true) {
+		}
+	}
 
-    while (true) {
-    }
+	/**
+	 * Start the HTTP Server.
+	 *
+	 * @return    The <code>HttpServer</code>.
+	 */
 
-  }
+	private HttpServer startServer() {
+		try {
+			int port = getPort();
 
-  /**
-   * Start the HTTP Server.
-   *
-   * @return    The <code>HttpServer</code>.
-   */
+			URI baseUri = UriBuilder.fromUri("http://138.67.186.221/").port(port).build();
+			ResourceConfig config = new ResourceConfig(getClasses());
 
-  private HttpServer startServer() {
-    try {
-      int port = getPort();
-      URI baseUri = UriBuilder.fromUri("http://localhost/").port(port).build();
-      ResourceConfig config = new ResourceConfig(getClasses());
-      config.register(JacksonJsonProvider.class, MessageBodyReader.class,
-                      MessageBodyWriter.class);
-      config.register(new ObjectMapperResolver());
-      GenericExceptionMapper.register(config);
-      config.register(new CORSResponseFilter());
-      return GrizzlyHttpServerFactory.createHttpServer(baseUri, config);
-    }
-    catch(Throwable exp) {
-      exp.printStackTrace();
-    }
-    return null;
-  }
+			config.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);
+			config.register(new ObjectMapperResolver());
+			GenericExceptionMapper.register(config);
+			config.register(new CORSResponseFilter());
+			HttpServer serve = GrizzlyHttpServerFactory.createHttpServer(baseUri, config, false);
+			serve.start();
 
-  /**
-   * Register the resources.
-   *
-   * @return     A Set of resource classes.
-   */
+			return serve;
+		}
+		catch(Throwable exp) {
+			exp.printStackTrace();
+		}
+		return null;
+	}
 
-  private Set<Class<?>> getClasses() {
-    Set<Class<?>> classes = new HashSet<>();
+	/**
+	 * Register the resources.
+	 *
+	 * @return     A Set of resource classes.
+	 */
 
-    classes.add(TestRes.class);
+	private Set<Class<?>> getClasses() {
+		Set<Class<?>> classes = new HashSet<>();
 
-    return classes;
-  }
+		classes.add(TestRes.class);
+		classes.add(PeopleResource.class);
+
+		return classes;
+	}
 
 
-  /**
-   * Return the port to use for the service.
-   * <P/>
-   * This should be smarter!
-   *
-   * @return    The port.
-   */
+	/**
+	 * Return the port to use for the service.
+	 * <P/>
+	 * This should be smarter!
+	 *
+	 * @return    The port.
+	 */
 
-  private int getPort() {
-    return 9898;
-  }
+	private int getPort() {
+		//return 0;
+		return 9898;
+	}
 }
