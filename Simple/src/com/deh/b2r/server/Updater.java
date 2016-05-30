@@ -68,7 +68,7 @@ public class Updater {
             writer.close();
             reader.close();
             
-            checkVersions(file);
+            checkJarVersions(file);
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,7 +91,7 @@ public class Updater {
 	 * @param file The original file to check against the new. 
 	 * @throws IOException Caught by the caller. 
 	 */
-	private void checkVersions(File file) throws IOException {
+	private void checkJarVersions(File file) throws IOException {
 		File originalFile = new File(updatedJarName + ".jar");
 		JarFile originalJarFile = new JarFile(originalFile);
         Manifest originalManifest = originalJarFile.getManifest();
@@ -133,6 +133,35 @@ public class Updater {
         jarFile.close();
         System.out.println("Original Version: " + originalVersionNumber);
         System.out.println("New Version: " + versionNumber);
+        
+        System.out.println(compareVersionNumbers(originalVersionNumber, versionNumber));
+	}
+	
+	/**
+	 * Compares two version numbers passed as strings.
+	 *  
+	 * @param originalVer The version of the original file.
+	 * @param newVer The version of the new file.
+	 * @return Returns positive if the new version is newer. 
+	 * 				   negative if it is an older version.
+	 * 				   zero if it is the same version. 
+	 */
+	private int compareVersionNumbers(String originalVer, String newVer) {
+		String[] vals1 = originalVer.split("\\.");
+	    String[] vals2 = newVer.split("\\.");
+	    int i = 0;
+	    // set index to first non-equal ordinal or length of shortest version string
+	    while (i < vals1.length && i < vals2.length && vals1[i].equals(vals2[i])) {
+	      i++;
+	    }
+	    // compare first non-equal ordinal number
+	    if (i < vals1.length && i < vals2.length) {
+	        int diff = Integer.valueOf(vals1[i]).compareTo(Integer.valueOf(vals2[i]));
+	        return Integer.signum(diff) * -1;
+	    }
+	    // the strings are equal or one string is a substring of the other
+	    // e.g. "1.2.3" = "1.2.3" or "1.2.3" < "1.2.3.4"
+	    return Integer.signum(vals1.length - vals2.length) * -1;
 	}
 
 }
