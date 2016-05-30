@@ -37,8 +37,7 @@ public class Fred
     Client client = ClientBuilder.newClient();
     WebTarget target = client.target("http://138.67.186.222:9898/");
     
-    //TODO Add place in URI to get jars
-    //TODO Add way to check jar version
+    //TODO Add place in URI to get jars. Make it restful
     //TODO Add pulling of correct jar
     //TODO Add security check for jars
 

@@ -42,33 +42,26 @@ public class Updater {
 	 * @param jar The name of the jar to get. Pass without ".jar" at the end. 
 	 */
 	public void get(String jar) {
-		// TODO Get the updated jar
 		updatedJarName = jar;
 		
 		try {
 			//Creates the local jar file
-		  	File file = new File(updatedJarName + "_temp.jar");
-		  	file.createNewFile();
-            
-            
-		  	//Downloads the file from S3 and puts it's contents into a output stream
-		  	//TODO What if file is not found?
-		  	System.out.println("Downloading an object\n");
-            S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, updatedJarName + ".jar"));
-            InputStream reader = new BufferedInputStream(s3object.getObjectContent());
-            OutputStream writer = new BufferedOutputStream(new FileOutputStream(file));
-            
-            //Pumps the file into the local file
-            int read = -1;
-            while ((read = reader.read()) != -1) {
-            	writer.write(read);
-            }
-            
-            writer.flush();
-            writer.close();
-            reader.close();
-            
-            checkJarVersions(file);
+			File file;
+		  	File originalFile = new File(updatedJarName + ".jar");
+		  	if (originalFile.exists()){
+		  		file = new File(updatedJarName + "_temp.jar");
+		  		
+		  		downloadFile(file);
+	            
+	            checkJarVersions(originalFile, file);
+		  	}
+		  	else {
+		  		file = new File(updatedJarName + ".jar");
+		  		
+		  		downloadFile(file);
+		  	}
+		  	
+		  	
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -85,14 +78,35 @@ public class Updater {
         }
 	}
 	
+	private void downloadFile(File file) throws IOException {
+		file.createNewFile();
+        
+	  	//Downloads the file from S3 and puts it's contents into a output stream
+	  	//TODO What if file is not found?
+	  	System.out.println("Downloading an object\n");
+        S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, updatedJarName + ".jar"));
+        InputStream reader = new BufferedInputStream(s3object.getObjectContent());
+        OutputStream writer = new BufferedOutputStream(new FileOutputStream(file));
+        
+        //Pumps the file into the local file
+        int read = -1;
+        while ((read = reader.read()) != -1) {
+        	writer.write(read);
+        }
+        
+        writer.flush();
+        writer.close();
+        reader.close();
+	}
+
 	/**
-	 * This compares the file based on the manifest file.
+	 * This compares the file based on the manifest file. 
+	 * Makes the newest version file the standard name.  
 	 * 
 	 * @param file The original file to check against the new. 
 	 * @throws IOException Caught by the caller. 
 	 */
-	private void checkJarVersions(File file) throws IOException {
-		File originalFile = new File(updatedJarName + ".jar");
+	private void checkJarVersions(File originalFile, File file) throws IOException {
 		JarFile originalJarFile = new JarFile(originalFile);
         Manifest originalManifest = originalJarFile.getManifest();
         
@@ -131,10 +145,22 @@ public class Updater {
         
         originalJarFile.close();
         jarFile.close();
-        System.out.println("Original Version: " + originalVersionNumber);
-        System.out.println("New Version: " + versionNumber);
+        System.out.println("Local Version: " + originalVersionNumber);
+        System.out.println("Downloaded Version: " + versionNumber);
+        int verDiff = compareVersionNumbers(originalVersionNumber, versionNumber);
         
-        System.out.println(compareVersionNumbers(originalVersionNumber, versionNumber));
+        //The downloaded version is newer
+        if (verDiff > 0) {
+        	file.renameTo(originalFile);
+        }
+        //The downloaded version is older
+        else if (verDiff < 0){
+        	file.delete();
+        }
+        //The versions are the same
+        else {
+        	file.delete();
+        }
 	}
 	
 	/**
