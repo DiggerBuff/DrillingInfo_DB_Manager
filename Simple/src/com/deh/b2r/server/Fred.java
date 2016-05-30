@@ -48,7 +48,7 @@ public class Fred
     	location = kb.nextLine();
     	if (location.equals("shutdown")) break;
     	else {
-    		Response response = target.path(location + ".jar").request(MediaType.APPLICATION_JSON_TYPE).get();
+    		Response response = target.path(location).request(MediaType.APPLICATION_JSON_TYPE).get();
     	    //System.out.println(response.toString());
     	}
     }
