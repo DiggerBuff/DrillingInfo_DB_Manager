@@ -37,7 +37,7 @@ public class Fred
     System.out.println("Type \"shutdown\" to quit server.");
     
     Client client = ClientBuilder.newClient();
-    WebTarget target = client.target("http://138.67.186.222:9898/");
+    WebTarget target = client.target("http://localhost:9898/");
     
     //TODO Add place in URI to get jars. Make it restful
     //TODO Add pulling of correct jar
@@ -84,7 +84,7 @@ public class Fred
     try {
       int port = getPort();
       
-      URI baseUri = UriBuilder.fromUri("http://138.67.186.222/").port(port).build();
+      URI baseUri = UriBuilder.fromUri("http://localhost/").port(port).build();
       ResourceConfig config = new ResourceConfig(getClasses());
       
       config.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);
