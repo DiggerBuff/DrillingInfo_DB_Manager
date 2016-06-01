@@ -69,6 +69,9 @@ public class Updater {
             System.out.println("AWS Error Code:   " + ase.getErrorCode());
             System.out.println("Error Type:       " + ase.getErrorType());
             System.out.println("Request ID:       " + ase.getRequestId());
+            
+            File file = new File(updatedJarName + ".jar");
+            file.delete();
         } catch (AmazonClientException ace) {
             System.out.println("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
             System.out.println("Error Message: " + ace.getMessage());
@@ -79,9 +82,9 @@ public class Updater {
 		file.createNewFile();
         
 	  	//Downloads the file from S3 and puts it's contents into a output stream
-	  	//TODO What if file is not found?
 	  	System.out.println("Downloading an object\n");
         S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, updatedJarName + ".jar"));
+        if (s3object == null) return;
         InputStream reader = new BufferedInputStream(s3object.getObjectContent());
         OutputStream writer = new BufferedOutputStream(new FileOutputStream(file));
         
