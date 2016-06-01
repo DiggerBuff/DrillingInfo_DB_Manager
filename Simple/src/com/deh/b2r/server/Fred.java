@@ -25,6 +25,9 @@ import java.util.Scanner;
 
 public class Fred
 {
+	private static final int port = getPort();
+	private static final String defaultUri = "http://localhost";
+	
   public static void main(String... args) {
     Fred fred = new Fred();
     Scanner kb = new Scanner(System.in);
@@ -37,7 +40,7 @@ public class Fred
     System.out.println("Type \"shutdown\" to quit server.");
     
     Client client = ClientBuilder.newClient();
-    WebTarget target = client.target("http://localhost:9898/");
+    WebTarget target = client.target(defaultUri + ":" + port);
     
     //TODO Add place in URI to get jars. Make it restful
     //TODO Add pulling of correct jar
@@ -82,9 +85,7 @@ public class Fred
 
   private HttpServer startServer() {
     try {
-      int port = getPort();
-      
-      URI baseUri = UriBuilder.fromUri("http://localhost/").port(port).build();
+      URI baseUri = UriBuilder.fromUri(defaultUri).port(port).build();
       ResourceConfig config = new ResourceConfig(getClasses());
       
       config.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);
@@ -125,7 +126,7 @@ public class Fred
    * @return    The port.
    */
 
-  private int getPort() {
+  private static int getPort() {
     //return 0;
     return 9898;
   }
