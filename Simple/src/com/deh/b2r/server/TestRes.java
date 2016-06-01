@@ -33,8 +33,9 @@ public class TestRes
   @GET
   @Path("update/{jar}")
   //@Produces(MediaType.APPLICATION_JSON)
-  public void getUpdate(@PathParam("jar") String jar) throws Exception
+  public String getUpdate(@PathParam("jar") String jar) throws Exception
   {
     updater.get(jar);
+    return "";
   }
 }
