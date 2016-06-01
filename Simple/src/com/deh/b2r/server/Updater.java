@@ -2,11 +2,14 @@ package com.deh.b2r.server;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
@@ -14,7 +17,8 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -46,8 +50,9 @@ public class Updater {
 	 * Make sure that the jar file has a manifest in it. 
 	 * 
 	 * @param jar The name of the jar to get. Pass without ".jar" at the end. 
+	 * @throws NoSuchAlgorithmException 
 	 */
-	public void get(String jar) {
+	public void get(String jar) throws NoSuchAlgorithmException {
 		updatedJarName = jar;
 		
 		try {
@@ -57,9 +62,9 @@ public class Updater {
 		  	if (originalFile.exists()){
 		  		file = new File(updatedJarName + "_temp.jar");
 		  		
-		  		downloadFile(file);
+		  		boolean goodFile = downloadFile(file);
+	            if (goodFile) checkJarVersions(originalFile, file);
 	            
-	            checkJarVersions(originalFile, file);
 		  	}
 		  	else {
 		  		file = new File(updatedJarName + ".jar");
@@ -84,25 +89,47 @@ public class Updater {
         }
 	}
 	
-	private void downloadFile(File file) throws IOException {
+	private boolean downloadFile(File file) throws IOException, NoSuchAlgorithmException {
+		boolean sumsMatched = false;
 		file.createNewFile();
         
 	  	//Downloads the file from S3 and puts it's contents into a output stream
 	  	System.out.println("Downloading an object\n");
         S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, updatedJarName + ".jar"));
-        if (s3object == null) return;
+        if (s3object == null) return sumsMatched;
+        String s3sum = s3object.getObjectMetadata().getETag();
+        
+        //Create the streams
         InputStream reader = new BufferedInputStream(s3object.getObjectContent());
         OutputStream writer = new BufferedOutputStream(new FileOutputStream(file));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        org.apache.commons.io.IOUtils.copy(reader, baos);
+        byte[] bytes = baos.toByteArray();
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         
-        //Pumps the file into the local file
-        int read = -1;
-        while ((read = reader.read()) != -1) {
-        	writer.write(read);
+        //Checksum here
+        bais.reset();
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        String generatedSum = SecurityChecksum.getDigest(bais, md);
+        
+        if (generatedSum.equals(s3sum)) {
+	        //Pumps the file into the local file
+	        bais.reset();
+	        int read = -1;
+	        while ((read = bais.read()) != -1) {
+	        	writer.write(read);
+	        }
+	        sumsMatched = true;
         }
-        
+        else {
+        	logger.warn("MD5 Checksums did not match. S3:\"" + s3sum + "\" Local:\"" + generatedSum + "\"");
+        }
         writer.flush();
         writer.close();
+        bais.close();
         reader.close();
+        
+        return sumsMatched;
 	}
 
 	/**

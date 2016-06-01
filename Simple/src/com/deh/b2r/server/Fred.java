@@ -53,17 +53,16 @@ public class Fred
     	if (location.equals("shutdown")) break;
     	else {
     		Response response = target.path(location).request(MediaType.APPLICATION_JSON_TYPE).get();
-			//System.out.println("Response is " + response.toString());   
+			//System.out.println("Response is " + response.toString());
 
 			String path = Updater.getUpdatedJarName();
-		    
+		    /*
 			//Create MD5 checksum for jar file verification
 			try {
-				System.out.println("The checkSum for " + " is.. " + SecurityChecksum.hashPassword(path));
+				//System.out.println("The checkSum for " + path + " is.. " + SecurityChecksum.hashPassword(path));
 			} catch (NoSuchAlgorithmException | FileNotFoundException e) {
-				
 				System.out.println("File not found for checkSum!!!");
-			}
+			}*/
     	}
     }
     
