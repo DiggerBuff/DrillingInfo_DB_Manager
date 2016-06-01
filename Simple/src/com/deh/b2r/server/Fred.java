@@ -1,6 +1,8 @@
 package com.deh.b2r.server;
 
+import java.io.FileNotFoundException;
 import java.net.URI;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,8 +49,18 @@ public class Fred
     	location = kb.nextLine();
     	if (location.equals("shutdown")) break;
     	else {
-    		Response response = target.path(location).request(MediaType.APPLICATION_JSON_TYPE).get();
-    	    //System.out.println(response.toString());
+    		Response response = target.path("update").request(MediaType.APPLICATION_JSON_TYPE).get();
+			System.out.println("Response is " + response.toString());   
+
+			String path = Updater.getUpdatedJarName();
+		    
+			//Create MD5 checksum for jar file verification
+			try {
+				System.out.println("The checkSum for " + " is.. " + SecurityChecksum.hashPassword(path));
+			} catch (NoSuchAlgorithmException | FileNotFoundException e) {
+				
+				System.out.println("File not found for checkSum!!!");
+			}
     	}
     }
     

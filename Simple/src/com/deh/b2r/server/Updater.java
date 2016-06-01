@@ -193,7 +193,12 @@ public class Updater {
 	    }
 	    // the strings are equal or one string is a substring of the other
 	    // e.g. "1.2.3" = "1.2.3" or "1.2.3" < "1.2.3.4"
-	    return Integer.signum(vals1.length - vals2.length) * -1;
+	    return Integer.signum(vals1.length - vals2.length) * -1;		
 	}
+
+	public static String getUpdatedJarName() {
+		return updatedJarName;
+	}
+	
 
 }
