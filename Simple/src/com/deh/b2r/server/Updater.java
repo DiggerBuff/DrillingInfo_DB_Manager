@@ -12,6 +12,8 @@ import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 
 import com.amazonaws.AmazonClientException;
@@ -27,12 +29,16 @@ public class Updater {
 	private static String bucketName     = "drilling-info-bucket";
 	private static String updatedJarName = "";
 	private final AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+	private static Logger logger;
+	private final String logLocation = "log.txt";
 	
 	/**
 	 * TODO make a better initializer
 	 */
 	public Updater() {
-		
+		logger = Logger.getLogger(Updater.class);
+		String log4jConfigFile = System.getProperty("user.dir") + File.separator + "resources/log4j.properties";
+        PropertyConfigurator.configure(log4jConfigFile);
 	}
 	
 	/**
@@ -63,18 +69,18 @@ public class Updater {
         } catch (IOException e) {
             e.printStackTrace();
         }catch (AmazonServiceException ase) {
-            System.out.println("Caught an AmazonServiceException, which means your request made it to Amazon S3, but was rejected with an error response for some reason.");
-            System.out.println("Error Message:    " + ase.getMessage());
-            System.out.println("HTTP Status Code: " + ase.getStatusCode());
-            System.out.println("AWS Error Code:   " + ase.getErrorCode());
-            System.out.println("Error Type:       " + ase.getErrorType());
-            System.out.println("Request ID:       " + ase.getRequestId());
+            logger.info("Caught an AmazonServiceException, which means your request made it to Amazon S3, but was rejected with an error response for some reason.");
+            logger.info("Error Message:    " + ase.getMessage());
+            logger.info("HTTP Status Code: " + ase.getStatusCode());
+            logger.info("AWS Error Code:   " + ase.getErrorCode());
+            logger.info("Error Type:       " + ase.getErrorType());
+            logger.info("Request ID:       " + ase.getRequestId());
             
             File file = new File(updatedJarName + ".jar");
             file.delete();
         } catch (AmazonClientException ace) {
-            System.out.println("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
-            System.out.println("Error Message: " + ace.getMessage());
+            System.err.println("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
+            System.err.println("Error Message: " + ace.getMessage());
         }
 	}
 	
