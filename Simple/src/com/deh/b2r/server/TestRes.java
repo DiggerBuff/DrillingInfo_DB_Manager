@@ -28,7 +28,7 @@ import javax.ws.rs.core.Response;
 
 //import org.glassfish.jersey.server.JSONP;
 
-import com.deh.b2r.server.AddressBook;
+
 
 //import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -40,96 +40,47 @@ import com.deh.b2r.server.AddressBook;
 @Path("/")
 public class TestRes
 {
-	static AddressBook book = new AddressBook();
 
-	@GET
-	@Path("utility/{system}")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getDatatype(@PathParam("system") String system) throws Exception
-	{
-		if (system.equals("shutdown")) {
-			System.exit(0);
-		}
-		return "Unknown System Command";
-	}
-
-	@GET
-	@Path("streets")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<SharedRep.Address> getQuantities() throws Exception
-	{
+	//static AddressBook book = new AddressBook();
+	static Updater updater = new Updater();
 	
-		return book.getStreets();
-	}
+  @GET
+  @Path("{system}")
+  @Produces(MediaType.TEXT_PLAIN)
+  public String getDatatype(@PathParam("system") String system) throws Exception
+  {
+    if (system.equals("shutdown")) {
+      System.exit(0);
+    }
+    return "Unknown System Command";
+  }
+  
+  @GET
+  @Path("update")
+  //@Produces(MediaType.APPLICATION_JSON)
+  public void getUpdate() throws Exception
+  {
+    updater.get("hello.jar");
+  }
+  
+  /*@GET
+  @Path("streets")
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<SharedRep.Address> getQuantities() throws Exception
+  {
+    return book.getStreets();
+  }
 
-	@PUT
-	@Path("putStreet")
-	@Consumes(MediaType.TEXT_PLAIN)
-	public String putStreet(String streetName)
-	{
-		//Create a file and write street to it
-		PrintWriter writer;
-		try {
-			writer = new PrintWriter("StreetsFile.txt", "UTF-8");
-			writer.println(streetName);
-
-			writer.close();
-		} catch (FileNotFoundException | UnsupportedEncodingException e) {
-
-			System.out.println("Cannot create file...");
-		}	  
-
-		String street = new String();
-		street = streetName;
-		return street;
-	}
-
-
-
-	@POST
-	@Path("streets")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public SharedRep.Address addStreet(SharedRep.Address street) throws Exception
-	{
-
-		book.addStreet(street);   
-
-		return street;
-	}
-
-
-	@POST
-	@Path("test")
-	@Consumes("text/plain")
-
-	//@Produces(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response test(String testing) throws Exception
-	{
-		System.out.println("Test: " + testing);
-
-		return Response.created(new URI("test/"+testing)).build();
-	}
-
-	@POST
-	@Path("test2")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String testPost()
-	{
-		return "POST works";
-	} 
-
-
-	//@Produces("text/plain")
-	public void testString(String testing) throws Exception
-	{
-		System.out.println("Test: " + testing);
-
-		//return testing;
-	}
-
-
+  @POST
+  @Path("streets")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public SharedRep.Address addStreet(SharedRep.Address street) throws Exception
+  {
+    book.addStreet(street);
+    
+    return street;
+  }*/
 
 }
 
