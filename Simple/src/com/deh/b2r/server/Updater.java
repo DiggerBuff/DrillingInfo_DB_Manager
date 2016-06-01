@@ -197,7 +197,7 @@ public class Updater {
 	}
 
 	public static String getUpdatedJarName() {
-		return updatedJarName;
+		return updatedJarName + ".jar";
 	}
 	
 
