@@ -1,5 +1,10 @@
 package com.deh.b2r.server.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Person {
@@ -9,6 +14,7 @@ public class Person {
 	private int age;
 	@JsonProperty("name")
 	private String name;
+	private Map<String, Address> addresses = new HashMap<>();
 		
 	public Person() {
 		
@@ -44,5 +50,13 @@ public class Person {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	@XmlTransient
+	public Map<String, Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(Map<String, Address> addresses) {
+		this.addresses = addresses;
 	}
 }

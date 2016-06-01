@@ -9,6 +9,8 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+
+import com.deh.b2r.server.resources.AddressResource;
 import com.deh.b2r.server.resources.PeopleResource;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
@@ -62,6 +64,7 @@ public class Fred
 
 		classes.add(TestRes.class);
 		classes.add(PeopleResource.class);
+		classes.add(AddressResource.class);
 
 		return classes;
 	}

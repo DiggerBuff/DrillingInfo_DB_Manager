@@ -2,28 +2,29 @@ package com.deh.b2r.server.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @XmlRootElement
 public class Address {
-
-	private long id;
+	@JsonProperty("number")
 	private int number;
+	@JsonProperty("streetName")
 	private String streetName;
+	@JsonProperty("town")
 	private String town;
+	@JsonProperty("state")
 	private String state;
-	private int zip;
 	
 	public Address() {
 		
 	}
 	
-	public Address(int number, String streetName, String town, String state,
-			int zip) {
+	public Address(@JsonProperty("number") int number, @JsonProperty("streetName") String streetName, @JsonProperty("town") String town, @JsonProperty("state") String state) {
 		super();
 		this.number = number;
 		this.streetName = streetName;
 		this.town = town;
 		this.state = state;
-		this.zip = zip;
 	}
 
 	public int getNumber() {
@@ -57,21 +58,4 @@ public class Address {
 	public void setState(String state) {
 		this.state = state;
 	}
-
-	public int getZip() {
-		return zip;
-	}
-
-	public void setZip(int zip) {
-		this.zip = zip;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
 }

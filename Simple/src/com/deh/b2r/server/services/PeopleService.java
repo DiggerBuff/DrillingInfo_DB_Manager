@@ -17,6 +17,14 @@ public class PeopleService {
 		people.put(3L, new Person(3, 25, "Adam"));
 	}
 	
+	public Map<Long, Person> getPeople() {
+		return people;
+	}
+
+	public void setPeople(Map<Long, Person> people) {
+		this.people = people;
+	}
+
 	public List<Person> getAllPeople() {
 		return new ArrayList<Person>(people.values());
 	}
