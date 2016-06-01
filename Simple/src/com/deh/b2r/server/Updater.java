@@ -17,7 +17,6 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import com.amazonaws.AmazonClientException;
@@ -37,7 +36,7 @@ public class Updater {
 	private final String logLocation = "log.txt";
 	
 	/**
-	 * TODO make a better initializer
+	 * Initializer sets up the logger for errors.
 	 */
 	public Updater() {
 		logger = Logger.getLogger(Updater.class);
@@ -111,6 +110,8 @@ public class Updater {
         //Create the streams
         InputStream reader = new BufferedInputStream(s3object.getObjectContent());
         OutputStream writer = new BufferedOutputStream(new FileOutputStream(file));
+        //To test if it will pull corrupt files, un-comment below. 
+        //reader.read();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         org.apache.commons.io.IOUtils.copy(reader, baos);
         byte[] bytes = baos.toByteArray();
@@ -232,7 +233,12 @@ public class Updater {
 	    // e.g. "1.2.3" = "1.2.3" or "1.2.3" < "1.2.3.4"
 	    return Integer.signum(vals1.length - vals2.length) * -1;		
 	}
-
+	
+	/**
+	 * Get the name of the jar that is wanted
+	 * 
+	 * @return the name of the jar with the .jar at the end. 
+	 */
 	public static String getUpdatedJarName() {
 		return updatedJarName + ".jar";
 	}

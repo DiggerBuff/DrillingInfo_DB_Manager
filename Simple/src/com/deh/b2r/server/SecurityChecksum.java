@@ -32,7 +32,15 @@ public class SecurityChecksum {
 		return b;
 		
 	}
-
+	
+	/**
+	 * Generates a checksum from an input stream and a message digest.
+	 * 
+	 * @param is Input Stream to create a checksum for.
+	 * @param md The type of checksum to create. 
+	 * @return the checksum.
+	 * @throws NoSuchAlgorithmException
+	 */
 	public static String getDigest(InputStream is, MessageDigest md)throws NoSuchAlgorithmException {
 		md.reset();
 		byte[] bytes = new byte[md.getDigestLength()];

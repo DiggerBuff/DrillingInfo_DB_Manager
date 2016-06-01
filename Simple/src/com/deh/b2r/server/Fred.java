@@ -43,8 +43,6 @@ public class Fred
     WebTarget target = client.target(defaultUri + ":" + port);
     
     //TODO Add place in URI to get jars. Make it restful
-    //TODO Add pulling of correct jar
-    //TODO Add security check for jars
 
     //Only allows for "update/JARNAMEHERE"
     while (true){
