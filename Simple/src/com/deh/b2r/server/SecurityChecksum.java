@@ -22,7 +22,7 @@ public class SecurityChecksum {
 		FileInputStream fis = new FileInputStream(path);
 		
 		
-//		byte[] data = Files.readAllBytes(jarFile);
+		//byte[] data = Files.readAllBytes(jarFile);
 		
 		MessageDigest md = MessageDigest.getInstance("MD5");
 //		md.update(jarFile.getBytes());

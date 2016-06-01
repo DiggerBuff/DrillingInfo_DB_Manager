@@ -89,6 +89,15 @@ public class Updater {
         }
 	}
 	
+	/**
+	 * Pulls the file from S3. Also checks the MD5 for security.
+	 * Note that there may be a problem if the ETag from Amazon is not in MD5 format. This may be the case for massive files. 
+	 * 
+	 * @param file the File to download
+	 * @return true if the MD5 checksums matched, false otherwise
+	 * @throws IOException
+	 * @throws NoSuchAlgorithmException
+	 */
 	private boolean downloadFile(File file) throws IOException, NoSuchAlgorithmException {
 		boolean sumsMatched = false;
 		file.createNewFile();
@@ -123,6 +132,7 @@ public class Updater {
         }
         else {
         	logger.warn("MD5 Checksums did not match. S3:\"" + s3sum + "\" Local:\"" + generatedSum + "\"");
+        	file.delete();
         }
         writer.flush();
         writer.close();
