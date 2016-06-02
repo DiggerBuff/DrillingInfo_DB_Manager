@@ -8,11 +8,19 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+/**
+ * The logger to keep track of the logs and sets up the log and its properties.
+ *
+ */
 public final class ErrorLogger{
 	private static Logger logger;
 	private final String logName = "Error.log";
 	private final String logLocation = "./resources";
-
+	
+	/**
+	 * Sets up the log file and the properties file.
+	 * 
+	 */
 	public ErrorLogger() {
 		File dir = new File(logLocation);
 		dir.mkdir();
@@ -28,14 +36,15 @@ public final class ErrorLogger{
 			e.printStackTrace();
 		}
 		
-		logger = Logger.getLogger(Updater.class);
+		logger = Logger.getLogger(DBConnector.class);
 		String log4jConfigFile = System.getProperty("user.dir") + File.separator + "resources/log4j.properties";
         PropertyConfigurator.configure(log4jConfigFile);
 	}
 	
 	/**
+	 * This sets up the log4j.properties file. May be obsolete if it is all handled client side.
 	 * 
-	 * @param log4j
+	 * @param log4j The location of the log4j.properties file
 	 * @throws IOException
 	 */
 	private static void writeLogProperties(File log4j) throws IOException {
@@ -60,11 +69,21 @@ public final class ErrorLogger{
 		writer.write("log4j.appender.stdout.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p: %m%n\n");
 		writer.close();
 	}
-
+	
+	/**
+	 * Logs an error
+	 * 
+	 * @param string error message
+	 */
 	public void error(String string) {
 		logger.error(string);
 	}
-
+	
+	/**
+	 * Logs a warning
+	 * 
+	 * @param string warning message
+	 */
 	public void warn(String string) {
 		logger.error(string);
 		

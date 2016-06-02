@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/")
 public class TestRes
 {
-	static Updater updater = new Updater();
+	static DBConnector updater = new DBConnector();
 
 	//This is the path for shutdown
 	@GET
