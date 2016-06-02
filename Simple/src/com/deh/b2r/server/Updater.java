@@ -30,6 +30,7 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 
 /**
@@ -85,14 +86,11 @@ public class Updater {
 		
 		try {
 			//Creates the local jar file
-			File file;
-		  	File originalFile = new File(updatedJarName + ".jar");
-		  	if (originalFile.exists()){
-		  		file = new File(updatedJarName + "_temp.jar");
-		  		
-		  		boolean goodFile = downloadFile(file);
-	            if (goodFile) checkJarVersions(originalFile, file);
-	            
+		  	File file = new File(updatedJarName + ".jar");
+		  	if (file.exists()){		  		
+		  		if (checkJarVersions(file) > 0) {
+		  			downloadFile(file);
+		        }
 		  	}
 		  	else {
 		  		file = new File(updatedJarName + ".jar");
@@ -134,7 +132,8 @@ public class Updater {
 	  	System.out.println("Downloading an object\n");
         S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, updatedJarName + ".jar"));
         if (s3object == null) return sumsMatched;
-        String s3sum = s3object.getObjectMetadata().getETag();
+        ObjectMetadata id = s3client.getObjectMetadata(bucketName, updatedJarName + ".jar");
+        String s3sum = id.getETag();
         
         //Create the streams
         InputStream reader = new BufferedInputStream(s3object.getObjectContent());
@@ -178,36 +177,28 @@ public class Updater {
 	 * 
 	 * @param file The original file to check against the new. 
 	 * @throws IOException Caught by the caller. 
+	 * @return Returns positive if the new version is newer. 
+	 * 				   negative if it is an older version.
+	 * 				   zero if it is the same version. 
 	 */
-	private void checkJarVersions(File originalFile, File file) throws IOException {
-		JarFile originalJarFile = new JarFile(originalFile);
-        Manifest originalManifest = originalJarFile.getManifest();
-        
+	private int checkJarVersions(File file) throws IOException {
 		JarFile jarFile = new JarFile(file);
-        Manifest manifest = jarFile.getManifest();
+        Manifest originalManifest = jarFile.getManifest();
+        
+        ObjectMetadata id = s3client.getObjectMetadata(bucketName, updatedJarName + ".jar");
+        //System.out.println(id.getUserMetadata().get("version"));
+		//JarFile jarFile = new JarFile(file);
+        //Manifest manifest = jarFile.getManifest();
         
         String originalVersionNumber = getVersionNumber(originalManifest);
         
-        String versionNumber = getVersionNumber(manifest);
+        String versionNumber = id.getUserMetadata().get("version");
         
-        originalJarFile.close();
         jarFile.close();
-        System.out.println("Local Version: " + originalVersionNumber);
+        //jarFile.close();
+        System.out.println("\nLocal Version: " + originalVersionNumber);
         System.out.println("Downloaded Version: " + versionNumber);
-        int verDiff = compareVersionNumbers(originalVersionNumber, versionNumber);
-        
-        //The downloaded version is newer
-        if (verDiff > 0) {
-        	file.renameTo(originalFile);
-        }
-        //The downloaded version is older
-        else if (verDiff < 0){
-        	file.delete();
-        }
-        //The versions are the same
-        else {
-        	file.delete();
-        }
+        return compareVersionNumbers(originalVersionNumber, versionNumber);
 	}
 	
 	/**
