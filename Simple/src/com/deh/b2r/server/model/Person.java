@@ -1,6 +1,8 @@
 package com.deh.b2r.server.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -15,6 +17,7 @@ public class Person {
 	@JsonProperty("name")
 	private String name;
 	private Map<String, Address> addresses = new HashMap<>();
+	private List<Link> links = new ArrayList<>();
 		
 	public Person() {
 		
@@ -27,6 +30,22 @@ public class Person {
 		this.age = age;
 		this.name = name;
 	}
+	
+	public List<Link> getLinks() {
+		return links;
+	}
+	
+	public void addLink(String url, String rel) {
+		Link link = new Link();
+		link.setLink(url);
+		link.setRel(rel);
+		links.add(link);
+	}
+
+	public void setLinks(List<Link> links) {
+		this.links = links;
+	}
+
 
 	public int getAge() {
 		return age;

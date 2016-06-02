@@ -35,11 +35,34 @@ public class PeopleResource {
 		System.out.println("Get was called");
 		return peopleService.getAllPeople();
 	}
-	
+
 	@GET
 	@Path("/{personId}")
-	public Person getPerson(@PathParam("personId") long id) {
-		return peopleService.getPerson(id);
+	public Person getPerson(@PathParam("personId") long id, @Context UriInfo uriInfo) {
+		Person person = peopleService.getPerson(id);
+		person.addLink(getUriForSelf(uriInfo, person), "self");
+		person.addLink(getUriForAddress(uriInfo, person), "address");
+		return person;
+	}
+
+	private String getUriForSelf(UriInfo uriInfo, Person person) {
+		String uri = uriInfo.getBaseUriBuilder()
+							.path(PeopleResource.class)
+							.path(Long.toString(person.getId()))
+							.build()
+							.toString();
+		return uri;
+	}
+	
+	private String getUriForAddress(UriInfo uriInfo, Person person) {
+		String uri = uriInfo.getBaseUriBuilder()
+							.path(PeopleResource.class)
+							.path(PeopleResource.class, "getAddressResource")
+							.path(AddressResource.class)
+							.resolveTemplate("personId", person.getId())
+							.build()
+							.toString();
+		return uri;
 	}
 	
 	@POST
