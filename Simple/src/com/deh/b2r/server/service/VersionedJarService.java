@@ -23,8 +23,8 @@ public class VersionedJarService {
 		return new ArrayList<VersionedJar>(versionedJars.values());
 	}
 	
-	public VersionedJar getVersionedJar(long id) {
-		return versionedJars.get(id);
+	public VersionedJar getVersionedJar(String vjName) {
+		return versionedJars.get(vjName);
 	}
 	
 	/*

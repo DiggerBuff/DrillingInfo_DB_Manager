@@ -37,9 +37,9 @@ public class VersionedJarResource {
 	}
 
 	@GET
-	@Path("/{vjId}")
-	public VersionedJar getVersionedJar(@PathParam("vjID") long id, @Context UriInfo uriInfo) {
-		VersionedJar vj = versionedJarService.getVersionedJar(id);
+	@Path("/{vjName}")
+	public VersionedJar getVersionedJar(@PathParam("vjName") String vjName, @Context UriInfo uriInfo) {
+		VersionedJar vj = versionedJarService.getVersionedJar(vjName);
 		//vj.addLink(getUriForSelf(uriInfo, vj), "self");
 		//vj.addLink(getUriForAddress(uriInfo, vj), "address");
 		return vj;
