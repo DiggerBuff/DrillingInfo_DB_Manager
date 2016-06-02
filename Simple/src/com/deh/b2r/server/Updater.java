@@ -35,7 +35,7 @@ public class Updater {
 	
 	private static String bucketName     = "drilling-info-bucket";
 	private static String updatedJarName = "";
-	private final AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+	private final AmazonS3 s3client;
 	private static Logger logger;
 	private final String logName = "Error.log";
 	private final String logLocation = "./resources";
@@ -61,6 +61,8 @@ public class Updater {
 		logger = Logger.getLogger(Updater.class);
 		String log4jConfigFile = System.getProperty("user.dir") + File.separator + "resources/log4j.properties";
         PropertyConfigurator.configure(log4jConfigFile);
+        
+        s3client = new AmazonS3Client(new ProfileCredentialsProvider());
 	}
 
 	/**
