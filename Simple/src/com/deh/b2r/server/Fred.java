@@ -30,6 +30,7 @@ public class Fred
 {
 	private static final int port = getPort();
 	private static final String defaultUri = "http://localhost";
+	public static ErrorLogger logger = new ErrorLogger();
 
 	public static void main(String... args) {
 		Fred fred = new Fred();

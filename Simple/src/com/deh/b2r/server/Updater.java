@@ -45,7 +45,6 @@ public class Updater {
 	private static String bucketName     = "drilling-info-bucket";
 	private static String updatedJarName = "";
 	private final AmazonS3 s3client;
-	private static Logger logger;
 	private final String logName = "Error.log";
 	private final String logLocation = "./resources";
 	
@@ -53,7 +52,7 @@ public class Updater {
 	 * Initializer sets up the logger for errors.
 	 */
 	public Updater() {
-		File dir = new File(logLocation);
+		/*File dir = new File(logLocation);
 		dir.mkdir();
 		File log = new File(logLocation + "/" + logName);
 		File log4j = new File(logLocation + "/log4j.properties");
@@ -65,11 +64,10 @@ public class Updater {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
-		logger = Logger.getLogger(Updater.class);
-		String log4jConfigFile = System.getProperty("user.dir") + File.separator + "resources/log4j.properties";
-        PropertyConfigurator.configure(log4jConfigFile);
+		/*String log4jConfigFile = System.getProperty("user.dir") + File.separator + "resources/log4j.properties";
+        PropertyConfigurator.configure(log4jConfigFile);*/
         
         s3client = new AmazonS3Client(new ProfileCredentialsProvider());
 	}
@@ -93,25 +91,23 @@ public class Updater {
 		        }
 		  	}
 		  	else {
-		  		file = new File(updatedJarName + ".jar");
-		  		
 		  		downloadFile(file);
 		  	}
         } catch (IOException e) {
             e.printStackTrace();
         }catch (AmazonServiceException ase) {
-            logger.error("Caught an AmazonServiceException, which means your request made it to Amazon S3, but was rejected with an error response for some reason.");
-            logger.error("Error Message:    " + ase.getMessage());
-            logger.error("HTTP Status Code: " + ase.getStatusCode());
-            logger.error("AWS Error Code:   " + ase.getErrorCode());
-            logger.error("Error Type:       " + ase.getErrorType());
-            logger.error("Request ID:       " + ase.getRequestId());
+            Fred.logger.error("Caught an AmazonServiceException, which means your request made it to Amazon S3, but was rejected with an error response for some reason.");
+            Fred.logger.error("Error Message:    " + ase.getMessage());
+            Fred.logger.error("HTTP Status Code: " + ase.getStatusCode());
+            Fred.logger.error("AWS Error Code:   " + ase.getErrorCode());
+            Fred.logger.error("Error Type:       " + ase.getErrorType());
+            Fred.logger.error("Request ID:       " + ase.getRequestId());
             
             File file = new File(updatedJarName + ".jar");
             file.delete();
         } catch (AmazonClientException ace) {
-        	logger.error("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
-        	logger.error("Error Message: " + ace.getMessage());
+        	Fred.logger.error("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
+        	Fred.logger.error("Error Message: " + ace.getMessage());
         }
 	}
 	
@@ -160,7 +156,7 @@ public class Updater {
 	        sumsMatched = true;
         }
         else {
-        	logger.warn("MD5 Checksums did not match. S3:\"" + s3sum + "\" Local:\"" + generatedSum + "\"");
+        	Fred.logger.warn("MD5 Checksums did not match. S3:\"" + s3sum + "\" Local:\"" + generatedSum + "\"");
         	file.delete();
         }
         writer.flush();
@@ -255,7 +251,7 @@ public class Updater {
 	 * 
 	 * @param log4j
 	 * @throws IOException
-	 */
+	 *//*
 	private void writeLogProperties(File log4j) throws IOException {
 		FileWriter log4jWriter = new FileWriter(log4j);
 		BufferedWriter writer = new BufferedWriter(log4jWriter);
@@ -277,7 +273,7 @@ public class Updater {
 		writer.write("log4j.appender.stdout.layout=org.apache.log4j.PatternLayout\n");
 		writer.write("log4j.appender.stdout.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p: %m%n\n");
 		writer.close();
-	}
+	}*/
 	
 	/**
 	 * Get the name of the jar that is wanted
