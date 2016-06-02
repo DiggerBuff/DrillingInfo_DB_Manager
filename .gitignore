@@ -28,4 +28,4 @@ local.properties
 
 !SampleUpdatedJar/*
 !SampleOldJar/*
-!resources/log4j.properties
+Simple/resources/*

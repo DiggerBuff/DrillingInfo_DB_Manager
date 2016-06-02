@@ -2,12 +2,16 @@ package com.deh.b2r.server;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
@@ -33,17 +37,32 @@ public class Updater {
 	private static String updatedJarName = "";
 	private final AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
 	private static Logger logger;
-	private final String logLocation = "log.txt";
+	private final String logName = "Error.log";
+	private final String logLocation = "./resources";
 	
 	/**
 	 * Initializer sets up the logger for errors.
 	 */
 	public Updater() {
+		File dir = new File(logLocation);
+		dir.mkdir();
+		File log = new File(logLocation + "/" + logName);
+		File log4j = new File(logLocation + "/log4j.properties");
+		try {
+			log.createNewFile();
+			if(!log4j.exists()){
+				log4j.createNewFile();
+				writeLogProperties(log4j);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		logger = Logger.getLogger(Updater.class);
 		String log4jConfigFile = System.getProperty("user.dir") + File.separator + "resources/log4j.properties";
         PropertyConfigurator.configure(log4jConfigFile);
 	}
-	
+
 	/**
 	 * This pulls a jar from Amazon S3 and places a copy in the local directory.
 	 * Make sure that the jar file has a manifest in it. 
@@ -232,6 +251,34 @@ public class Updater {
 	    // the strings are equal or one string is a substring of the other
 	    // e.g. "1.2.3" = "1.2.3" or "1.2.3" < "1.2.3.4"
 	    return Integer.signum(vals1.length - vals2.length) * -1;		
+	}
+	
+	/**
+	 * 
+	 * @param log4j
+	 * @throws IOException
+	 */
+	private void writeLogProperties(File log4j) throws IOException {
+		FileWriter log4jWriter = new FileWriter(log4j);
+		BufferedWriter writer = new BufferedWriter(log4jWriter);
+		
+		//Root logger option
+		writer.write("log4j.rootLogger=INFO, file, stdout\n\n");
+		
+		//Direct log messages to a log file
+		writer.write("log4j.appender.file=org.apache.log4j.RollingFileAppender\n");
+		writer.write("log4j.appender.file.File=resources/Error.log\n");
+		writer.write("log4j.appender.file.MaxFileSize=10MB\n");
+		writer.write("log4j.appender.file.MaxBackupIndex=10\n");
+		writer.write("log4j.appender.file.layout=org.apache.log4j.PatternLayout\n");
+		writer.write("log4j.appender.file.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n\n\n");
+		
+		//Direct log messages to stdout
+		writer.write("log4j.appender.stdout=org.apache.log4j.ConsoleAppender\n");
+		writer.write("log4j.appender.stdout.Target=System.out\n");
+		writer.write("log4j.appender.stdout.layout=org.apache.log4j.PatternLayout\n");
+		writer.write("log4j.appender.stdout.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p: %m%n\n");
+		writer.close();
 	}
 	
 	/**
