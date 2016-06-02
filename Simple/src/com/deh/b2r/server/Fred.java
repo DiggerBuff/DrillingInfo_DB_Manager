@@ -1,6 +1,8 @@
 package com.deh.b2r.server;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.URI;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
@@ -117,14 +119,17 @@ public class Fred
 
   /**
    * Return the port to use for the service.
-   * <P/>
-   * This should be smarter!
    *
-   * @return    The port.
+   * @return    The port. -1 if there was an error. 
    */
-
+  //TODO What to do when it returns -1
   private static int getPort() {
-    //return 0;
-    return 9898;
+	  try {
+		ServerSocket s = new ServerSocket(0);
+		return s.getLocalPort();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	  return -1;
   }
 }
