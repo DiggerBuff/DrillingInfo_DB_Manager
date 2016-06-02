@@ -7,6 +7,12 @@ import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.MultivaluedMap;
 
+/**
+ * TODO get a better understanding of ContainerResponseFilter
+ * 
+ * This seems like it auto-adds the relevant headers that we need.
+ *
+ */
 public class CORSResponseFilter implements ContainerResponseFilter
 {
   public void filter(ContainerRequestContext requestContext,ContainerResponseContext responseContext) throws IOException

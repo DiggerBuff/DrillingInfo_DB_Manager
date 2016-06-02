@@ -10,15 +10,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 import java.util.Iterator;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -31,6 +32,13 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 
+/**
+ * TODO need to separate logger stuff into its own class
+ * TODO likely need to change the setup of this to make it restful.
+ * 
+ * Currently handles pulling jars from S3, verification, and version control.
+ *
+ */
 public class Updater {
 	
 	private static String bucketName     = "drilling-info-bucket";
@@ -178,35 +186,9 @@ public class Updater {
 		JarFile jarFile = new JarFile(file);
         Manifest manifest = jarFile.getManifest();
         
-        String originalVersionNumber = "";
-        Attributes originalAttributes = originalManifest.getMainAttributes();
-        if (originalAttributes!=null){
-            Iterator it = originalAttributes.keySet().iterator();
-            while (it.hasNext()){
-                Name key = (Name) it.next();
-                String keyword = key.toString();
-                //Different types of manifest files may require a change here.
-                if (keyword.equals("Implementation-Version") || keyword.equals("Bundle-Version") || keyword.equals("Manifest-Version")){
-                    originalVersionNumber = (String) originalAttributes.get(key);
-                    break;
-                }
-            }
-        }
+        String originalVersionNumber = getVersionNumber(originalManifest);
         
-        String versionNumber = "";
-        Attributes attributes = manifest.getMainAttributes();
-        if (attributes!=null){
-            Iterator it = attributes.keySet().iterator();
-            while (it.hasNext()){
-                Name key = (Name) it.next();
-                String keyword = key.toString();
-                //Different types of manifest files may require a change here.
-                if (keyword.equals("Implementation-Version") || keyword.equals("Bundle-Version") || keyword.equals("Manifest-Version")){
-                    versionNumber = (String) attributes.get(key);
-                    break;
-                }
-            }
-        }
+        String versionNumber = getVersionNumber(manifest);
         
         originalJarFile.close();
         jarFile.close();
@@ -226,6 +208,29 @@ public class Updater {
         else {
         	file.delete();
         }
+	}
+	
+	/**
+	 * Iterates through the main attributes of a jar until it finds specific version keywords
+	 * to get the version number of the jar.
+	 * 
+	 * @param manifest
+	 * @return version number corresponding to the keyword
+	 */
+	private String getVersionNumber(Manifest manifest) {
+		Attributes attributes = manifest.getMainAttributes();
+		if (attributes!=null){
+			Iterator<Object> it = attributes.keySet().iterator();
+			while (it.hasNext()){
+				Name key = (Name) it.next();
+				String keyword = key.toString();
+				//Different types of manifest files may require a change here.
+				if (keyword.equals("Implementation-Version") || keyword.equals("Bundle-Version") || keyword.equals("Manifest-Version")){
+					return (String) attributes.get(key);
+				}
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -291,6 +296,4 @@ public class Updater {
 	public static String getUpdatedJarName() {
 		return updatedJarName + ".jar";
 	}
-	
-
 }

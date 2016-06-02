@@ -8,11 +8,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
+ * TODO what is this...
+ * 
  * Provider of the Jackson <code>ObjectMapper</code>.
  *
  * @version      $Rev$
  */
-
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class ObjectMapperResolver implements ContextResolver<ObjectMapper>
@@ -22,7 +23,6 @@ public class ObjectMapperResolver implements ContextResolver<ObjectMapper>
   /**
    * Create the mapper - it should be a singleton.
    */
-
   public ObjectMapperResolver() {
     mapper = new ObjectMapper();
     mapper.enable(SerializationFeature.INDENT_OUTPUT);
