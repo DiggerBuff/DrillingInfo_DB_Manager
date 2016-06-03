@@ -29,13 +29,13 @@ import com.deh.b2r.server.service.VersionedJarService;
 public class VersionedJarResource {
 
 	VersionedJarService versionedJarService = new VersionedJarService();
-
+	/*
 	@GET
 	public List<VersionedJar> getVersionedJars() {
 		System.out.println("Get was called");
 		return versionedJarService.getAllVersionedJars();
 	}
-
+	*/
 	@GET
 	@Path("/{vjName}")
 	public VersionedJar getVersionedJar(@PathParam("vjName") String vjName, @Context UriInfo uriInfo) {

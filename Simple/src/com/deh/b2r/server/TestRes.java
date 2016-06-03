@@ -28,12 +28,4 @@ public class TestRes
 		}
 		return "Unknown System Command";
 	}
-
-	//This is the path that gets jars
-	@GET
-	@Path("update/{jar}")
-	public void getUpdate(@PathParam("jar") String jar) throws Exception
-	{
-		updater.get(jar);
-	}
 }

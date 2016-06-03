@@ -1,5 +1,6 @@
 package com.deh.b2r.server.model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,16 +8,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VersionedJar {
 	@JsonProperty("id")
-	private long id;
+	private String version;
+	private File file;
 	private List<Link> links = new ArrayList<>();
 		
 	public VersionedJar() {
 		
 	}
 
-	public VersionedJar(@JsonProperty("id") long id) {
+	public VersionedJar(@JsonProperty("id") String version, File file) {
 		super();
-		this.id = id;
+		this.version = version;
+		this.file = file;
 	}
 	
 	public List<Link> getLinks() {

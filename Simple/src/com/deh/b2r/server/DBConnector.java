@@ -28,6 +28,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
+import com.deh.b2r.server.model.VersionedJar;
 
 /**
  * TODO need to separate logger stuff into its own class
@@ -54,11 +55,12 @@ public class DBConnector {
 	 * Make sure that the jar file has a manifest in it. 
 	 * 
 	 * @param jar The name of the jar to get. Pass without ".jar" at the end. 
+	 * @return 
 	 * @throws NoSuchAlgorithmException 
 	 */
-	public void get(String jar) throws NoSuchAlgorithmException {
+	public VersionedJar getVersionedJar(String jar) throws NoSuchAlgorithmException {
 		updatedJarName = jar;
-		
+
 		try {
 			//Creates the local jar file
 		  	File file = new File(updatedJarName + ".jar");
@@ -70,6 +72,9 @@ public class DBConnector {
 		  	else {
 		  		downloadFile(file);
 		  	}
+		  	
+		  	return new VersionedJar(getVersionNumber(file), file);
+		  	
         } catch (IOException e) {
             e.printStackTrace();
         }catch (AmazonServiceException ase) {
@@ -86,6 +91,7 @@ public class DBConnector {
         	Fred.logger.error("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
         	Fred.logger.error("Error Message: " + ace.getMessage());
         }
+		return null;
 	}
 	
 	/**
@@ -155,19 +161,17 @@ public class DBConnector {
 	 * 				   zero if it is the same version. 
 	 */
 	private int checkJarVersions(File file) throws IOException {
-		JarFile jarFile = new JarFile(file);
-        Manifest originalManifest = jarFile.getManifest();
         
         ObjectMetadata id = s3client.getObjectMetadata(bucketName, updatedJarName + ".jar");
         //System.out.println(id.getUserMetadata().get("version"));
 		//JarFile jarFile = new JarFile(file);
         //Manifest manifest = jarFile.getManifest();
         
-        String originalVersionNumber = getVersionNumber(originalManifest);
+        String originalVersionNumber = getVersionNumber(file);
         
         String versionNumber = id.getUserMetadata().get("version");
         
-        jarFile.close();
+        
         //jarFile.close();
         System.out.println("\nLocal Version: " + originalVersionNumber);
         System.out.println("Downloaded Version: " + versionNumber);
@@ -180,8 +184,12 @@ public class DBConnector {
 	 * 
 	 * @param manifest
 	 * @return version number corresponding to the keyword
+	 * @throws IOException 
 	 */
-	private String getVersionNumber(Manifest manifest) {
+	private String getVersionNumber(File file) throws IOException {
+		JarFile jarFile = new JarFile(file);
+        Manifest manifest = jarFile.getManifest();
+        jarFile.close();
 		Attributes attributes = manifest.getMainAttributes();
 		if (attributes!=null){
 			Iterator<Object> it = attributes.keySet().iterator();

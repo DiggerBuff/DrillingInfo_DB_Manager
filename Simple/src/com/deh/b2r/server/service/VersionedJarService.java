@@ -1,17 +1,20 @@
 package com.deh.b2r.server.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.deh.b2r.server.DBConnector;
 import com.deh.b2r.server.model.VersionedJar;
 
 public class VersionedJarService {
 	
 	//TODO populate verionedJar using database
-	private Map<Long, VersionedJar> versionedJars = null; // Need to interface this with Alan's S3 stuff
-	
+	private DBConnector dbConnector = new DBConnector(); // Need to interface this with Alan's S3 stuff
+	/*
 	public Map<Long, VersionedJar> getVersionedJars() {
+		
 		return versionedJars;
 	}
 
@@ -22,9 +25,15 @@ public class VersionedJarService {
 	public List<VersionedJar> getAllVersionedJars() {
 		return new ArrayList<VersionedJar>(versionedJars.values());
 	}
-	
+	*/
 	public VersionedJar getVersionedJar(String vjName) {
-		return versionedJars.get(vjName);
+		try {
+			return dbConnector.getVersionedJar(vjName);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/*

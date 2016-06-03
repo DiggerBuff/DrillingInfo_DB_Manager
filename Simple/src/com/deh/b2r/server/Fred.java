@@ -17,6 +17,8 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+
+import com.deh.b2r.server.resource.VersionedJarResource;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 import java.util.Scanner;
@@ -101,7 +103,7 @@ public class Fred
 	private Set<Class<?>> getClasses() {
 		Set<Class<?>> classes = new HashSet<>();
 		classes.add(TestRes.class);
-		
+		classes.add(VersionedJarResource.class);
 		return classes;
 	}
 
