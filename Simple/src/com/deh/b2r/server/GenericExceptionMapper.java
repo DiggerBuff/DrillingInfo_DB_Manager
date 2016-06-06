@@ -27,7 +27,7 @@ public class GenericExceptionMapper
    */
   public static class ThrowableMapper implements ExceptionMapper<Throwable>
   {
-    // Implements:  ExceptionMapper
+    // Implements:  ExceptionMapper	
     public Response toResponse(Throwable exp) {
       return Response.status(404).entity(exp.getMessage()).type("text/plain").build();
     }
