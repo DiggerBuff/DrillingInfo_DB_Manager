@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.7.0
+Created-By: 1.6.0_01-b06 (Sun Microsystems Inc.)
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: com.drillinginfo.repair;singleton:=true
+Bundle-Name: Drillinginfo Repair Plugin
+Bundle-Version: 6.0.1
+Bundle-Vendor: Drillinginfo
+Bundle-Localization: plugin
+Bundle-ClassPath: .
+Export-Package: com.drillinginfo.repair,
+ com.drillinginfo.repair.rest.api
+Bundle-ActivationPolicy: lazy
+Require-Bundle: com.drillinginfo.javax

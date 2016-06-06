@@ -2,4 +2,4 @@
 
 export CLASSPATH=$CLASSPATH:plugins/*
 
-exec $JAVA_HOME/bin/java -XstartOnFirstThread com.drillinginfo.rest.DIServer
+exec ./jre/bin/java -XstartOnFirstThread com.drillinginfo.rest.DIServer
