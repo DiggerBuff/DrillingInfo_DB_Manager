@@ -29,5 +29,6 @@ local.properties
 !SampleUpdatedJar/*
 !SampleOldJar/*
 Simple/resources/*
-!Simple/production/*
+!Simple/production/Transform/*
+!Simple/production/Transform/plugins/*
 !Simple/update/*
