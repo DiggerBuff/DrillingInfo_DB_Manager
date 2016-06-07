@@ -29,6 +29,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.iterable.S3Objects;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
@@ -47,6 +48,8 @@ public class DBConnector {
 	
 	private static String bucketName     = "drilling-info-bucket";
 	private static String updatedJarName = "";
+	private static String prefix = "DrillingInfo_Updates/";
+	private static String version = "6.0.1/plugins/";
 	private final AmazonS3 s3client;
 	
 	/**
@@ -72,7 +75,7 @@ public class DBConnector {
             do {               
                result = s3client.listObjectsV2(req);
                
-               for (S3ObjectSummary objectSummary : result.getObjectSummaries()) {
+               for (S3ObjectSummary objectSummary : S3Objects.withPrefix(s3client, bucketName, prefix + version)) {
                    System.out.println(" - " + objectSummary.getKey());
                    jars.add(objectSummary.getKey());
                }

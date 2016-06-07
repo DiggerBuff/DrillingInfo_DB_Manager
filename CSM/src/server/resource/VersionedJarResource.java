@@ -2,7 +2,10 @@ package server.resource;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -30,6 +33,7 @@ import server.service.VersionedJarService;
 public class VersionedJarResource {
 
 	VersionedJarService versionedJarService = new VersionedJarService();
+	private Map<String, String> jarsOldToNew = new HashMap<String, String>();
 	/*
 	@GET
 	public List<VersionedJar> getVersionedJars() {
