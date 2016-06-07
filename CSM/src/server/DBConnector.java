@@ -15,7 +15,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
@@ -34,8 +33,6 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.iterable.S3Objects;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ListObjectsV2Request;
-import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
@@ -115,7 +112,7 @@ public class DBConnector {
 	 * @param jar The name of the jar to get. Pass without ".jar" at the end. 
 	 * @return 
 	 * @throws NoSuchAlgorithmException 
-	 */
+	 *//*
 	public VersionedJar getVersionedJar(String jar) throws NoSuchAlgorithmException {
 		updatedJarName = jar;
 
@@ -123,9 +120,9 @@ public class DBConnector {
 			//Creates the local jar file
 			File file = new File(updatedJarName + ".jar");
 			if (file.exists()){		  		
-				/*if (checkJarVersions(file) > 0) {
+				if (checkJarVersions(file) > 0) {
 					downloadFile(file);
-				}*/
+				}
 			}
 			else {
 				downloadFile(file);
@@ -149,13 +146,6 @@ public class DBConnector {
 			Fred.logger.error("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
 			Fred.logger.error("Error Message: " + ace.getMessage());
 		}
-		return null;
-	}
-	
-	/*public List<String> getNewestVersion(String localJar) {
-		String jar = localJar.substring(0, localJar.lastIndexOf('_'));
-		isValidFile(prefix + version + jar);
-		
 		return null;
 	}*/
 	
