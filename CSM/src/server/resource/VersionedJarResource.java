@@ -33,26 +33,28 @@ import server.service.VersionedJarService;
 public class VersionedJarResource {
 
 	VersionedJarService versionedJarService = new VersionedJarService();
-	
-	
-	@GET
-	public List<VersionedJar> getVersionedJars() {
-		System.out.println("Get was called");
-		return versionedJarService.getAllVersionedJars();
-	}
-	
+
 	@GET
 	@Path("/{vjName}")
-	public Response getVersionedJar(@PathParam("vjName") String vjName, @Context UriInfo uriInfo) {
+	public Response detect(@PathParam("vjName") String vjName, @Context UriInfo uriInfo) {
 		String response = versionedJarService.detect(vjName);
-		
-		return Response.status(Response.Status.NOT_FOUND).build();
+		if (response == null) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		else {
+			return Response.status(Response.Status.OK).entity(response).build();
+		}
 	}
 	
 	@GET
-	public Map<String, ArrayList<String>> getVersionedJar(@Context UriInfo uriInfo) {
-		Map<String, ArrayList<String>> updates = versionedJarService.getAllJars();
-		return updates;
+	public Response detectAll(@Context UriInfo uriInfo) {
+		String response = versionedJarService.detectAll();
+		if (response == null) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+		else {
+			return Response.status(Response.Status.OK).entity(response).build();
+		}
 	}
 	
 	/*
