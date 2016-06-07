@@ -1,22 +1,10 @@
 package server.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
-import java.util.jar.Attributes.Name;
-
-import com.amazonaws.services.s3.model.ObjectMetadata;
-
 import server.DBConnector;
-import server.model.VersionedJar;
 
 
 public class VersionedJarService {
@@ -24,10 +12,6 @@ public class VersionedJarService {
 	private DBConnector dbConnector = new DBConnector();
 	private Map<String, ArrayList<String>> jarsOldToNew = new HashMap<String, ArrayList<String>>();
 
-	public Map<String, ArrayList<String>> getAllJars() {
-		return dbConnector.getAllJars();
-	}
-	
 	/*
 	public String detect(String vjName) {
 		List<String> updates = dbConnector.getAssociatedVersions(vjName);
@@ -74,27 +58,9 @@ public class VersionedJarService {
 		}
 	}
 	
-	/*
-	public Person addPerson(Person newPerson) {
-		newPerson.setId(people.size() + 1);
-		people.put(newPerson.getId(), newPerson);
-		return newPerson;
+	public Map<String, ArrayList<String>> getAllJars() {
+		return dbConnector.getAllJars();
 	}
-	
-	public Person updatePerson(Person person) {
-		if(person.getId() <= 0) {
-			return null;
-		}
-		people.put(person.getId(),  person);
-		return person;
-	}
-	
-	public Person deletePerson(long id) {
-		return people.remove(id);
-	}
-	*/
-	
-	
 	
 	private List<String> getLocalJars() {
 		// TODO Auto-generated method stub
@@ -114,16 +80,20 @@ public class VersionedJarService {
 	private int compareVersionNumbers(String originalVer, String newVer) {
 		String[] vals1 = originalVer.split("\\.");
 	    String[] vals2 = newVer.split("\\.");
+	    
 	    int i = 0;
+	    
 	    // set index to first non-equal ordinal or length of shortest version string
 	    while (i < vals1.length && i < vals2.length && vals1[i].equals(vals2[i])) {
 	      i++;
 	    }
+	    
 	    // compare first non-equal ordinal number
 	    if (i < vals1.length && i < vals2.length) {
 	        int diff = Integer.valueOf(vals1[i]).compareTo(Integer.valueOf(vals2[i]));
 	        return Integer.signum(diff) * -1;
 	    }
+	    
 	    // the strings are equal or one string is a substring of the other
 	    // e.g. "1.2.3" = "1.2.3" or "1.2.3" < "1.2.3.4"
 	    return Integer.signum(vals1.length - vals2.length) * -1;		
