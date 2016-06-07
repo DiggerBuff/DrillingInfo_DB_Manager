@@ -33,7 +33,7 @@ import server.service.VersionedJarService;
 public class VersionedJarResource {
 
 	VersionedJarService versionedJarService = new VersionedJarService();
-	private Map<String, String> jarsOldToNew = new HashMap<String, String>();
+	
 	/*
 	@GET
 	public List<VersionedJar> getVersionedJars() {
@@ -43,11 +43,10 @@ public class VersionedJarResource {
 	*/
 	@GET
 	@Path("/{vjName}")
-	public VersionedJar getVersionedJar(@PathParam("vjName") String vjName, @Context UriInfo uriInfo) {
-		VersionedJar vj = versionedJarService.getVersionedJar(vjName);
-		//vj.addLink(getUriForSelf(uriInfo, vj), "self");
-		//vj.addLink(getUriForAddress(uriInfo, vj), "address");
-		return vj;
+	public Response getVersionedJar(@PathParam("vjName") String vjName, @Context UriInfo uriInfo) {
+		String response = versionedJarService.detect(vjName);
+		
+		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 	
 	@GET
