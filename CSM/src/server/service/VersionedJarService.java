@@ -24,15 +24,6 @@ public class VersionedJarService {
 	private DBConnector dbConnector = new DBConnector();
 	private Map<String, ArrayList<String>> jarsOldToNew = new HashMap<String, ArrayList<String>>();
 
-	public VersionedJar getVersionedJar(String vjName) {
-		try {
-			return dbConnector.getVersionedJar(vjName);
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 	public Map<String, ArrayList<String>> getAllJars() {
 		return dbConnector.getAllJars();
 	}
