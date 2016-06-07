@@ -30,6 +30,7 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.iterable.S3Objects;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
@@ -82,9 +83,6 @@ public class DBConnector {
 			Fred.logger.error("AWS Error Code:   " + ase.getErrorCode());
 			Fred.logger.error("Error Type:       " + ase.getErrorType());
 			Fred.logger.error("Request ID:       " + ase.getRequestId());
-
-			File file = new File(updatedJarName + ".jar");
-			file.delete();
 		} catch (AmazonClientException ace) {
 			Fred.logger.error("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
 			Fred.logger.error("Error Message: " + ace.getMessage());
@@ -136,7 +134,14 @@ public class DBConnector {
 		}
 		return null;
 	}
-
+	
+	/*public List<String> getNewestVersion(String localJar) {
+		String jar = localJar.substring(0, localJar.lastIndexOf('_'));
+		isValidFile(prefix + version + jar);
+		
+		return null;
+	}*/
+	
 	/**
 	 * Pulls the file from S3. Also checks the MD5 for security.
 	 * Note that there may be a problem if the ETag from Amazon is not in MD5 format. This may be the case for massive files. 
@@ -283,4 +288,30 @@ public class DBConnector {
 	public static String getUpdatedJarName() {
 		return updatedJarName + ".jar";
 	}
+	
+	/**
+	 * Tries to access a file to see if it exists. 
+	 * 
+	 * @param path The name of the file to see if it exists. 
+	 * @return True if the file exists. False otherwise. 
+	 * @throws AmazonClientException
+	 * @throws AmazonServiceException
+	 */
+	public boolean isValidFile(String path) throws AmazonClientException, AmazonServiceException {
+	    boolean isValidFile = true;
+	    try {
+	        ObjectMetadata objectMetadata = s3client.getObjectMetadata(bucketName, path);
+	    } catch (AmazonS3Exception s3e) {
+	        if (s3e.getStatusCode() == 404) {
+	        // i.e. 404: NoSuchKey - The specified key does not exist
+	            isValidFile = false;
+	        }
+	        else {
+	            throw s3e;    // rethrow all S3 exceptions other than 404   
+	        }
+	    }
+
+	    return isValidFile;
+	}
+
 }
