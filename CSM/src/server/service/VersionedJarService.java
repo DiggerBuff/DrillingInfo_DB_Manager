@@ -22,7 +22,7 @@ import server.model.VersionedJar;
 public class VersionedJarService {
 	
 	private DBConnector dbConnector = new DBConnector();
-	private Map<String, List<String>> jarsOldToNew = new HashMap<String, List<String>>();
+	private Map<String, ArrayList<String>> jarsOldToNew = new HashMap<String, ArrayList<String>>();
 
 	public VersionedJar getVersionedJar(String vjName) {
 		try {
@@ -37,6 +37,7 @@ public class VersionedJarService {
 		return dbConnector.getAllJars();
 	}
 	
+	/*
 	public String detect(String vjName) {
 		List<String> updates = dbConnector.getAssociatedVersions(vjName);
 		if (updates == null) {
@@ -50,16 +51,17 @@ public class VersionedJarService {
 			return "Detected " + updates.size() + " updates for " + vjName;
 		}
 	}
+	*/
 	
 	public String detectAll() {
-		Map<String, List<String>> dbJarMap = dbConnector.getAllJars();
+		Map<String, ArrayList<String>> dbJarMap = dbConnector.getAllJars();
 		List<String> localJars = getLocalJars();
 		
 		for (String localJar : localJars) {
 			String key = localJar.substring(0, localJar.lastIndexOf('_'));
 			String version = localJar.substring(localJar.lastIndexOf('_') + 1);
 			
-			List<String> dbJars = dbJarMap.get(key);
+			ArrayList<String> dbJars = dbJarMap.get(key);
 			
 			for (String dbJar : dbJars) {
 				if (!(compareVersionNumbers(version, dbJar) > 0)) {
@@ -101,6 +103,12 @@ public class VersionedJarService {
 	}
 	*/
 	
+	
+	
+	private List<String> getLocalJars() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	/**

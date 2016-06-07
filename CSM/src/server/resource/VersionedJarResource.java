@@ -33,7 +33,7 @@ import server.service.VersionedJarService;
 public class VersionedJarResource {
 
 	VersionedJarService versionedJarService = new VersionedJarService();
-
+/*
 	@GET
 	@Path("/{vjName}")
 	public Response detect(@PathParam("vjName") String vjName, @Context UriInfo uriInfo) {
@@ -45,7 +45,7 @@ public class VersionedJarResource {
 			return Response.status(Response.Status.OK).entity(response).build();
 		}
 	}
-	
+*/	
 	@GET
 	public Response detectAll(@Context UriInfo uriInfo) {
 		String response = versionedJarService.detectAll();
