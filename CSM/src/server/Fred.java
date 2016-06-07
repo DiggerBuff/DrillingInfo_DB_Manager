@@ -1,4 +1,4 @@
-package com.deh.b2r.server;
+package server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -18,7 +18,8 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 
-import com.deh.b2r.server.resource.VersionedJarResource;
+import server.resource.VersionedJarResource;
+
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 import java.util.Scanner;

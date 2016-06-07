@@ -1,4 +1,4 @@
-package com.deh.b2r.server.model;
+package server.model;
 
 public class Link {
 	private String link;

@@ -1,4 +1,4 @@
-package com.deh.b2r.server;
+package server;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -20,6 +20,8 @@ import java.util.jar.Manifest;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
+import server.model.VersionedJar;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
@@ -28,7 +30,6 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
-import com.deh.b2r.server.model.VersionedJar;
 
 /**
  * TODO need to separate logger stuff into its own class

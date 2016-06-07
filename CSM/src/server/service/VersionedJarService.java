@@ -1,12 +1,13 @@
-package com.deh.b2r.server.service;
+package server.service;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.deh.b2r.server.DBConnector;
-import com.deh.b2r.server.model.VersionedJar;
+import server.DBConnector;
+import server.model.VersionedJar;
+
 
 public class VersionedJarService {
 	

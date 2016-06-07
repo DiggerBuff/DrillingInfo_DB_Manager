@@ -1,4 +1,4 @@
-package com.deh.b2r.server.model;
+package server.model;
 
 import java.io.File;
 import java.util.ArrayList;

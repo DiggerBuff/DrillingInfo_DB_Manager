@@ -1,4 +1,4 @@
-package com.deh.b2r.server.resource;
+package server.resource;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -20,8 +20,9 @@ import javax.ws.rs.core.UriInfo;
 
 import org.glassfish.jersey.server.Uri;
 
-import com.deh.b2r.server.model.VersionedJar;
-import com.deh.b2r.server.service.VersionedJarService;
+import server.model.VersionedJar;
+import server.service.VersionedJarService;
+
 
 @Path("/")
 @Consumes(MediaType.APPLICATION_JSON)

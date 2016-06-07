@@ -1,4 +1,4 @@
-package com.deh.b2r.server;
+package server;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

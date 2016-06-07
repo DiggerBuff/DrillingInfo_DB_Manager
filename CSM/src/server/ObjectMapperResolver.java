@@ -1,4 +1,4 @@
-package com.deh.b2r.server;
+package server;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.ext.Provider;

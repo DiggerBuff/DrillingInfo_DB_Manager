@@ -1,4 +1,4 @@
-package com.deh.b2r.server;
+package server;
 
 import java.io.BufferedWriter;
 import java.io.File;
