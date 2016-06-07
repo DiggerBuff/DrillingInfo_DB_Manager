@@ -11,22 +11,8 @@ import server.model.VersionedJar;
 
 public class VersionedJarService {
 	
-	//TODO populate verionedJar using database
-	private DBConnector dbConnector = new DBConnector(); // Need to interface this with Alan's S3 stuff
-	/*
-	public Map<Long, VersionedJar> getVersionedJars() {
-		
-		return versionedJars;
-	}
+	private DBConnector dbConnector = new DBConnector();
 
-	public void setVersionedJars(Map<Long, VersionedJar> versionedJars) {
-		this.versionedJars = versionedJars;
-	}
-
-	public List<VersionedJar> getAllVersionedJars() {
-		return new ArrayList<VersionedJar>(versionedJars.values());
-	}
-	*/
 	public VersionedJar getVersionedJar(String vjName) {
 		try {
 			return dbConnector.getVersionedJar(vjName);
