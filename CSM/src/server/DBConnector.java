@@ -13,8 +13,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.JarFile;
@@ -66,14 +68,18 @@ public class DBConnector {
 	 *  
 	 * @return The list of all jars on the S3 server
 	 */
-	public  List<String> getAllJars() {
-		List<String> jars = new ArrayList<String>();
+	public  Map<String,ArrayList<String>> getAllJars() {
+		Map<String,ArrayList<String>> jars = new HashMap<String,ArrayList<String>>();
 
 		try {
 			for (S3ObjectSummary objectSummary : S3Objects.withPrefix(s3client, bucketName, prefix + version)) {
 				if(!objectSummary.getKey().replaceFirst(prefix + version, "").equals("")) {
 					//System.out.println(" - " + objectSummary.getKey().replaceFirst(prefix + version, ""));
-					jars.add(objectSummary.getKey().replaceFirst(prefix + version, ""));
+					if(!jars.containsKey(formatKey(objectSummary.getKey()))){
+						jars.put(formatKey(objectSummary.getKey()), new ArrayList<String>());
+					}
+					jars.get(formatKey(objectSummary.getKey())).add(formatVersionNumber(objectSummary.getKey()));
+					//System.out.println(formatKey(objectSummary.getKey()) + " - " + formatVersionNumber(objectSummary.getKey()));
 				}
 			}
 		} catch (AmazonServiceException ase) {
@@ -91,6 +97,17 @@ public class DBConnector {
 		return jars;
 	}
 
+	private String formatVersionNumber(String key) {
+		key = key.substring(key.lastIndexOf('_') + 1, key.length() - 4);
+		return key;
+	}
+
+	private String formatKey(String key) {
+		key = key.replaceFirst(prefix + version, "");
+		key = key.substring(0, key.lastIndexOf('_'));
+		return key;
+	}
+
 	/**
 	 * This pulls a jar from Amazon S3 and places a copy in the local directory.
 	 * Make sure that the jar file has a manifest in it. 
@@ -106,16 +123,16 @@ public class DBConnector {
 			//Creates the local jar file
 			File file = new File(updatedJarName + ".jar");
 			if (file.exists()){		  		
-				if (checkJarVersions(file) > 0) {
+				/*if (checkJarVersions(file) > 0) {
 					downloadFile(file);
-				}
+				}*/
 			}
 			else {
 				downloadFile(file);
 			}
 
-			return new VersionedJar(getVersionNumber(file), file);
-
+			//return new VersionedJar(getVersionNumber(file), file);
+			return null;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}catch (AmazonServiceException ase) {
