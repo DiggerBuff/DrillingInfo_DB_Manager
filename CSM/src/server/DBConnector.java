@@ -231,5 +231,32 @@ public class DBConnector {
 
 	    return isValidFile;
 	}
+	
+	/**
+	 * Iterates through the main attributes of a jar until it finds specific version keywords
+	 * to get the version number of the jar.
+	 * 
+	 * @param manifest
+	 * @return version number corresponding to the keyword
+	 * @throws IOException 
+	 */
+	private String getVersionNumber(File file) throws IOException {
+		JarFile jarFile = new JarFile(file);
+        Manifest manifest = jarFile.getManifest();
+        jarFile.close();
+		Attributes attributes = manifest.getMainAttributes();
+		if (attributes!=null){
+			Iterator<Object> it = attributes.keySet().iterator();
+			while (it.hasNext()){
+				Name key = (Name) it.next();
+				String keyword = key.toString();
+				//Different types of manifest files may require a change here.
+				if (keyword.equals("Implementation-Version") || keyword.equals("Bundle-Version") || keyword.equals("Manifest-Version")){
+					return (String) attributes.get(key);
+				}
+			}
+		}
+		return null;
+	}
 
 }

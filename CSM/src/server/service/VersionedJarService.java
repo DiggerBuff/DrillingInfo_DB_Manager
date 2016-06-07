@@ -101,61 +101,7 @@ public class VersionedJarService {
 	}
 	*/
 	
-
-	/**
-	 * This compares the file based on the manifest file. 
-	 * Makes the newest version file the standard name.  
-	 * 
-	 * @param file The original file to check against the new. 
-	 * @throws IOException Caught by the caller. 
-	 * @return Returns positive if the new version is newer. 
-	 * 				   negative if it is an older version.
-	 * 				   zero if it is the same version. 
-	 */
-	private int checkJarVersions(File file) throws IOException {
-        
-        ObjectMetadata id = s3client.getObjectMetadata(bucketName, updatedJarName + ".jar");
-        //System.out.println(id.getUserMetadata().get("version"));
-		//JarFile jarFile = new JarFile(file);
-        //Manifest manifest = jarFile.getManifest();
-        
-        String originalVersionNumber = getVersionNumber(file);
-        
-        String versionNumber = id.getUserMetadata().get("version");
-        
-        
-        //jarFile.close();
-        System.out.println("\nLocal Version: " + originalVersionNumber);
-        System.out.println("Downloaded Version: " + versionNumber);
-        return compareVersionNumbers(originalVersionNumber, versionNumber);
-	}
 	
-	/**
-	 * Iterates through the main attributes of a jar until it finds specific version keywords
-	 * to get the version number of the jar.
-	 * 
-	 * @param manifest
-	 * @return version number corresponding to the keyword
-	 * @throws IOException 
-	 */
-	private String getVersionNumber(File file) throws IOException {
-		JarFile jarFile = new JarFile(file);
-        Manifest manifest = jarFile.getManifest();
-        jarFile.close();
-		Attributes attributes = manifest.getMainAttributes();
-		if (attributes!=null){
-			Iterator<Object> it = attributes.keySet().iterator();
-			while (it.hasNext()){
-				Name key = (Name) it.next();
-				String keyword = key.toString();
-				//Different types of manifest files may require a change here.
-				if (keyword.equals("Implementation-Version") || keyword.equals("Bundle-Version") || keyword.equals("Manifest-Version")){
-					return (String) attributes.get(key);
-				}
-			}
-		}
-		return null;
-	}
 	
 	/**
 	 * Compares two version numbers passed as strings.
