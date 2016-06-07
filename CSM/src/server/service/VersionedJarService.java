@@ -33,7 +33,7 @@ public class VersionedJarService {
 		}
 		return null;
 	}
-	public List<String> getAllJars() {
+	public Map<String, ArrayList<String>> getAllJars() {
 		return dbConnector.getAllJars();
 	}
 	

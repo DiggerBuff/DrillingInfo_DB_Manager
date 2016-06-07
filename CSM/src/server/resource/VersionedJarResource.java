@@ -34,13 +34,13 @@ public class VersionedJarResource {
 
 	VersionedJarService versionedJarService = new VersionedJarService();
 	
-	/*
+	
 	@GET
 	public List<VersionedJar> getVersionedJars() {
 		System.out.println("Get was called");
 		return versionedJarService.getAllVersionedJars();
 	}
-	*/
+	
 	@GET
 	@Path("/{vjName}")
 	public Response getVersionedJar(@PathParam("vjName") String vjName, @Context UriInfo uriInfo) {
@@ -50,8 +50,8 @@ public class VersionedJarResource {
 	}
 	
 	@GET
-	public List<String> getVersionedJar(@Context UriInfo uriInfo) {
-		List<String> updates = versionedJarService.getAllJars();
+	public Map<String, ArrayList<String>> getVersionedJar(@Context UriInfo uriInfo) {
+		Map<String, ArrayList<String>> updates = versionedJarService.getAllJars();
 		return updates;
 	}
 	
