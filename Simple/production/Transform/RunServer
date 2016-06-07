@@ -1,5 +1,0 @@
-#!/bin/bash
-
-export CLASSPATH=$CLASSPATH:plugins/*
-
-exec $JAVA_HOME/bin/java -XstartOnFirstThread com.drillinginfo.rest.DIServer

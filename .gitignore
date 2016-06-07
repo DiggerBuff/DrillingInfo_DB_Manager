@@ -26,9 +26,10 @@ local.properties
 # Locally stored "Eclipse launch configurations"
 *.launch
 
+Simple/resources/*
+production/Transform/jre
+
 !SampleUpdatedJar/*
 !SampleOldJar/*
-Simple/resources/*
-!Simple/production/Transform/*
-!Simple/production/Transform/plugins/*
-!Simple/update/*
+!production/Transform/plugins/*
+!update/*
