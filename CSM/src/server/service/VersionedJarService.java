@@ -40,7 +40,7 @@ public class VersionedJarService {
 	public String detect(String vjName) {
 		List<String> updates = dbConnector.getAssociatedVersions(vjName);
 		if (updates == null) {
-			return "Database could not find a jar that matches the jar given : " + vjName;
+			return null;
 		}
 		else if (updates.size() == 0) {
 			return vjName + " is up to date.";
@@ -52,10 +52,33 @@ public class VersionedJarService {
 	}
 	
 	public String detectAll() {
-		List<String> dbJars = dbConnector.getAllJars();
+		Map<String, List<String>> dbJarMap = dbConnector.getAllJars();
 		List<String> localJars = getLocalJars();
 		
+		for (String localJar : localJars) {
+			String key = localJar.substring(0, localJar.lastIndexOf('_'));
+			String version = localJar.substring(localJar.lastIndexOf('_') + 1);
+			
+			List<String> dbJars = dbJarMap.get(key);
+			
+			for (String dbJar : dbJars) {
+				if (!(compareVersionNumbers(version, dbJar) > 0)) {
+					dbJars.remove(dbJar);
+				}
+				else {
+					dbJar = key + "_" + dbJar;
+				}
+			}
+			
+			jarsOldToNew.put(localJar, dbJars);
+		}
 		
+		if (jarsOldToNew.size() > 0) {
+			return "Detected updates for " + jarsOldToNew.size() + " jars";
+		}
+		else {
+			return null;
+		}
 	}
 	
 	/*
