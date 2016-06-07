@@ -63,7 +63,7 @@ public class VersionedJarService {
 	}
 	
 	private List<String> getLocalJars() {
-		// TO-DO
+		String pwd = System.getProperty("user.dir");
 		return null;
 	}
 	
