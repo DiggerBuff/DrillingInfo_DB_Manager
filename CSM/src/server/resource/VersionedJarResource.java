@@ -46,6 +46,12 @@ public class VersionedJarResource {
 		return vj;
 	}
 	
+	@GET
+	public List<String> getVersionedJar(@Context UriInfo uriInfo) {
+		List<String> updates = versionedJarService.getAllJars();
+		return updates;
+	}
+	
 	/*
 	private String getUriForSelf(UriInfo uriInfo, Person person) {
 		String uri = uriInfo.getBaseUriBuilder()

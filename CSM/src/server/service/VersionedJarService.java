@@ -36,6 +36,9 @@ public class VersionedJarService {
 		}
 		return null;
 	}
+	public List<String> getAllJars() {
+		return dbConnector.getAllJars();
+	}
 	
 	/*
 	public Person addPerson(Person newPerson) {

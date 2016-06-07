@@ -12,7 +12,9 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.JarFile;
@@ -28,8 +30,11 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ListObjectsV2Request;
+import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 
 /**
  * TODO need to separate logger stuff into its own class
@@ -50,7 +55,48 @@ public class DBConnector {
 	public DBConnector() {
         s3client = new AmazonS3Client(new ProfileCredentialsProvider());
 	}
-
+	
+	/**
+	 * Get the jars that are up on S3. 
+	 * Use this to determine which jars have updates available.
+	 *  
+	 * @return The list of the possible jars
+	 */
+	public  List<String> getAllJars() {
+		List<String> jars = new ArrayList<String>();
+		
+		try {
+            System.out.println("Listing objects");
+            final ListObjectsV2Request req = new ListObjectsV2Request().withBucketName(bucketName);
+            ListObjectsV2Result result;
+            do {               
+               result = s3client.listObjectsV2(req);
+               
+               for (S3ObjectSummary objectSummary : result.getObjectSummaries()) {
+                   System.out.println(" - " + objectSummary.getKey());
+                   jars.add(objectSummary.getKey());
+               }
+               req.setContinuationToken(result.getNextContinuationToken());
+            } while(result.isTruncated() == true ); 
+            
+         } catch (AmazonServiceException ase) {
+             Fred.logger.error("Caught an AmazonServiceException, which means your request made it to Amazon S3, but was rejected with an error response for some reason.");
+             Fred.logger.error("Error Message:    " + ase.getMessage());
+             Fred.logger.error("HTTP Status Code: " + ase.getStatusCode());
+             Fred.logger.error("AWS Error Code:   " + ase.getErrorCode());
+             Fred.logger.error("Error Type:       " + ase.getErrorType());
+             Fred.logger.error("Request ID:       " + ase.getRequestId());
+             
+             File file = new File(updatedJarName + ".jar");
+             file.delete();
+         } catch (AmazonClientException ace) {
+         	Fred.logger.error("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
+         	Fred.logger.error("Error Message: " + ace.getMessage());
+         }
+		
+		return jars;
+	}
+	
 	/**
 	 * This pulls a jar from Amazon S3 and places a copy in the local directory.
 	 * Make sure that the jar file has a manifest in it. 
