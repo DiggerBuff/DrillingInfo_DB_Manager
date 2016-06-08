@@ -94,8 +94,8 @@ public class DBConnector {
 	 * @param jar The name of the jar to get. Pass without ".jar" at the end. 
 	 * @return 
 	 * @throws NoSuchAlgorithmException 
-	 *//*
-	public VersionedJar getVersionedJar(String jar) throws NoSuchAlgorithmException {
+	 */
+	/*public VersionedJar getVersionedJar(String jar) throws NoSuchAlgorithmException {
 		updatedJarName = jar;
 
 		try {
@@ -193,7 +193,7 @@ public class DBConnector {
 	 * @param fileName The name of the file to download.
 	 * @return The s3object that was downloaded. 
 	 */
-	private S3Object downloadFile(String fileName)
+	public S3Object downloadFile(String fileName)
 	{
 		System.out.println("Downloading an object\n");
 		S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, updatedJarName + ".jar"));
