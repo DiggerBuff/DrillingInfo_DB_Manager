@@ -62,6 +62,7 @@ public class DBConnector {
 	/**
 	 * Get the jars that are up on S3. 
 	 * Use this to determine which jars have updates available.
+	 * metadata contains the user metadata "bundle-symbolicname" and "version"
 	 *  
 	 * @return The map of all jars on the S3 server to their metadata
 	 */
