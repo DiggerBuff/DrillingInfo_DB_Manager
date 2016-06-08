@@ -60,22 +60,18 @@ public class DBConnector {
 	/**
 	 * Get the jars that are up on S3. 
 	 * Use this to determine which jars have updates available.
+	 * metadata contains the user metadata "bundle-symbolicname" and "version"
 	 *  
-	 * @return The list of all jars on the S3 server
+	 * @return The map of all jars on the S3 server to their metadata
 	 */
-	public  Map<String,ArrayList<String>> getAllJars() {
-		Map<String,ArrayList<String>> jars = new HashMap<String,ArrayList<String>>();
+	public  Map<String,ObjectMetadata> getAllJars() {
+		Map<String,ObjectMetadata> jars = new HashMap<String,ObjectMetadata>();
 
 		try {
 			for (S3ObjectSummary objectSummary : S3Objects.withPrefix(s3client, bucketName, prefix + version)) {
 				if(!objectSummary.getKey().replaceFirst(prefix + version, "").equals("")) {
 					//System.out.println(" - " + objectSummary.getKey().replaceFirst(prefix + version, ""));
-					if(!jars.containsKey(formatKey(objectSummary.getKey()))){
-						jars.put(formatKey(objectSummary.getKey()), new ArrayList<String>());
-					}
-					jars.get(formatKey(objectSummary.getKey())).add(formatVersionNumber(objectSummary.getKey()));
-					//System.out.println(formatKey(objectSummary.getKey()) + " - " + formatVersionNumber(objectSummary.getKey()));
-				}
+					jars.put(objectSummary.getKey(), s3client.getObjectMetadata(bucketName, objectSummary.getKey()));				}
 			}
 		} catch (AmazonServiceException ase) {
 			Fred.logger.error("Caught an AmazonServiceException, which means your request made it to Amazon S3, but was rejected with an error response for some reason.");
@@ -90,17 +86,6 @@ public class DBConnector {
 		}
 
 		return jars;
-	}
-
-	private String formatVersionNumber(String key) {
-		key = key.substring(key.lastIndexOf('_') + 1, key.length() - 4);
-		return key;
-	}
-
-	private String formatKey(String key) {
-		key = key.replaceFirst(prefix + version, "");
-		key = key.substring(0, key.lastIndexOf('_'));
-		return key;
 	}
 
 	/**
@@ -256,7 +241,7 @@ public class DBConnector {
 				Name key = (Name) it.next();
 				String keyword = key.toString();
 				//Different types of manifest files may require a change here.
-				if (keyword.equals("Implementation-Version") || keyword.equals("Bundle-Version") || keyword.equals("Manifest-Version")){
+				if (keyword.equals("Bundle-Version")){
 					return (String) attributes.get(key);
 				}
 			}

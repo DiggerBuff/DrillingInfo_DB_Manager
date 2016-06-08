@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.amazonaws.services.s3.model.ObjectMetadata;
+
 import server.DBConnector;
 
 
@@ -29,12 +32,12 @@ public class VersionedJarService {
 	*/
 	
 	public String detectAll() {
-		Map<String, ArrayList<String>> dbJarMap = dbConnector.getAllJars();
-		List<String> localJars = getLocalJars();
+		Map<String, ObjectMetadata> dbJarMap = dbConnector.getAllJars();
+		Map<String, String> localJars = getLocalJars();
 		
-		for (String localJar : localJars) {
-			String key = localJar.substring(0, localJar.lastIndexOf('_'));
-			String version = localJar.substring(localJar.lastIndexOf('_') + 1);
+		for (String s3jar : dbJarMap.keySet()) {
+			/*String key = s3jar.substring(0, s3jar.lastIndexOf('_'));
+			String version = s3jar.substring(s3jar.lastIndexOf('_') + 1);
 			
 			ArrayList<String> dbJars = dbJarMap.get(key);
 			
@@ -47,7 +50,13 @@ public class VersionedJarService {
 				}
 			}
 			
-			jarsOldToNew.put(localJar, dbJars);
+			jarsOldToNew.put(s3jar, dbJars);*/
+			String symName = dbJarMap.get(s3jar).getUserMetaDataOf("bundle-symbolicname");
+			
+			if(localJars.containsKey(symName)){
+				//TODO What to do after comparing. 
+				compareVersionNumbers(localJars.get(symName), dbJarMap.get(s3jar).getUserMetaDataOf("version"));
+			}
 		}
 		
 		if (jarsOldToNew.size() > 0) {
@@ -58,12 +67,13 @@ public class VersionedJarService {
 		}
 	}
 	
-	public Map<String, ArrayList<String>> getAllJars() {
+	public Map<String, ObjectMetadata> getAllJars() {
 		return dbConnector.getAllJars();
 	}
 	
-	private List<String> getLocalJars() {
-		String pwd = System.getProperty("user.dir");
+
+	private HashMap<String, String> getLocalJars() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	
