@@ -23,8 +23,6 @@ import java.util.jar.Manifest;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
-import server.model.VersionedJar;
-
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
