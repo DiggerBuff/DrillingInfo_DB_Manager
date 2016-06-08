@@ -10,7 +10,7 @@ import server.DBConnector;
 public class VersionedJarService {
 	
 	private DBConnector dbConnector = new DBConnector();
-	private Map<String, ArrayList<String>> jarsOldToNew = new HashMap<String, ArrayList<String>>();
+	private Map<String, String> jarsOldToNew = new HashMap<String, String>();
 
 	/*
 	public String detect(String vjName) {
@@ -29,8 +29,8 @@ public class VersionedJarService {
 	*/
 	
 	public String detectAll() {
-		Map<String, ArrayList<String>> dbJarMap = dbConnector.getAllJars();
-		List<String> localJars = getLocalJars();
+		Map<String, String> dbJarMap = dbConnector.getAllJars();
+		Map<String, File> localJars = getLocalJars();
 		
 		for (String localJar : localJars) {
 			String key = localJar.substring(0, localJar.lastIndexOf('_'));

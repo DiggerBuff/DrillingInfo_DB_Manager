@@ -16,6 +16,10 @@ public class Test {
 	       scanner.setIncludes(new String[]{"**/Transform/plugins/"});
 	       scanner.setBasedir(baseDir);
 	       scanner.setCaseSensitive(false);
+	       
+	       ScanConductor.ScanAction scanConductor = new ScanConductor
+	       
+	       scanner.setScanConductor(scanConductor);
 	       scanner.scan();
 	       String[] files = scanner.getIncludedDirectories();
 	       
@@ -35,5 +39,8 @@ public class Test {
 	    	   System.out.println("Matched file : " + file);
 	       }
 
+	}
+	public class ScannerConductor implements ScanConductor {
+		
 	}
 }
