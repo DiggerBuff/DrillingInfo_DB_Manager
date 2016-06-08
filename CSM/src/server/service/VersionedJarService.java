@@ -54,8 +54,13 @@ public class VersionedJarService {
 			String symName = dbJarMap.get(s3jar).getUserMetaDataOf("bundle-symbolicname");
 			
 			if(localJars.containsKey(symName)){
-				//TODO What to do after comparing. 
-				compareVersionNumbers(localJars.get(symName), dbJarMap.get(s3jar).getUserMetaDataOf("version"));
+				if (compareVersionNumbers(localJars.get(symName), dbJarMap.get(s3jar).getUserMetaDataOf("version")) <= 0) {
+					localJars.remove(symName);
+					dbJarMap.remove(s3jar);
+				}
+			}
+			else {
+				//TODO What if there is a file in S3 but not in the users files. 
 			}
 		}
 		

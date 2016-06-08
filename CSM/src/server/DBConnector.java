@@ -49,7 +49,6 @@ public class DBConnector {
 	private static String bucketName     = "drilling-info-bucket";
 	private static String updatedJarName = "";
 	private static String prefix = "DrillingInfo_Updates/";
-	private static String version = "6.0.1/plugins/";
 	private final AmazonS3 s3client;
 
 	/**
@@ -70,8 +69,8 @@ public class DBConnector {
 		Map<String,ObjectMetadata> jars = new HashMap<String,ObjectMetadata>();
 
 		try {
-			for (S3ObjectSummary objectSummary : S3Objects.withPrefix(s3client, bucketName, prefix + version)) {
-				if(!objectSummary.getKey().replaceFirst(prefix + version, "").equals("")) {
+			for (S3ObjectSummary objectSummary : S3Objects.withPrefix(s3client, bucketName, prefix)) {
+				if(!objectSummary.getKey().replaceFirst(prefix, "").equals("")) {
 					//System.out.println(" - " + objectSummary.getKey().replaceFirst(prefix + version, ""));
 					jars.put(objectSummary.getKey(), s3client.getObjectMetadata(bucketName, objectSummary.getKey()));				}
 			}
@@ -151,7 +150,7 @@ public class DBConnector {
 		System.out.println("Downloading an object\n");
 		S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, updatedJarName + ".jar"));
 		if (s3object == null) return sumsMatched;
-		ObjectMetadata id = s3client.getObjectMetadata(bucketName, updatedJarName + ".jar");
+		ObjectMetadata id = s3object.getObjectMetadata();
 		String s3sum = id.getETag();
 
 		//Create the streams
@@ -190,6 +189,21 @@ public class DBConnector {
 		return sumsMatched;
 	}
 
+	/**
+	 * Downloads the s3object from s3 of the given name. 
+	 * 
+	 * @param fileName The name of the file to download.
+	 * @return The s3object that was downloaded. 
+	 */
+	private S3Object downloadFile(String fileName)
+	{
+		System.out.println("Downloading an object\n");
+		S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, updatedJarName + ".jar"));
+		if (s3object == null) return null;
+		
+		return s3object;
+	}
+	
 	/**
 	 * Get the name of the jar that is wanted
 	 * 
