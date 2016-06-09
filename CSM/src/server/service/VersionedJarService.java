@@ -3,6 +3,7 @@ package server.service;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,7 +88,8 @@ public class VersionedJarService {
 				S3Object s3object = dbConnector.downloadFile(pair.getValue());
 				ObjectMetadata id = s3object.getObjectMetadata();
 				String s3sum = id.getETag();
-				String localNew = pair.getKey().substring(0, pair.getKey().lastIndexOf('/'));
+				String localNew = pair.getKey().substring(0, pair.getKey().lastIndexOf('/') + 1);
+				localNew = localNew + pair.getValue();
 				
 				//Create the streams
 				InputStream reader = new BufferedInputStream(s3object.getObjectContent());
@@ -112,6 +114,10 @@ public class VersionedJarService {
 						writer.write(read);
 					}
 					sumsMatched = true;
+					
+					//Remove if we don't want to delete the old file
+					File deleteFile = new File(pair.getKey());
+					deleteFile.delete();
 				}
 				else {
 					Fred.logger.warn("MD5 Checksums did not match. S3:\"" + s3sum + "\" Local:\"" + generatedSum + "\"");
