@@ -34,7 +34,13 @@ public class VersionedJarService {
 
 	private DBConnector dbConnector = new DBConnector();
 	private Map<String, String> jarsOldToNew = new HashMap<String, String>();
-
+	
+	/**
+	 * This will find all the local files that can be updated with files on S3. 
+	 * Populates a map with the location on the local machine to the name of the file on S3.
+	 * 
+	 * @return The String for the response body.
+	 */
 	public String detectAll() {
 		Map<String, ObjectMetadata> dbJarMap = dbConnector.getAllJars();
 		Map<String, ArrayList<String>> localJars = getLocalJars();
@@ -71,11 +77,23 @@ public class VersionedJarService {
 			return null;
 		}
 	}
-
+	
+	/**
+	 * This will call a method to check the local file system for the files to replace. 
+	 *  
+	 * @return The map of the Symbolic name to an array list of the version and the local location of the file.
+	 */
 	private Map<String, ArrayList<String>> getLocalJars() {
 		return new LocalConnector().getLocalJars();
 	}
-
+	
+	/**
+	 * This replaces the files found by the detecting for updates. 
+	 * This checks the MD5 checksum on the download as well. 
+	 * Pushes the file to the location of the old file and deletes the old file.
+	 * 
+	 * @return If the replace worked or not.
+	 */
 	public String replace() {
 		boolean sumsMatched = false;
 
