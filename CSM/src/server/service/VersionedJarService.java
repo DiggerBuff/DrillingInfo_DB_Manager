@@ -1,27 +1,17 @@
 package server.service;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.jar.Attributes;
-import java.util.jar.Attributes.Name;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
-
-import org.apache.tools.ant.DirectoryScanner;
-
 import java.util.Map.Entry;
 
+
+import client.LocalConnector;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 
 import database.DBConnector;
-
-import sun.tools.jar.resources.jar;
 
 
 public class VersionedJarService {
@@ -65,105 +55,10 @@ public class VersionedJarService {
 		}
 	}
 	
-	private Map<String, ArrayList<String>> getLocalJars() {
-
-		String pwd = System.getProperty("user.dir");
-		//System.out.println("PWD : " + pwd);
-		
-		//TODO this baseDir needs to be as close to *Transform/plugins as possible
-		String baseDir = pwd.substring(0, pwd.lastIndexOf("CSM"));
-		System.out.println("BaseDir : " + baseDir);
-
-		DirectoryScanner scanner = new DirectoryScanner();
-		scanner.setIncludes(new String[]{"**/Transform/plugins/**/*.jar"});
-		scanner.setBasedir(baseDir);
-		scanner.setCaseSensitive(false);
-		System.out.println("scan starting");
-		scanner.scan();
-		System.out.println("scan ended");
-		String[] relativeFilePaths = scanner.getIncludedFiles();
-
-		Map<String, ArrayList<String>> localJars = new HashMap<String, ArrayList<String>>();
-
-		for (String relativeFilePath : relativeFilePaths) {
-			
-			System.out.println("Matched file : " + relativeFilePath);
-			
-			String absoluteDirPath = baseDir + relativeFilePath.substring(0, relativeFilePath.lastIndexOf('/'));
-			
-			String fileName = relativeFilePath.substring(relativeFilePath.lastIndexOf('/') + 1);
-			
-			File file = new File(absoluteDirPath, fileName);
-			
-			if (file.exists()) {
-				try {
-					JarFile jarFile;
-
-					jarFile = new JarFile(file);
-
-					//System.out.println("Jar name : " + jarFile.getName());
-
-					Manifest manifest = jarFile.getManifest();
-
-					Attributes attributes = manifest.getMainAttributes();
-
-					String version = getVersion(attributes);
-					String name = getSymbolicName(attributes);
-
-					ArrayList<String> list = new ArrayList<String>();
-					list.add(version);
-					list.add(file.getAbsolutePath());
-					System.out.println("Key : " + name + " List Contents : " + list);
-
-					localJars.put(name,  list);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			else {
-				System.out.println("File creation broke");
-			}
-
-		}
-		return localJars;
-	}
 	
-	private String getSymbolicName(Attributes attributes) throws IOException {
-		if (attributes!=null){
-			Iterator<Object> it = attributes.keySet().iterator();
-			while (it.hasNext()){
-				Name key = (Name) it.next();
-				String keyword = key.toString();
-				//Different types of manifest files may require a change here.
-				if (keyword.equals("Bundle-SymbolicName")){
-					String result = (String)attributes.get(key);
-					if(result.lastIndexOf(';') != -1){
-						result = result.substring(0, result.lastIndexOf(';'));
-					}
-					return result;
-				}
-			}
-		}
-		throw new IOException("Could not find the Bundle-SymbolicName in the manifest file.");
+	private Map<String, ArrayList<String>> getLocalJars() {
+		return new LocalConnector().getLocalJars();
 	}
-
-	private String getVersion(Attributes attributes) throws IOException {
-		if (attributes!=null){
-			Iterator<Object> it = attributes.keySet().iterator();
-			while (it.hasNext()){
-				Name key = (Name) it.next();
-				String keyword = key.toString();
-				//System.out.println("\"" + keyword + "\"");
-				//Different types of manifest files may require a change here.
-				if (keyword.equals("Bundle-Version")){
-					return (String) attributes.get(key);
-				}
-			}
-		}
-		throw new IOException("Could not find the Bundle-Version in the manifest file.");
-	}
-
 
 
 	/**
