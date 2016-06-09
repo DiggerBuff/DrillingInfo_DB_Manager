@@ -17,7 +17,7 @@ import server.service.VersionedJarService;
 @Produces(MediaType.APPLICATION_JSON)
 public class VersionedJarResource {
 
-	VersionedJarService versionedJarService = new VersionedJarService();
+	private static VersionedJarService versionedJarService = new VersionedJarService();
 /*
 	@GET
 	@Path("/{vjName}")
@@ -46,8 +46,7 @@ public class VersionedJarResource {
 	@GET
 	@Path("replace/")
 	public Response replaceAll(@Context UriInfo uriInfo) {
-		String response = versionedJarService.detectAll();
-		
+		String response = versionedJarService.replace();
 		if (response == null) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
