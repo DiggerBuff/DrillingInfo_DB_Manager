@@ -45,7 +45,6 @@ public class VersionedJarService {
 	*/
 	
 	public String detectAll() {
-
 		Map<String, ObjectMetadata> dbJarMap = dbConnector.getAllJars();
 		Map<String, ArrayList<String>> localJars = getLocalJars();
 		
@@ -55,19 +54,22 @@ public class VersionedJarService {
 	        
 	        String s3jar = pair.getKey().toString();
 			String symName = dbJarMap.get(s3jar).getUserMetaDataOf("bundle-symbolicname");
-
+			
+			System.out.println("SymName expecting to match : " + symName);
 			if(localJars.containsKey(symName)){
 				if (compareVersionNumbers(localJars.get(symName).get(0), dbJarMap.get(s3jar).getUserMetaDataOf("version")) <= 0) {
 					localJars.remove(symName);
 					it.remove();
 				}
+				else {
+					System.out.println("Matched S3Jar : " + s3jar + " To Local Jar : " + localJars.get(symName).get(1));
+				}
 			}
 			else {
-				
+				System.out.println("Local Jars didn't have dbJar");
 				//TODO What if there is a file in S3 but not in the users files. 
 			}
 		}
-		
 		if (jarsOldToNew.size() > 0) {
 			return "Detected updates for " + jarsOldToNew.size() + " jars";
 		}
@@ -82,17 +84,23 @@ public class VersionedJarService {
 	
 	
 	private Map<String, ArrayList<String>> getLocalJars() {
+
 		String pwd = System.getProperty("user.dir");
+		//System.out.println("PWD : " + pwd);
 		
-		// TO-DO this baseDir needs to be as close to *Transform/plugins as possible
-		String baseDir = pwd.substring(0, pwd.lastIndexOf("DrillingInfo_DB_Manager/"));
+		//TODO this baseDir needs to be as close to *Transform/plugins as possible
+		String baseDir = pwd.substring(0, pwd.lastIndexOf("CSM"));
+		System.out.println("BaseDir : " + baseDir);
 
 		DirectoryScanner scanner = new DirectoryScanner();
 		scanner.setIncludes(new String[]{"**/Transform/plugins/**/*.jar"});
 		scanner.setBasedir(baseDir);
 		scanner.setCaseSensitive(false);
+		System.out.println("scan starting");
+		scanner.scan();
+		System.out.println("scan ended");
 		String[] relativeFilePaths = scanner.getIncludedFiles();
-		
+
 		Map<String, ArrayList<String>> localJars = new HashMap<String, ArrayList<String>>();
 
 		for (String relativeFilePath : relativeFilePaths) {
@@ -100,10 +108,8 @@ public class VersionedJarService {
 			System.out.println("Matched file : " + relativeFilePath);
 			
 			String absoluteDirPath = baseDir + relativeFilePath.substring(0, relativeFilePath.lastIndexOf('/'));
-			System.out.println("AbsoluteDirPath : " + absoluteDirPath);
 			
 			String fileName = relativeFilePath.substring(relativeFilePath.lastIndexOf('/') + 1);
-			System.out.println("FileName : " + fileName);
 			
 			File file = new File(absoluteDirPath, fileName);
 			
@@ -113,7 +119,7 @@ public class VersionedJarService {
 
 					jarFile = new JarFile(file);
 
-					System.out.println("Jar name : " + jarFile.getName());
+					//System.out.println("Jar name : " + jarFile.getName());
 
 					Manifest manifest = jarFile.getManifest();
 
@@ -125,7 +131,7 @@ public class VersionedJarService {
 					ArrayList<String> list = new ArrayList<String>();
 					list.add(version);
 					list.add(file.getAbsolutePath());
-					System.out.println("List Contents : " + list);
+					System.out.println("Key : " + name + " List Contents : " + list);
 
 					localJars.put(name,  list);
 				} catch (IOException e) {

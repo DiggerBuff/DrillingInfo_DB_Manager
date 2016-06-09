@@ -63,6 +63,7 @@ public class DBConnector {
 	 * @return The map of all jars on the S3 server to their metadata
 	 */
 	public  Map<String,ObjectMetadata> getAllJars() {
+		
 		Map<String,ObjectMetadata> jars = new HashMap<String,ObjectMetadata>();
 
 		try {
@@ -82,7 +83,6 @@ public class DBConnector {
 			Fred.logger.error("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
 			Fred.logger.error("Error Message: " + ace.getMessage());
 		}
-
 		return jars;
 	}
 
