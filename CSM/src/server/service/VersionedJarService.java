@@ -1,7 +1,5 @@
 package server.service;
 
-import ScanConductor;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +13,9 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import org.apache.tools.ant.DirectoryScanner;
+
+import java.util.Map.Entry;
+
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 
@@ -48,31 +49,21 @@ public class VersionedJarService {
 		Map<String, ObjectMetadata> dbJarMap = dbConnector.getAllJars();
 		Map<String, ArrayList<String>> localJars = getLocalJars();
 		
-		for (String s3jar : dbJarMap.keySet()) {
-			/*String key = s3jar.substring(0, s3jar.lastIndexOf('_'));
-			String version = s3jar.substring(s3jar.lastIndexOf('_') + 1);
-			
-			ArrayList<String> dbJars = dbJarMap.get(key);
-			
-			for (String dbJar : dbJars) {
-				if (!(compareVersionNumbers(version, dbJar) > 0)) {
-					dbJars.remove(dbJar);
-				}
-				else {
-					dbJar = key + "_" + dbJar;
-				}
-			}
-			
-			jarsOldToNew.put(s3jar, dbJars);*/
+		Iterator<Entry<String, ObjectMetadata>> it = dbJarMap.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry<String, ObjectMetadata> pair = (Map.Entry<String, ObjectMetadata>)it.next();
+	        
+	        String s3jar = pair.getKey().toString();
 			String symName = dbJarMap.get(s3jar).getUserMetaDataOf("bundle-symbolicname");
-			
+
 			if(localJars.containsKey(symName)){
 				if (compareVersionNumbers(localJars.get(symName), dbJarMap.get(s3jar).getUserMetaDataOf("version")) <= 0) {
 					localJars.remove(symName);
-					dbJarMap.remove(s3jar);
+					it.remove();
 				}
 			}
 			else {
+				
 				//TODO What if there is a file in S3 but not in the users files. 
 			}
 		}
@@ -85,11 +76,11 @@ public class VersionedJarService {
 		}
 	}
 	
-	public Map<String, ObjectMetadata> getAllJars() {
+	/*public Map<String, ObjectMetadata> getAllJars() {
 		return dbConnector.getAllJars();
-	}
+	}*/
 	
-
+	
 	private Map<String, ArrayList<String>> getLocalJars() {
 		String pwd = System.getProperty("user.dir");
 		
@@ -117,23 +108,30 @@ public class VersionedJarService {
 			File file = new File(absoluteDirPath, fileName);
 			
 			if (file.exists()) {
-				JarFile jarFile = new JarFile(file);
-				System.out.println("Jar name : " + jarFile.getName());
-				
-				Manifest manifest = jarFile.getManifest();
-				
-				Attributes attributes = manifest.getMainAttributes();
-				
-				String version = getVersion(attributes);
-				String name = getSymbolicName(attributes);
-				
-				ArrayList<String> list = new ArrayList<String>();
-				list.add(version);
-				list.add(file.getAbsolutePath());
-				System.out.println("List Contents : " + list);
-				
-				localJars.put(name,  list);
+				try {
+					JarFile jarFile;
 
+					jarFile = new JarFile(file);
+
+					System.out.println("Jar name : " + jarFile.getName());
+
+					Manifest manifest = jarFile.getManifest();
+
+					Attributes attributes = manifest.getMainAttributes();
+
+					String version = getVersion(attributes);
+					String name = getSymbolicName(attributes);
+
+					ArrayList<String> list = new ArrayList<String>();
+					list.add(version);
+					list.add(file.getAbsolutePath());
+					System.out.println("List Contents : " + list);
+
+					localJars.put(name,  list);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			else {
 				System.out.println("File creation broke");

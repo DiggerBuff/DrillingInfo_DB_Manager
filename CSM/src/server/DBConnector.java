@@ -12,7 +12,6 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -69,8 +68,8 @@ public class DBConnector {
 		try {
 			for (S3ObjectSummary objectSummary : S3Objects.withPrefix(s3client, bucketName, prefix)) {
 				if(!objectSummary.getKey().replaceFirst(prefix, "").equals("")) {
-					//System.out.println(" - " + objectSummary.getKey().replaceFirst(prefix + version, ""));
-					jars.put(objectSummary.getKey(), s3client.getObjectMetadata(bucketName, objectSummary.getKey()));				}
+					//System.out.println(" - " + objectSummary.getKey().replaceFirst(prefix, ""));
+					jars.put(objectSummary.getKey().replaceFirst(prefix, ""), s3client.getObjectMetadata(bucketName, objectSummary.getKey()));				}
 			}
 		} catch (AmazonServiceException ase) {
 			Fred.logger.error("Caught an AmazonServiceException, which means your request made it to Amazon S3, but was rejected with an error response for some reason.");
@@ -197,7 +196,7 @@ public class DBConnector {
 	{
 		System.out.println("Downloading an object\n");
 		S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, updatedJarName + ".jar"));
-		if (s3object == null) return null;
+		//if (s3object == null) return null;
 		
 		return s3object;
 	}
