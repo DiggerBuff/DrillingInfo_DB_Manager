@@ -1,8 +1,9 @@
 package server.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 
@@ -35,16 +36,21 @@ public class VersionedJarService {
 		Map<String, ObjectMetadata> dbJarMap = dbConnector.getAllJars();
 		Map<String, String> localJars = getLocalJars();
 		
-		for (String s3jar : dbJarMap.keySet()) {
+		Iterator<Entry<String, ObjectMetadata>> it = dbJarMap.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry<String, ObjectMetadata> pair = (Map.Entry<String, ObjectMetadata>)it.next();
+	        
+	        String s3jar = pair.getKey().toString();
 			String symName = dbJarMap.get(s3jar).getUserMetaDataOf("bundle-symbolicname");
-			
+
 			if(localJars.containsKey(symName)){
 				if (compareVersionNumbers(localJars.get(symName), dbJarMap.get(s3jar).getUserMetaDataOf("version")) <= 0) {
 					localJars.remove(symName);
-					dbJarMap.remove(s3jar);
+					it.remove();
 				}
 			}
 			else {
+				
 				//TODO What if there is a file in S3 but not in the users files. 
 			}
 		}
