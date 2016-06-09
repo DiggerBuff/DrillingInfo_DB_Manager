@@ -1,4 +1,4 @@
-package server;
+package database;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -21,6 +21,9 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
+
+import security.SecurityChecksum;
+import server.Fred;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;

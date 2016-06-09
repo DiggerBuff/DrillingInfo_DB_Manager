@@ -1,4 +1,4 @@
-package server;
+package security;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
