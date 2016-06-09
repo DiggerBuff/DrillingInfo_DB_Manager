@@ -35,9 +35,6 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 
 /**
- * TODO need to separate logger stuff into its own class
- * TODO likely need to change the setup of this to make it restful.
- * 
  * Currently handles pulling jars from S3, verification, and version control.
  *
  */
@@ -195,7 +192,7 @@ public class DBConnector {
 	public S3Object downloadFile(String fileName)
 	{
 		System.out.println("Downloading an object\n");
-		S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, updatedJarName + ".jar"));
+		S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, fileName + ".jar"));
 		//if (s3object == null) return null;
 		
 		return s3object;
@@ -221,7 +218,7 @@ public class DBConnector {
 	public boolean isValidFile(String path) throws AmazonClientException, AmazonServiceException {
 	    boolean isValidFile = true;
 	    try {
-	        ObjectMetadata objectMetadata = s3client.getObjectMetadata(bucketName, path);
+	        s3client.getObjectMetadata(bucketName, path);
 	    } catch (AmazonS3Exception s3e) {
 	        if (s3e.getStatusCode() == 404) {
 	        // i.e. 404: NoSuchKey - The specified key does not exist

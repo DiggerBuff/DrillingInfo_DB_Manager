@@ -61,12 +61,7 @@ public class VersionedJarService {
 		else {
 			return null;
 		}
-	}
-	
-	/*public Map<String, ObjectMetadata> getAllJars() {
-		return dbConnector.getAllJars();
-	}*/
-	
+	}	
 
 	private HashMap<String, String> getLocalJars() {
 		// TODO Auto-generated method stub
