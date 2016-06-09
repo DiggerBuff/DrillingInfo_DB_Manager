@@ -1,10 +1,12 @@
-package server;
+package server.resource;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import database.DBConnector;
 
 /**
  * Utility methods. Currently holds updater methods but we will change this once 

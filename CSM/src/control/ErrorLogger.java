@@ -1,4 +1,4 @@
-package server;
+package control;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+
+import database.DBConnector;
 
 /**
  * The logger to keep track of the logs and sets up the log and its properties.

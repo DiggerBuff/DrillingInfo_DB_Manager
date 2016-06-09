@@ -19,7 +19,8 @@ import java.util.Map.Entry;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 
-import server.DBConnector;
+import database.DBConnector;
+
 import sun.tools.jar.resources.jar;
 
 
