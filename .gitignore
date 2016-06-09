@@ -33,3 +33,4 @@ production/Transform/jre
 !SampleOldJar/*
 !production/Transform/plugins/*
 !update/*
+!OldJars/*
