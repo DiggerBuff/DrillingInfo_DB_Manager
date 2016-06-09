@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import client.LocalConnector;
@@ -34,7 +35,7 @@ public class VersionedJarService {
 
 	private DBConnector dbConnector = new DBConnector();
 	private Map<String, String> jarsOldToNew = new HashMap<String, String>();
-	
+
 	/**
 	 * This will find all the local files that can be updated with files on S3. 
 	 * Populates a map with the location on the local machine to the name of the file on S3.
@@ -77,7 +78,7 @@ public class VersionedJarService {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * This will call a method to check the local file system for the files to replace. 
 	 *  
@@ -86,7 +87,7 @@ public class VersionedJarService {
 	private Map<String, ArrayList<String>> getLocalJars() {
 		return new LocalConnector().getLocalJars();
 	}
-	
+
 	/**
 	 * This replaces the files found by the detecting for updates. 
 	 * This checks the MD5 checksum on the download as well. 
@@ -101,24 +102,24 @@ public class VersionedJarService {
 			Iterator<Entry<String, String>> it = jarsOldToNew.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, String> pair = (Map.Entry<String, String>)it.next();
-				
-				System.out.println(pair.getKey());
-				S3Object s3object = dbConnector.downloadFile(pair.getValue());
-				ObjectMetadata id = s3object.getObjectMetadata();
-				String s3sum = id.getETag();
+
 				String localNew = pair.getKey().substring(0, pair.getKey().lastIndexOf('/') + 1);
 				localNew = localNew + pair.getValue();
-				
+
+				S3Object s3object = dbConnector.downloadFile(pair.getValue());
+				String s3sum = s3object.getObjectMetadata().getETag();
+
 				//Create the streams
 				InputStream reader = new BufferedInputStream(s3object.getObjectContent());
 				OutputStream writer = new BufferedOutputStream(new FileOutputStream(localNew));
+				
 				//To test if it will pull corrupt files, un-comment below. 
 				//reader.read();
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				org.apache.commons.io.IOUtils.copy(reader, baos);
+				IOUtils.copy(reader, baos);
 				byte[] bytes = baos.toByteArray();
 				ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-				
+
 				//Checksum here
 				bais.reset();
 				MessageDigest md = MessageDigest.getInstance("MD5");
@@ -132,10 +133,9 @@ public class VersionedJarService {
 						writer.write(read);
 					}
 					sumsMatched = true;
-					
+
 					//Remove if we don't want to delete the old file
-					File deleteFile = new File(pair.getKey());
-					deleteFile.delete();
+					deleteOldFile(pair.getKey());
 				}
 				else {
 					Fred.logger.warn("MD5 Checksums did not match. S3:\"" + s3sum + "\" Local:\"" + generatedSum + "\"");
@@ -145,16 +145,26 @@ public class VersionedJarService {
 				bais.close();
 				reader.close();
 			}
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
-		
+
 		return (sumsMatched + "");
+	}
+	
+	/**
+	 * This will delete the old file when it is no longer needed.
+	 * 
+	 * @param path The path to the file to delete.
+	 */
+	private void deleteOldFile(String path) {
+		File deleteFile = new File(path);
+		deleteFile.delete();
 	}
 
 	/**

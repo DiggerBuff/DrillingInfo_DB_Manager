@@ -16,7 +16,14 @@ import org.apache.commons.codec.binary.Hex;
  *
  */
 public class SecurityChecksum {
-
+	/**
+	 * Generates a checksum based on the given file path
+	 * 
+	 * @param path the path to the file to generate the checksums
+	 * @return the MD5 checksum
+	 * @throws NoSuchAlgorithmException
+	 * @throws FileNotFoundException
+	 */
 	public static String hashPassword(String path) throws NoSuchAlgorithmException, FileNotFoundException{
 		FileInputStream fis = new FileInputStream(path);
 		MessageDigest md = MessageDigest.getInstance("MD5");
