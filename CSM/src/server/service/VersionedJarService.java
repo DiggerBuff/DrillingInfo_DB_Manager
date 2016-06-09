@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -96,56 +97,69 @@ public class VersionedJarService {
 	 * @return If the replace worked or not.
 	 */
 	public String replace() {
-		boolean sumsMatched = false;
+		boolean fileCreated = false;
 
+		Iterator<Entry<String, String>> it = jarsOldToNew.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, String> pair = (Map.Entry<String, String>)it.next();
+
+			String localNew = pair.getKey().substring(0, pair.getKey().lastIndexOf('/') + 1);
+			localNew = localNew + pair.getValue();
+
+			S3Object s3object = dbConnector.downloadFile(pair.getValue());
+			fileCreated = writeJar(localNew, s3object);
+
+			//Remove if we don't want to delete the old file
+			if(fileCreated) deleteOldFile(pair.getKey());
+		}
+		return (fileCreated + "");
+	}
+	
+	/**
+	 * This will create the file from the S3Object and return if it worked or not.
+	 * Will also perform the checksum checking.
+	 * 
+	 * @param localNew The location to make the new file.
+	 * @param s3object The S3Object to create the new file from.
+	 * @return
+	 */
+	private boolean writeJar(String localNew, S3Object s3object) {
+		boolean fileCreated = false;
 		try {
-			Iterator<Entry<String, String>> it = jarsOldToNew.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, String> pair = (Map.Entry<String, String>)it.next();
+			String s3sum = s3object.getObjectMetadata().getETag();
 
-				String localNew = pair.getKey().substring(0, pair.getKey().lastIndexOf('/') + 1);
-				localNew = localNew + pair.getValue();
+			//Create the streams
+			InputStream reader = new BufferedInputStream(s3object.getObjectContent());
+			OutputStream writer = new BufferedOutputStream(new FileOutputStream(localNew));
 
-				S3Object s3object = dbConnector.downloadFile(pair.getValue());
-				String s3sum = s3object.getObjectMetadata().getETag();
+			//To test if it will pull corrupt files, un-comment below. 
+			//reader.read();
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			IOUtils.copy(reader, baos);
+			byte[] bytes = baos.toByteArray();
+			ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
 
-				//Create the streams
-				InputStream reader = new BufferedInputStream(s3object.getObjectContent());
-				OutputStream writer = new BufferedOutputStream(new FileOutputStream(localNew));
-				
-				//To test if it will pull corrupt files, un-comment below. 
-				//reader.read();
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				IOUtils.copy(reader, baos);
-				byte[] bytes = baos.toByteArray();
-				ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+			//Checksum here
+			bais.reset();
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			String generatedSum = SecurityChecksum.getDigest(bais, md);
 
-				//Checksum here
+			if (generatedSum.equals(s3sum)) {
+				//Pumps the file into the local file
 				bais.reset();
-				MessageDigest md = MessageDigest.getInstance("MD5");
-				String generatedSum = SecurityChecksum.getDigest(bais, md);
-
-				if (generatedSum.equals(s3sum)) {
-					//Pumps the file into the local file
-					bais.reset();
-					int read = -1;
-					while ((read = bais.read()) != -1) {
-						writer.write(read);
-					}
-					sumsMatched = true;
-
-					//Remove if we don't want to delete the old file
-					deleteOldFile(pair.getKey());
+				int read = -1;
+				while ((read = bais.read()) != -1) {
+					writer.write(read);
 				}
-				else {
-					Fred.logger.warn("MD5 Checksums did not match. S3:\"" + s3sum + "\" Local:\"" + generatedSum + "\"");
-				}
-				writer.flush();
-				writer.close();
-				bais.close();
-				reader.close();
+				fileCreated = true;
 			}
-
+			else {
+				Fred.logger.warn("MD5 Checksums did not match. S3:\"" + s3sum + "\" Local:\"" + generatedSum + "\"");
+			}
+			writer.flush();
+			writer.close();
+			bais.close();
+			reader.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
@@ -154,9 +168,9 @@ public class VersionedJarService {
 			System.err.println(e.getMessage());
 		}
 
-		return (sumsMatched + "");
+		return fileCreated;
 	}
-	
+
 	/**
 	 * This will delete the old file when it is no longer needed.
 	 * 
