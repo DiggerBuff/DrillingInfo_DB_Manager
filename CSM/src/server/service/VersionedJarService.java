@@ -57,7 +57,7 @@ public class VersionedJarService {
 			String symName = dbJarMap.get(s3jar).getUserMetaDataOf("bundle-symbolicname");
 
 			if(localJars.containsKey(symName)){
-				if (compareVersionNumbers(localJars.get(symName), dbJarMap.get(s3jar).getUserMetaDataOf("version")) <= 0) {
+				if (compareVersionNumbers(localJars.get(symName).get(0), dbJarMap.get(s3jar).getUserMetaDataOf("version")) <= 0) {
 					localJars.remove(symName);
 					it.remove();
 				}
