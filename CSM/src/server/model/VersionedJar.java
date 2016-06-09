@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class VersionedJar {
 	@JsonProperty("id")
 	private String version;
-	private File file;
 	private List<Link> links = new ArrayList<>();
 		
 	public VersionedJar() {
@@ -19,7 +18,6 @@ public class VersionedJar {
 	public VersionedJar(@JsonProperty("id") String version, File file) {
 		super();
 		this.version = version;
-		this.file = file;
 	}
 	
 	public List<Link> getLinks() {
