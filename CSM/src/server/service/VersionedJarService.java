@@ -82,21 +82,23 @@ public class VersionedJarService {
 			Iterator<Entry<String, String>> it = jarsOldToNew.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, String> pair = (Map.Entry<String, String>)it.next();
-
+				
+				System.out.println(pair.getKey());
 				S3Object s3object = dbConnector.downloadFile(pair.getValue());
 				ObjectMetadata id = s3object.getObjectMetadata();
 				String s3sum = id.getETag();
-
+				String localNew = pair.getKey().substring(0, pair.getKey().lastIndexOf('/'));
+				
 				//Create the streams
 				InputStream reader = new BufferedInputStream(s3object.getObjectContent());
-				OutputStream writer = new BufferedOutputStream(new FileOutputStream(pair.getKey()));
+				OutputStream writer = new BufferedOutputStream(new FileOutputStream(localNew));
 				//To test if it will pull corrupt files, un-comment below. 
 				//reader.read();
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				org.apache.commons.io.IOUtils.copy(reader, baos);
 				byte[] bytes = baos.toByteArray();
 				ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-
+				
 				//Checksum here
 				bais.reset();
 				MessageDigest md = MessageDigest.getInstance("MD5");
@@ -118,7 +120,6 @@ public class VersionedJarService {
 				writer.close();
 				bais.close();
 				reader.close();
-
 			}
 			
 		} catch (IOException e) {

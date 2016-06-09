@@ -195,7 +195,7 @@ public class DBConnector {
 	public S3Object downloadFile(String fileName)
 	{
 		System.out.println("Downloading an object\n");
-		S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, fileName + ".jar"));
+		S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, prefix + fileName));
 		//if (s3object == null) return null;
 		
 		return s3object;
