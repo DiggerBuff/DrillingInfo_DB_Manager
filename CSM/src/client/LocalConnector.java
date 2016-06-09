@@ -84,7 +84,14 @@ public class LocalConnector {
 			System.err.println(e.getMessage());
 		}
 	}
-
+	
+	/**
+	 * This gets the symbolic name of the jar based on the Bundle-SymbolicName in the manifest.
+	 * 
+	 * @param attributes the manifest attributes.
+	 * @return The symbolic name as a String. 
+	 * @throws IOException
+	 */
 	private String getSymbolicName(Attributes attributes) throws IOException {
 		if (attributes!=null){
 			Iterator<Object> it = attributes.keySet().iterator();
@@ -103,7 +110,14 @@ public class LocalConnector {
 		}
 		throw new IOException("Could not find the Bundle-SymbolicName in the manifest file.");
 	}
-
+	
+	/**
+	 * This gets the version of the jar based on the Bundle-Version in the manifest.
+	 * 
+	 * @param attributes the manifest attributes.
+	 * @return The version number as a String. 
+	 * @throws IOException
+	 */
 	private String getVersion(Attributes attributes) throws IOException {
 		if (attributes!=null){
 			Iterator<Object> it = attributes.keySet().iterator();

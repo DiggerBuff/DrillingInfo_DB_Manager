@@ -15,7 +15,6 @@ import org.apache.commons.io.IOUtils;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.transfer.ObjectMetadataProvider;
 
-
 public class JarMetadataProvider implements ObjectMetadataProvider {
 
 	@Override
@@ -52,6 +51,13 @@ public class JarMetadataProvider implements ObjectMetadataProvider {
 
 	}
 	
+	/**
+	 * This gets the symbolic name of the jar based on the Bundle-SymbolicName in the manifest.
+	 * 
+	 * @param attributes the manifest attributes.
+	 * @return The symbolic name as a String. 
+	 * @throws IOException
+	 */
 	private String getSymbolicName(Attributes attributes) throws IOException {
 		if (attributes!=null){
 			Iterator<Object> it = attributes.keySet().iterator();
@@ -70,7 +76,14 @@ public class JarMetadataProvider implements ObjectMetadataProvider {
 		}
 		throw new IOException("Could not find the Bundle-SymbolicName in the manifest file. Uploaded metadata incorrect for file: ");
 	}
-
+	
+	/**
+	 * This gets the version of the jar based on the Bundle-Version in the manifest.
+	 * 
+	 * @param attributes the manifest attributes.
+	 * @return The version number as a String. 
+	 * @throws IOException
+	 */
 	private String getVersion(Attributes attributes) throws IOException {
 		if (attributes!=null){
 			Iterator<Object> it = attributes.keySet().iterator();
