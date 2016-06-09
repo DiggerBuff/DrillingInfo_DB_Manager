@@ -1,28 +1,8 @@
 package database;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.jar.Attributes;
-import java.util.jar.Attributes.Name;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 
-import org.apache.commons.io.output.ByteArrayOutputStream;
-
-import security.SecurityChecksum;
 import server.Fred;
 
 import com.amazonaws.AmazonClientException;
@@ -87,106 +67,6 @@ public class DBConnector {
 	}
 
 	/**
-	 * This pulls a jar from Amazon S3 and places a copy in the local directory.
-	 * Make sure that the jar file has a manifest in it. 
-	 * 
-	 * @param jar The name of the jar to get. Pass without ".jar" at the end. 
-	 * @return 
-	 * @throws NoSuchAlgorithmException 
-	 */
-	/*public VersionedJar getVersionedJar(String jar) throws NoSuchAlgorithmException {
-		updatedJarName = jar;
-
-		try {
-			//Creates the local jar file
-			File file = new File(updatedJarName + ".jar");
-			if (file.exists()){		  		
-				if (checkJarVersions(file) > 0) {
-					downloadFile(file);
-				}
-			}
-			else {
-				downloadFile(file);
-			}
-
-			//return new VersionedJar(getVersionNumber(file), file);
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}catch (AmazonServiceException ase) {
-			Fred.logger.error("Caught an AmazonServiceException, which means your request made it to Amazon S3, but was rejected with an error response for some reason.");
-			Fred.logger.error("Error Message:    " + ase.getMessage());
-			Fred.logger.error("HTTP Status Code: " + ase.getStatusCode());
-			Fred.logger.error("AWS Error Code:   " + ase.getErrorCode());
-			Fred.logger.error("Error Type:       " + ase.getErrorType());
-			Fred.logger.error("Request ID:       " + ase.getRequestId());
-
-			File file = new File(updatedJarName + ".jar");
-			file.delete();
-		} catch (AmazonClientException ace) {
-			Fred.logger.error("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
-			Fred.logger.error("Error Message: " + ace.getMessage());
-		}
-		return null;
-	}*/
-	
-	/**
-	 * Pulls the file from S3. Also checks the MD5 for security.
-	 * Note that there may be a problem if the ETag from Amazon is not in MD5 format. This may be the case for massive files. 
-	 * 
-	 * @param file the File to download
-	 * @return true if the MD5 checksums matched, false otherwise
-	 * @throws IOException
-	 * @throws NoSuchAlgorithmException
-	 */
-	private boolean downloadFile(File file) throws IOException, NoSuchAlgorithmException {
-		boolean sumsMatched = false;
-		file.createNewFile();
-
-		//Downloads the file from S3 and puts it's contents into a output stream
-		System.out.println("Downloading an object\n");
-		S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, updatedJarName + ".jar"));
-		if (s3object == null) return sumsMatched;
-		ObjectMetadata id = s3object.getObjectMetadata();
-		String s3sum = id.getETag();
-
-		//Create the streams
-		InputStream reader = new BufferedInputStream(s3object.getObjectContent());
-		OutputStream writer = new BufferedOutputStream(new FileOutputStream(file));
-		//To test if it will pull corrupt files, un-comment below. 
-		//reader.read();
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		org.apache.commons.io.IOUtils.copy(reader, baos);
-		byte[] bytes = baos.toByteArray();
-		ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-
-		//Checksum here
-		bais.reset();
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		String generatedSum = SecurityChecksum.getDigest(bais, md);
-
-		if (generatedSum.equals(s3sum)) {
-			//Pumps the file into the local file
-			bais.reset();
-			int read = -1;
-			while ((read = bais.read()) != -1) {
-				writer.write(read);
-			}
-			sumsMatched = true;
-		}
-		else {
-			Fred.logger.warn("MD5 Checksums did not match. S3:\"" + s3sum + "\" Local:\"" + generatedSum + "\"");
-			file.delete();
-		}
-		writer.flush();
-		writer.close();
-		bais.close();
-		reader.close();
-
-		return sumsMatched;
-	}
-
-	/**
 	 * Downloads the s3object from s3 of the given name. 
 	 * 
 	 * @param fileName The name of the file to download.
@@ -234,32 +114,4 @@ public class DBConnector {
 
 	    return isValidFile;
 	}
-	
-	/**
-	 * Iterates through the main attributes of a jar until it finds specific version keywords
-	 * to get the version number of the jar.
-	 * 
-	 * @param manifest
-	 * @return version number corresponding to the keyword
-	 * @throws IOException 
-	 */
-	private String getVersionNumber(File file) throws IOException {
-		JarFile jarFile = new JarFile(file);
-        Manifest manifest = jarFile.getManifest();
-        jarFile.close();
-		Attributes attributes = manifest.getMainAttributes();
-		if (attributes!=null){
-			Iterator<Object> it = attributes.keySet().iterator();
-			while (it.hasNext()){
-				Name key = (Name) it.next();
-				String keyword = key.toString();
-				//Different types of manifest files may require a change here.
-				if (keyword.equals("Bundle-Version")){
-					return (String) attributes.get(key);
-				}
-			}
-		}
-		return null;
-	}
-
 }
