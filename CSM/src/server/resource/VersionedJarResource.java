@@ -34,6 +34,7 @@ public class VersionedJarResource {
 	@GET
 	public Response detectAll(@Context UriInfo uriInfo) {
 		String response = versionedJarService.detectAll();
+		
 		if (response == null) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}

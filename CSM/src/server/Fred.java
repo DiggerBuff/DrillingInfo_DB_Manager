@@ -10,6 +10,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
@@ -57,7 +58,8 @@ public class Fred
 			location = kb.nextLine();
 			if (location.equals("shutdown")) break;
 			else {
-				target.path(location).request(MediaType.APPLICATION_JSON_TYPE).get();
+				/*Response response = */target.path(location).request(MediaType.APPLICATION_JSON_TYPE).get();
+				//System.out.println(response);
 			}
 		}
 

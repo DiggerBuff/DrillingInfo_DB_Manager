@@ -2,7 +2,6 @@ package server.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -32,25 +31,11 @@ public class VersionedJarService {
 	*/
 	
 	public String detectAll() {
+		
 		Map<String, ObjectMetadata> dbJarMap = dbConnector.getAllJars();
 		Map<String, String> localJars = getLocalJars();
 		
 		for (String s3jar : dbJarMap.keySet()) {
-			/*String key = s3jar.substring(0, s3jar.lastIndexOf('_'));
-			String version = s3jar.substring(s3jar.lastIndexOf('_') + 1);
-			
-			ArrayList<String> dbJars = dbJarMap.get(key);
-			
-			for (String dbJar : dbJars) {
-				if (!(compareVersionNumbers(version, dbJar) > 0)) {
-					dbJars.remove(dbJar);
-				}
-				else {
-					dbJar = key + "_" + dbJar;
-				}
-			}
-			
-			jarsOldToNew.put(s3jar, dbJars);*/
 			String symName = dbJarMap.get(s3jar).getUserMetaDataOf("bundle-symbolicname");
 			
 			if(localJars.containsKey(symName)){
@@ -72,14 +57,14 @@ public class VersionedJarService {
 		}
 	}
 	
-	public Map<String, ObjectMetadata> getAllJars() {
+	/*public Map<String, ObjectMetadata> getAllJars() {
 		return dbConnector.getAllJars();
-	}
+	}*/
 	
 
 	private HashMap<String, String> getLocalJars() {
 		// TODO Auto-generated method stub
-		return null;
+		return new HashMap<String, String>();
 	}
 	
 	
