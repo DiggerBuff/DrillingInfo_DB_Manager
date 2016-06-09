@@ -27,22 +27,6 @@ public class VersionedJarService {
 	
 	private DBConnector dbConnector = new DBConnector();
 	private Map<String, String> jarsOldToNew = new HashMap<String, String>();
-
-	/*
-	public String detect(String vjName) {
-		List<String> updates = dbConnector.getAssociatedVersions(vjName);
-		if (updates == null) {
-			return null;
-		}
-		else if (updates.size() == 0) {
-			return vjName + " is up to date.";
-		}
-		else {
-			jarsOldToNew.put(vjName, updates);
-			return "Detected " + updates.size() + " updates for " + vjName;
-		}
-	}
-	*/
 	
 	public String detectAll() {
 		Map<String, ObjectMetadata> dbJarMap = dbConnector.getAllJars();
@@ -63,25 +47,22 @@ public class VersionedJarService {
 				}
 				else {
 					System.out.println("Matched S3Jar : " + s3jar + " To Local Jar : " + localJars.get(symName).get(1));
+					String localPath = localJars.get(symName).get(1);
+					jarsOldToNew.put(localPath, s3jar);
 				}
 			}
 			else {
-				System.out.println("Local Jars didn't have dbJar");
+				System.out.println("Local Jars didn't have " + symName);
 				//TODO What if there is a file in S3 but not in the users files. 
 			}
 		}
 		if (jarsOldToNew.size() > 0) {
-			return "Detected updates for " + jarsOldToNew.size() + " jars";
+			return "Detected updates for " + jarsOldToNew.size() + " jars.";
 		}
 		else {
 			return null;
 		}
 	}
-	
-	/*public Map<String, ObjectMetadata> getAllJars() {
-		return dbConnector.getAllJars();
-	}*/
-	
 	
 	private Map<String, ArrayList<String>> getLocalJars() {
 
