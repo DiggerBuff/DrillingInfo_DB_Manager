@@ -12,7 +12,7 @@ import server.DBConnector;
 public class VersionedJarService {
 	
 	private DBConnector dbConnector = new DBConnector();
-	private Map<String, ArrayList<String>> jarsOldToNew = new HashMap<String, ArrayList<String>>();
+	private Map<String, String> jarsOldToNew = new HashMap<String, String>();
 
 	/*
 	public String detect(String vjName) {
@@ -31,7 +31,7 @@ public class VersionedJarService {
 	*/
 	
 	public String detectAll() {
-		
+
 		Map<String, ObjectMetadata> dbJarMap = dbConnector.getAllJars();
 		Map<String, String> localJars = getLocalJars();
 		
