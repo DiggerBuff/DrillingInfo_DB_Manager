@@ -34,6 +34,22 @@ public class LocalConnector {
 	 * @throws TODO
 	 */
 	public Map<String, ArrayList<String>> getLocalJars() {
+		
+		String workingDirectory;
+		String OS = (System.getProperty("os.name")).toUpperCase();
+
+		if (OS.contains("WIN")){
+		    //it is simply the location of the "AppData" folder
+		    workingDirectory = System.getenv("AppData");
+		}
+		//Otherwise, we assume Linux or Mac
+		else
+		{
+		    //in either case, we would start in the user's home directory
+		    workingDirectory = System.getProperty("user.home");
+		    //if we are on a Mac, we are not done, we look for "Application Support"
+		    workingDirectory += "/Library/Application Support";
+		}
 
 
 		//String pwd = System.getProperty("user.dir");
@@ -43,29 +59,29 @@ public class LocalConnector {
 		 * if you aren't close to the correct directory.
 		 */
 		//String baseDir = pwd.substring(0, pwd.lastIndexOf("CSM"));
+		String baseDir = System.getProperty("user.home");
+		System.out.println(baseDir);
+		
 		long start = System.currentTimeMillis();
-		String baseDir = getPath("/u/st/");
+		String pluginDir = getPath(baseDir);
+		System.out.println("PLUGINDIR: " + pluginDir);
 		long stop = System.currentTimeMillis();
 		System.out.println( "Elapsed: " + (stop - start) + " ms" );
-		DirectoryScanner scanner = setUpScanner(baseDir);
+		
+		DirectoryScanner scanner = setUpScanner(pluginDir);
 
-		System.out.println("scan starting");
+		start = System.currentTimeMillis();
 		scanner.scan();
-		System.out.println("scan ended");
+		stop = System.currentTimeMillis();
+		System.out.println( "Elapsed: " + (stop - start) + " ms" );
 
 		String[] relativeFilePaths = scanner.getIncludedFiles();
-		//System.out.println(relativeFilePaths.length);
 
 		for (String relativeFilePath : relativeFilePaths) {
 			
 			System.out.println("Matched file : " + relativeFilePath);
 
-			String absoluteDirPath = baseDir;
-			System.out.println(absoluteDirPath);
-			String fileName = relativeFilePath;
-			System.out.println(fileName);
-			
-			File file = new File(absoluteDirPath, fileName);
+			File file = new File(pluginDir, relativeFilePath);
 
 			if (file.exists()) {
 				addToMap(file);
@@ -79,20 +95,19 @@ public class LocalConnector {
 
 	private String getPath(String path) {
 		Path dir = FileSystems.getDefault().getPath( path );
-		DirectoryStream<Path> stream;
+		System.out.println("DIRECTORY: " + dir);
 		try {
-			stream = Files.newDirectoryStream(dir);
+			DirectoryStream<Path> stream = Files.newDirectoryStream(dir);
 
 			for (Path local : stream) {
-				//System.out.println(path + local.getFileName() );
-				File newFile = new File(path + local.getFileName().toString());
+				File newFile = new File(path + File.separatorChar + local.getFileName().toString());
 				if(newFile.isDirectory() && !(newFile.getName().charAt(0) == '.') && newFile.canRead()){
 					//System.out.println("going down: " + path + local.getFileName());
-					if(newFile.getAbsolutePath().contains("Transform/plugins")) {
+					if(newFile.getAbsolutePath().contains("Transform" + File.separatorChar + "plugins")) {
 						System.out.println("Found file");
 						return newFile.getAbsolutePath();
 					}
-					String nextPath = getPath(path + local.getFileName() + "/");
+					String nextPath = getPath(path + File.separatorChar + local.getFileName() );
 					if(!(nextPath == null)) {
 						return nextPath;
 					}

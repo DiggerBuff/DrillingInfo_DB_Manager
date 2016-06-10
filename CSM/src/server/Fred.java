@@ -44,6 +44,8 @@ public class Fred
 	public static ErrorLogger logger = new ErrorLogger();
 
 	public static void main(String... args) {
+		System.out.println(System.getProperty("user.home"));
+		
 		try {
 			String localIP = InetAddress.getLocalHost().getHostAddress();
 			defaultUri += localIP;
