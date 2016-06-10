@@ -103,7 +103,7 @@ public class VersionedJarService {
 		while (it.hasNext()) {
 			Map.Entry<String, String> pair = (Map.Entry<String, String>)it.next();
 
-			String localNew = pair.getKey().substring(0, pair.getKey().lastIndexOf('/') + 1);
+			String localNew = pair.getKey().substring(0, pair.getKey().lastIndexOf(File.separatorChar) + 1);
 			localNew = localNew + pair.getValue();
 
 			S3Object s3object = dbConnector.downloadFile(pair.getValue());

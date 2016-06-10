@@ -32,6 +32,7 @@ public class LocalConnector {
 	public Map<String, ArrayList<String>> getLocalJars() {
 
 		String pwd = System.getProperty("user.dir");
+		System.out.println(pwd);
 
 		/*TODO This is not the base directory but the scan takes forever 
 		 * if you aren't close to the correct directory.
@@ -50,8 +51,8 @@ public class LocalConnector {
 
 			System.out.println("Matched file : " + relativeFilePath);
 
-			String absoluteDirPath = baseDir + relativeFilePath.substring(0, relativeFilePath.lastIndexOf('/'));
-			String fileName = relativeFilePath.substring(relativeFilePath.lastIndexOf('/') + 1);
+			String absoluteDirPath = baseDir + relativeFilePath.substring(0, relativeFilePath.lastIndexOf(File.separatorChar));
+			String fileName = relativeFilePath.substring(relativeFilePath.lastIndexOf(File.separatorChar) + 1);
 			File file = new File(absoluteDirPath, fileName);
 
 			if (file.exists()) {
@@ -60,7 +61,6 @@ public class LocalConnector {
 			else {
 				System.out.println("File creation broke");
 			}
-
 		}
 		return localJars;
 	}
