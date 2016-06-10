@@ -1,8 +1,10 @@
 package server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,10 +40,19 @@ import java.util.Scanner;
 public class Fred
 {
 	private static final int port = getPort();
-	private static final String defaultUri = "http://localhost";
+	private static String defaultUri = "http://";
 	public static ErrorLogger logger = new ErrorLogger();
 
 	public static void main(String... args) {
+		try {
+			String localIP = InetAddress.getLocalHost().getHostAddress();
+			defaultUri += localIP;
+			System.out.println(defaultUri);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Fred fred = new Fred();
 		Scanner kb = new Scanner(System.in);
 		String location = "";
