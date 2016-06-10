@@ -37,23 +37,24 @@ public class LocalConnector {
 		
 		String baseDir = System.getProperty("user.home");
 		
+		System.out.println("\nDir search start");
 		long start = System.currentTimeMillis();
 		String pluginDir = getPath(baseDir);
 		long stop = System.currentTimeMillis();
-		System.out.println( "Elapsed: " + (stop - start) + " ms" );
+		System.out.println("Dir search end. Elapsed time : " + (stop - start) + " ms\n" );
 		
 		DirectoryScanner scanner = setUpScanner(pluginDir);
-
+		System.out.println("Plugin search start");
 		start = System.currentTimeMillis();
 		scanner.scan();
 		stop = System.currentTimeMillis();
-		System.out.println( "Elapsed: " + (stop - start) + " ms" );
+		System.out.println("Plugin search end. Elapsed time : " + (stop - start) + " ms\n" );
 
 		String[] relativeFilePaths = scanner.getIncludedFiles();
 
 		for (String relativeFilePath : relativeFilePaths) {
 			
-			System.out.println("Matched file : " + relativeFilePath);
+			System.out.println("Found Local Jar : " + relativeFilePath + "\n");
 
 			File file = new File(pluginDir, relativeFilePath);
 
@@ -76,7 +77,7 @@ public class LocalConnector {
 				File newFile = new File(path + File.separatorChar + local.getFileName().toString());
 				if(newFile.isDirectory() && !(newFile.getName().charAt(0) == '.') && newFile.canRead()){
 					if(newFile.getAbsolutePath().contains("Transform" + File.separatorChar + "plugins")) {
-						System.out.println("Found file");
+						System.out.println("Found Transform/plugins directory");
 						return newFile.getAbsolutePath();
 					}
 					String nextPath = getPath(path + File.separatorChar + local.getFileName());
@@ -131,7 +132,6 @@ public class LocalConnector {
 			ArrayList<String> list = new ArrayList<String>();
 			list.add(version);
 			list.add(file.getAbsolutePath());
-			System.out.println("Key : " + name + " List Contents : " + list);
 
 			localJars.put(name,  list);
 

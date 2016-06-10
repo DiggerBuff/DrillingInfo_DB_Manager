@@ -54,7 +54,6 @@ public class VersionedJarService {
 			String s3jar = pair.getKey().toString();
 			String symName = dbJarMap.get(s3jar).getUserMetaDataOf("bundle-symbolicname");
 
-			System.out.println("SymName expecting to match : " + symName);
 			if(localJars.containsKey(symName)){
 				if (compareVersionNumbers(localJars.get(symName).get(0), dbJarMap.get(s3jar).getUserMetaDataOf("version")) <= 0) {
 					localJars.remove(symName);
@@ -73,6 +72,7 @@ public class VersionedJarService {
 		}
 
 		if (jarsOldToNew.size() > 0) {
+			System.out.println("Detected updates for " + jarsOldToNew.size() + " jars.");
 			return "Detected updates for " + jarsOldToNew.size() + " jars.";
 		}
 		else {
