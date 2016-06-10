@@ -3,6 +3,7 @@
 	// this is our MODULE declaration line
 	// is is called "store" and has no dependencies
 	var app = angular.module('interface', []);
+	
 
 	// this is our CONTROLLER named "StoreController" it must be capitalized
 	// the code in function here is what will be executed when StoreController
@@ -17,7 +18,7 @@
 	{
 		name : 'Panel1',
 		description : 'The first panel deals with scanning for updates. Is there a Transform/plugins folder? Great - let’s look at the jars in it and see if any newer versions (or perhaps brand new jars) are available.  Either display to the user that they are fully up-to-date or they need to download and install newer jars. Give them a button of some form to do that. This would replace the older version jars in Transform/plugins folder.',
-		canShow : false
+		canShow : true
 		
 	}, 
 	{
