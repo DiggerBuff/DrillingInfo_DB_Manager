@@ -18,6 +18,13 @@ bootstrap-theme.min.css"
 
 <link href="main.css" rel="stylesheet">
 
+<script>
+function getJarList()
+{
+	var mylist=document.getElementById("myList");
+}
+</script>
+
 </head>
 
 <!--   the ng-controller DIRECTIVE allows us to attach our controller to this element in our HTML -->
@@ -41,29 +48,14 @@ bootstrap-theme.min.css"
 		<!--  This DIRECTIVE is telling our button to only show if the value of our expression is true-->
 		<button ng-show="panel.canShow">Scan For Update</button>
 
-		<div class="dropdown">
-			<button class="btn btn-default dropdown-toggle" type="button"
-				id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="true">
-				Dropdown
-				<span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-				<li>
-					<a href="#">Action</a>
-				</li>
-				<li>
-					<a href="#">Another action</a>
-				</li>
-				<li>
-					<a href="#">Something else here</a>
-				</li>
-				<li role="separator" class="divider"></li>
-				<li>
-					<a href="#">Separated link</a>
-				</li>
-			</ul>
-		</div>
+		<!-- DROPDOWN MENUE -->
+		<select id="myList" onchange="getJarMap()">
+		<option>One</option>
+		<option>Two</option>
+		<option>Three</option>
+		
+		</select>
+		
 
 		<!--  This is where we must declare our Angular.JS NDC-->
 	<script
@@ -73,6 +65,8 @@ bootstrap-theme.min.css"
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
 		integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
 		crossorigin="anonymous"></script>
+		
+	
 
 </body>
 </html>
