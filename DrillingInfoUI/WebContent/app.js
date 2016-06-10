@@ -13,7 +13,7 @@
 		// the property we name products
 		this.panels = panelSet;
 	});
-
+	
 	var panelSet = [ 
 	{
 		name : 'Panel1',
@@ -33,4 +33,5 @@
 		canShow : true
 		
 	}];
+		
 })();
