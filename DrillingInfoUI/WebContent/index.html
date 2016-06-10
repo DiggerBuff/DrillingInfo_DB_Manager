@@ -18,11 +18,42 @@ bootstrap-theme.min.css"
 
 <link href="main.css" rel="stylesheet">
 
+<!-- Function for dropdown manue -->
 <script>
-function getJarList()
+	function getJarList() 
+	{
+		var mylist = document.getElementById("myList");
+	}
+</script>
+
+
+<script type="text/javascript">
+function startUp()
 {
-	var mylist=document.getElementById("myList");
+
+window.alert("ZEPPELIN RULES!!!");
+
+var xhr = new XMLHttpRequest();
+
+xhr.open('GET', "http://ipinfo.io/json", true);
+xhr.send();
+
+xhr.addEventListener("readystatechange", processRequest, false);
+
+xhr.onreadystatechange = processRequest;
+
+function processRequest(e) 
+	{
+	
+		if (xhr.readyState == 4 && xhr.status == 200) 
+		{
+			var response = JSON.parse(xhr.responseText);
+			alert(response.ip);
+		}
+	}
 }
+
+
 </script>
 
 </head>
@@ -46,27 +77,29 @@ function getJarList()
 		<p>{{panel.description}}</p>
 
 		<!--  This DIRECTIVE is telling our button to only show if the value of our expression is true-->
-		<button ng-show="panel.canShow">Scan For Update</button>
+		
+		<!-- BUTTON -->
+		<button ng-show="panel.canShow" id="button1" onclick="startUp();")>
+		
+		Scan For Update
+		</button>
 
 		<!-- DROPDOWN MENUE -->
 		<select id="myList" onchange="getJarMap()">
-		<option>One</option>
-		<option>Two</option>
-		<option>Three</option>
-		
+			<option>One</option>
+			<option>Two</option>
+			<option>Three</option>
+
 		</select>
-		
+
 
 		<!--  This is where we must declare our Angular.JS NDC-->
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-	<script type="text/javascript" src="app.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-		integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-		crossorigin="anonymous"></script>
-		
-	
-
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+		<script type="text/javascript" src="app.js"></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+			integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+			crossorigin="anonymous"></script>
 </body>
 </html>
