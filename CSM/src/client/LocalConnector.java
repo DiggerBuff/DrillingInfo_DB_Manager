@@ -35,36 +35,10 @@ public class LocalConnector {
 	 */
 	public Map<String, ArrayList<String>> getLocalJars() {
 		
-		String workingDirectory;
-		String OS = (System.getProperty("os.name")).toUpperCase();
-
-		if (OS.contains("WIN")){
-		    //it is simply the location of the "AppData" folder
-		    workingDirectory = System.getenv("AppData");
-		}
-		//Otherwise, we assume Linux or Mac
-		else
-		{
-		    //in either case, we would start in the user's home directory
-		    workingDirectory = System.getProperty("user.home");
-		    //if we are on a Mac, we are not done, we look for "Application Support"
-		    workingDirectory += "/Library/Application Support";
-		}
-
-
-		//String pwd = System.getProperty("user.dir");
-		//System.out.println(pwd);
-		//System.out.println(getPath("/u/st/am/"));
-		/*TODO This is not the base directory but the scan takes forever 
-		 * if you aren't close to the correct directory.
-		 */
-		//String baseDir = pwd.substring(0, pwd.lastIndexOf("CSM"));
 		String baseDir = System.getProperty("user.home");
-		System.out.println(baseDir);
 		
 		long start = System.currentTimeMillis();
 		String pluginDir = getPath(baseDir);
-		System.out.println("PLUGINDIR: " + pluginDir);
 		long stop = System.currentTimeMillis();
 		System.out.println( "Elapsed: " + (stop - start) + " ms" );
 		
@@ -95,19 +69,17 @@ public class LocalConnector {
 
 	private String getPath(String path) {
 		Path dir = FileSystems.getDefault().getPath( path );
-		System.out.println("DIRECTORY: " + dir);
 		try {
 			DirectoryStream<Path> stream = Files.newDirectoryStream(dir);
-
+			
 			for (Path local : stream) {
 				File newFile = new File(path + File.separatorChar + local.getFileName().toString());
 				if(newFile.isDirectory() && !(newFile.getName().charAt(0) == '.') && newFile.canRead()){
-					//System.out.println("going down: " + path + local.getFileName());
 					if(newFile.getAbsolutePath().contains("Transform" + File.separatorChar + "plugins")) {
 						System.out.println("Found file");
 						return newFile.getAbsolutePath();
 					}
-					String nextPath = getPath(path + File.separatorChar + local.getFileName() );
+					String nextPath = getPath(path + File.separatorChar + local.getFileName());
 					if(!(nextPath == null)) {
 						return nextPath;
 					}
@@ -119,7 +91,6 @@ public class LocalConnector {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
 		}
-		//		System.out.println(path.substring(0, path.lastIndexOf('/', path.length() - 2) + 1));
 		return null;
 	}
 
