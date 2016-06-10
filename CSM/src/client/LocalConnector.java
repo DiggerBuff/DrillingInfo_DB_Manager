@@ -2,6 +2,10 @@ package client;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,14 +35,18 @@ public class LocalConnector {
 	 */
 	public Map<String, ArrayList<String>> getLocalJars() {
 
-		String pwd = System.getProperty("user.dir");
-		System.out.println(pwd);
 
+		//String pwd = System.getProperty("user.dir");
+		//System.out.println(pwd);
+		//System.out.println(getPath("/u/st/am/"));
 		/*TODO This is not the base directory but the scan takes forever 
 		 * if you aren't close to the correct directory.
 		 */
-		String baseDir = pwd.substring(0, pwd.lastIndexOf("CSM"));
-
+		//String baseDir = pwd.substring(0, pwd.lastIndexOf("CSM"));
+		long start = System.currentTimeMillis();
+		String baseDir = getPath("/u/st/");
+		long stop = System.currentTimeMillis();
+		System.out.println( "Elapsed: " + (stop - start) + " ms" );
 		DirectoryScanner scanner = setUpScanner(baseDir);
 
 		System.out.println("scan starting");
@@ -46,13 +54,17 @@ public class LocalConnector {
 		System.out.println("scan ended");
 
 		String[] relativeFilePaths = scanner.getIncludedFiles();
+		//System.out.println(relativeFilePaths.length);
 
 		for (String relativeFilePath : relativeFilePaths) {
-
+			
 			System.out.println("Matched file : " + relativeFilePath);
 
-			String absoluteDirPath = baseDir + relativeFilePath.substring(0, relativeFilePath.lastIndexOf(File.separatorChar));
-			String fileName = relativeFilePath.substring(relativeFilePath.lastIndexOf(File.separatorChar) + 1);
+			String absoluteDirPath = baseDir;
+			System.out.println(absoluteDirPath);
+			String fileName = relativeFilePath;
+			System.out.println(fileName);
+			
 			File file = new File(absoluteDirPath, fileName);
 
 			if (file.exists()) {
@@ -65,6 +77,37 @@ public class LocalConnector {
 		return localJars;
 	}
 
+	private String getPath(String path) {
+		Path dir = FileSystems.getDefault().getPath( path );
+		DirectoryStream<Path> stream;
+		try {
+			stream = Files.newDirectoryStream(dir);
+
+			for (Path local : stream) {
+				//System.out.println(path + local.getFileName() );
+				File newFile = new File(path + local.getFileName().toString());
+				if(newFile.isDirectory() && !(newFile.getName().charAt(0) == '.') && newFile.canRead()){
+					//System.out.println("going down: " + path + local.getFileName());
+					if(newFile.getAbsolutePath().contains("Transform/plugins")) {
+						System.out.println("Found file");
+						return newFile.getAbsolutePath();
+					}
+					String nextPath = getPath(path + local.getFileName() + "/");
+					if(!(nextPath == null)) {
+						return nextPath;
+					}
+				}
+			}
+			stream.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
+		}
+		//		System.out.println(path.substring(0, path.lastIndexOf('/', path.length() - 2) + 1));
+		return null;
+	}
+
 	/**
 	 * This sets up the DirectoryScanner to find the plugins.
 	 * 
@@ -73,7 +116,7 @@ public class LocalConnector {
 	 */
 	private DirectoryScanner setUpScanner(String baseDir) {
 		DirectoryScanner scanner = new DirectoryScanner();
-		scanner.setIncludes(new String[]{"**/Transform/plugins/**/*.jar"});
+		scanner.setIncludes(new String[]{"**/*.jar"});
 		scanner.setBasedir(baseDir);
 		scanner.setCaseSensitive(false);
 		return scanner;
