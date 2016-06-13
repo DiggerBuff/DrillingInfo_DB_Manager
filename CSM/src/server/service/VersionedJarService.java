@@ -30,6 +30,7 @@ import exception.LocalFileError;
 import exception.SecurityError;
 
 import security.SecurityChecksum;
+import server.model.VersionedJar;
 
 public class VersionedJarService {
 
@@ -46,9 +47,10 @@ public class VersionedJarService {
 	 * 
 	 * @return The String for the response body.
 	 */
-	public String detectAll() {
+	public ArrayList<VersionedJar> detectAll() {
 		Map<String, ArrayList<String>> localJars = getLocalJars();
 		Map<String, ObjectMetadata> dbJarMap = dbConnector.getAllJars();
+		ArrayList<VersionedJar> updates = new ArrayList<VersionedJar>();
 
 		Iterator<Entry<String, ObjectMetadata>> it = dbJarMap.entrySet().iterator();
 		while (it.hasNext()) {
@@ -66,6 +68,7 @@ public class VersionedJarService {
 					System.out.println("Matched S3Jar : " + s3jar + " To Local Jar : " + localJars.get(symName).get(1));
 					String localPath = localJars.get(symName).get(1);
 					jarsOldToNew.put(localPath, s3jar);
+					updates.add(new VersionedJar(s3jar));
 				}
 			}
 			else {
@@ -76,7 +79,7 @@ public class VersionedJarService {
 
 		if (jarsOldToNew.size() > 0) {
 			System.out.println("Detected updates for " + jarsOldToNew.size() + " jars.");
-			return "Detected updates for " + jarsOldToNew.size() + " jars.";
+			return updates;
 		}
 		else {
 			return null;
