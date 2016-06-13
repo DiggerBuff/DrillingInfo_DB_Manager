@@ -9,8 +9,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import exception.LocalFileError;
-
 import server.service.VersionedJarService;
 
 
@@ -48,8 +46,9 @@ public class VersionedJarResource {
 	@GET
 	@Path("replace/")
 	public Response replaceAll(@Context UriInfo uriInfo) {
-		String response = versionedJarService.replace();
-		if (response == null) {
+		boolean response = versionedJarService.replace();
+		
+		if (!response) {
 			return Response.status(Response.Status.NO_CONTENT).build();
 		}
 		else {

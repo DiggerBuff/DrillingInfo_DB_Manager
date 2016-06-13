@@ -26,6 +26,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 
 import database.DBConnector;
+import exception.SecurityError;
 
 import security.SecurityChecksum;
 import server.Fred;
@@ -95,7 +96,7 @@ public class VersionedJarService {
 	 * 
 	 * @return If the replace worked or not.
 	 */
-	public String replace() {
+	public boolean replace() {
 		boolean fileCreated = false;
 
 		Iterator<Entry<String, String>> it = jarsOldToNew.entrySet().iterator();
@@ -104,14 +105,20 @@ public class VersionedJarService {
 
 			String localNew = pair.getKey().substring(0, pair.getKey().lastIndexOf(File.separatorChar) + 1);
 			localNew = localNew + pair.getValue();
+			//System.out.println(localNew);
+			//System.out.println(pair.getKey());
 
 			S3Object s3object = dbConnector.downloadFile(pair.getValue());
 			fileCreated = writeJar(localNew, s3object);
 
 			//Remove if we don't want to delete the old file
-			if(fileCreated) deleteOldFile(pair.getKey());
+			if(fileCreated) deleteFile(pair.getKey());
+			else {
+				deleteFile(localNew);
+				throw new SecurityError("MD5 Checksums did not match.");
+			}
 		}
-		return (fileCreated + "");
+		return fileCreated;
 	}
 	
 	/**
@@ -152,9 +159,6 @@ public class VersionedJarService {
 				}
 				fileCreated = true;
 			}
-			else {
-				Fred.logger.warn("MD5 Checksums did not match. S3:\"" + s3sum + "\" Local:\"" + generatedSum + "\"");
-			}
 			writer.flush();
 			writer.close();
 			bais.close();
@@ -175,7 +179,7 @@ public class VersionedJarService {
 	 * 
 	 * @param path The path to the file to delete.
 	 */
-	private void deleteOldFile(String path) {
+	private void deleteFile(String path) {
 		File deleteFile = new File(path);
 		deleteFile.delete();
 	}

@@ -11,6 +11,7 @@ import com.amazonaws.AmazonServiceException;
 
 import exception.ErrorMessage;
 import exception.LocalFileError;
+import exception.SecurityError;
 
 /**
  * TODO Flesh out exception handlers
@@ -31,6 +32,7 @@ public class GenericExceptionMapper
 		config.register(new LocalFilesMapper());
 		config.register(new AmazonServiceMapper());
 		config.register(new AmazonClientMapper());
+		config.register(new SecurityErrorMapper());
 	}
 
 	/**
@@ -75,6 +77,16 @@ public class GenericExceptionMapper
 		public Response toResponse(AmazonClientException ace) {
 			ErrorMessage errorMessage = new ErrorMessage("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.\n" + 
 					ace.getMessage(), 404, "http://info.drillinginfo.com");
+			return Response.status(errorMessage.getErrorCode()).entity(errorMessage).build();
+		}
+	}
+	
+	@Provider
+	public static class SecurityErrorMapper implements ExceptionMapper<SecurityError>
+	{
+		@Override
+		public Response toResponse(SecurityError e) {
+			ErrorMessage errorMessage = new ErrorMessage(e.getMessage(), Response.Status.PRECONDITION_FAILED.getStatusCode(), "http://info.drillinginfo.com");
 			return Response.status(errorMessage.getErrorCode()).entity(errorMessage).build();
 		}
 	}
