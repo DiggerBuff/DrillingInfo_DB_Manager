@@ -17,7 +17,6 @@ import java.util.jar.Attributes.Name;
 
 import org.apache.tools.ant.DirectoryScanner;
 
-import control.GenericExceptionMapper;
 import exception.LocalFileError;
 
 /**
