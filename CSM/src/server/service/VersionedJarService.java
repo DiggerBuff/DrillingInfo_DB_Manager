@@ -30,8 +30,6 @@ import exception.LocalFileError;
 import exception.SecurityError;
 
 import security.SecurityChecksum;
-import server.Fred;
-
 
 public class VersionedJarService {
 
