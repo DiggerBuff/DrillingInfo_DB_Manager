@@ -4,6 +4,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.ext.Provider;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.core.MediaType;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 

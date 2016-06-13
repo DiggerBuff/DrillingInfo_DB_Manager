@@ -40,7 +40,7 @@ public class VersionedJarResource {
 		String response = versionedJarService.detectAll();
 		
 		if (response == null) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Response.Status.NO_CONTENT).build();
 		}
 		else {
 			return Response.status(Response.Status.OK).entity(response).build();
@@ -50,10 +50,11 @@ public class VersionedJarResource {
 	@GET
 	@Path("replace/")
 	public Response replaceAll(@Context UriInfo uriInfo) {
-		String response = versionedJarService.replace();
+
+		boolean response = versionedJarService.replace();
 		
-		if (response == null) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		if (!response) {
+			return Response.status(Response.Status.NO_CONTENT).build();
 		}
 		else {
 			return Response.status(Response.Status.OK).entity(response).build();

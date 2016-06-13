@@ -17,6 +17,9 @@ import java.util.jar.Attributes.Name;
 
 import org.apache.tools.ant.DirectoryScanner;
 
+import control.GenericExceptionMapper;
+import exception.LocalFileError;
+
 /**
  * The name is a bit of a misnomer since it doesn't actually connect to something.
  *
@@ -34,27 +37,31 @@ public class LocalConnector {
 	 * @throws TODO
 	 */
 	public Map<String, ArrayList<String>> getLocalJars() {
-		
+
 		String baseDir = System.getProperty("user.home");
-		
+
 		System.out.println("\nDir search start");
 		long start = System.currentTimeMillis();
 		String pluginDir = getPath(baseDir);
 		long stop = System.currentTimeMillis();
 		System.out.println("Dir search end. Elapsed time : " + (stop - start) + " ms\n" );
-		
+
+		if(pluginDir == null) {
+			throw new LocalFileError("Unable to find local Transform files.");
+		}
+
 		DirectoryScanner scanner = setUpScanner(pluginDir);
 		System.out.println("Plugin search start");
 		start = System.currentTimeMillis();
 		scanner.scan();
 		stop = System.currentTimeMillis();
-		System.out.println("Plugin search end. Elapsed time : " + (stop - start) + " ms\n" );
+		System.out.println("Plugin search end. Elapsed time : " + (stop - start) + " ms" );
 
 		String[] relativeFilePaths = scanner.getIncludedFiles();
 
 		for (String relativeFilePath : relativeFilePaths) {
-			
-			System.out.println("Found Local Jar : " + relativeFilePath + "\n");
+
+			System.out.println("\nFound Local Jar : " + relativeFilePath);
 
 			File file = new File(pluginDir, relativeFilePath);
 
@@ -62,7 +69,7 @@ public class LocalConnector {
 				addToMap(file);
 			}
 			else {
-				System.out.println("File creation broke");
+				System.err.println("File creation broke");
 			}
 		}
 		return localJars;
@@ -72,7 +79,7 @@ public class LocalConnector {
 		Path dir = FileSystems.getDefault().getPath( path );
 		try {
 			DirectoryStream<Path> stream = Files.newDirectoryStream(dir);
-			
+
 			for (Path local : stream) {
 				File newFile = new File(path + File.separatorChar + local.getFileName().toString());
 				if(newFile.isDirectory() && !(newFile.getName().charAt(0) == '.') && newFile.canRead()){
@@ -87,7 +94,7 @@ public class LocalConnector {
 				}
 			}
 			stream.close();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());

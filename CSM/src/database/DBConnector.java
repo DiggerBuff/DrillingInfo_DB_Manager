@@ -3,15 +3,10 @@ package database;
 import java.util.HashMap;
 import java.util.Map;
 
-import server.Fred;
-
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.iterable.S3Objects;
-import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
@@ -43,26 +38,17 @@ public class DBConnector {
 	 * @return The map of all jars on the S3 server to their metadata
 	 */
 	public  Map<String,ObjectMetadata> getAllJars() {
-		
-		Map<String,ObjectMetadata> jars = new HashMap<String,ObjectMetadata>();
 
-		try {
-			for (S3ObjectSummary objectSummary : S3Objects.withPrefix(s3client, bucketName, prefix)) {
-				if(!objectSummary.getKey().replaceFirst(prefix, "").equals("")) {
-					//System.out.println(" - " + objectSummary.getKey().replaceFirst(prefix, ""));
-					jars.put(objectSummary.getKey().replaceFirst(prefix, ""), s3client.getObjectMetadata(bucketName, objectSummary.getKey()));				}
-			}
-		} catch (AmazonServiceException ase) {
-			Fred.logger.error("Caught an AmazonServiceException, which means your request made it to Amazon S3, but was rejected with an error response for some reason.");
-			Fred.logger.error("Error Message:    " + ase.getMessage());
-			Fred.logger.error("HTTP Status Code: " + ase.getStatusCode());
-			Fred.logger.error("AWS Error Code:   " + ase.getErrorCode());
-			Fred.logger.error("Error Type:       " + ase.getErrorType());
-			Fred.logger.error("Request ID:       " + ase.getRequestId());
-		} catch (AmazonClientException ace) {
-			Fred.logger.error("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
-			Fred.logger.error("Error Message: " + ace.getMessage());
+		Map<String,ObjectMetadata> jars = new HashMap<String,ObjectMetadata>();
+		System.out.println("\nDB search start");
+		long start = System.currentTimeMillis();
+		for (S3ObjectSummary objectSummary : S3Objects.withPrefix(s3client, bucketName, prefix)) {
+			if(!objectSummary.getKey().replaceFirst(prefix, "").equals("")) {
+				//System.out.println(" - " + objectSummary.getKey().replaceFirst(prefix, ""));
+				jars.put(objectSummary.getKey().replaceFirst(prefix, ""), s3client.getObjectMetadata(bucketName, objectSummary.getKey()));				}
 		}
+		long stop = System.currentTimeMillis();
+		System.out.println("DB search end. Elapsed time : " + (stop - start) + " ms\n" );
 		return jars;
 	}
 
@@ -77,10 +63,10 @@ public class DBConnector {
 		System.out.println("Downloading an object\n");
 		S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, prefix + fileName));
 		//if (s3object == null) return null;
-		
+
 		return s3object;
 	}
-	
+
 	/**
 	 * Get the name of the jar that is wanted
 	 * 
@@ -89,7 +75,7 @@ public class DBConnector {
 	public static String getUpdatedJarName() {
 		return updatedJarName + ".jar";
 	}
-	
+
 	/**
 	 * Tries to access a file to see if it exists. 
 	 * 
@@ -98,20 +84,20 @@ public class DBConnector {
 	 * @throws AmazonClientException
 	 * @throws AmazonServiceException
 	 */
-	public boolean isValidFile(String path) throws AmazonClientException, AmazonServiceException {
-	    boolean isValidFile = true;
-	    try {
-	        s3client.getObjectMetadata(bucketName, path);
-	    } catch (AmazonS3Exception s3e) {
-	        if (s3e.getStatusCode() == 404) {
-	        // i.e. 404: NoSuchKey - The specified key does not exist
-	            isValidFile = false;
-	        }
-	        else {
-	            throw s3e;    // rethrow all S3 exceptions other than 404   
-	        }
-	    }
+	/*public boolean isValidFile(String path){
+		boolean isValidFile = true;
+		try {
+			s3client.getObjectMetadata(bucketName, path);
+		} catch (AmazonS3Exception s3e) {
+			if (s3e.getStatusCode() == 404) {
+				// i.e. 404: NoSuchKey - The specified key does not exist
+				isValidFile = false;
+			}
+			else {
+				throw s3e;    // rethrow all S3 exceptions other than 404   
+			}
+		}
 
-	    return isValidFile;
-	}
+		return isValidFile;
+	}*/
 }
