@@ -26,6 +26,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 
 import database.DBConnector;
+import exception.LocalFileError;
 import exception.SecurityError;
 
 import security.SecurityChecksum;
@@ -164,11 +165,9 @@ public class VersionedJarService {
 			bais.close();
 			reader.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.err.println(e.getMessage());
+			throw new LocalFileError("Unable to make the new file " + localNew + ".");
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			System.err.println(e.getMessage());
+			throw new SecurityError("Unable to create the security checksum. Unable to create the new file.");
 		}
 
 		return fileCreated;
