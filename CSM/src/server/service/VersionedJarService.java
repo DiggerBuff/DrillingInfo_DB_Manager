@@ -108,14 +108,15 @@ public class VersionedJarService {
 
 			String localNew = pair.getKey().substring(0, pair.getKey().lastIndexOf(File.separatorChar) + 1);
 			localNew = localNew + pair.getValue();
-			//System.out.println(localNew);
-			//System.out.println(pair.getKey());
 
 			S3Object s3object = dbConnector.downloadFile(pair.getValue());
 			fileCreated = writeJar(localNew, s3object);
 
 			//Remove if we don't want to delete the old file
-			if(fileCreated) deleteFile(pair.getKey());
+			if(fileCreated){
+				deleteFile(pair.getKey());
+				jarsOldToNew.remove(pair.getKey());
+			}
 			else {
 				deleteFile(localNew);
 				throw new SecurityError("MD5 Checksums did not match.");
@@ -142,6 +143,7 @@ public class VersionedJarService {
 		//Remove if we don't want to delete the old file
 		if(fileCreated) {
 			deleteFile(fileName);
+			jarsOldToNew.remove(fileName);
 		}
 		else {
 			deleteFile(localNew);
