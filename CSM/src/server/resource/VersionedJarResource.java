@@ -1,5 +1,10 @@
 package server.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import server.model.VersionedJar;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -33,7 +38,7 @@ public class VersionedJarResource {
 */	
 	@GET
 	public Response detectAll(@Context UriInfo uriInfo) {
-		String response = versionedJarService.detectAll();
+		ArrayList<VersionedJar> response = versionedJarService.detectAll();
 		
 		if (response == null) {
 			return Response.status(Response.Status.NO_CONTENT).build();
