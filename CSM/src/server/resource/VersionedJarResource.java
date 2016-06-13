@@ -37,6 +37,7 @@ public class VersionedJarResource {
 */	
 	@GET
 	public Response detectAll(@Context UriInfo uriInfo) {
+		/*
 		String response = versionedJarService.detectAll();
 		
 		if (response == null) {
@@ -45,6 +46,13 @@ public class VersionedJarResource {
 		else {
 			return Response.status(Response.Status.OK).entity(response).build();
 		}
+		*/
+		List<VersionedJar> list = new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			list.add(new VersionedJar("Test #" + i));
+		}
+		
+		return Response.status(Response.Status.OK).entity(list).build();
 	}
 	
 	@GET

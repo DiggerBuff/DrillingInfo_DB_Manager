@@ -27,7 +27,7 @@
 		
 		
 		<script type="text/javascript">
-			function startUp() {
+			function scan() {
 			
 				window.alert("ZEPPELIN RULES!!!");
 				
@@ -47,9 +47,9 @@
 							
 						alert(xhr.responseText);
 							
-    					obj = JSON.parse(xhr.responseText);
+    					var obj = JSON.parse(xhr.responseText);
 
-						alert(obj.name);
+						alert(obj);
 					}
 				}
 			
@@ -58,9 +58,7 @@
 						alert(arr[i]);
 					}
 				}
-			};
-			
-			
+			};	
 		</script>
 	</head>
 	

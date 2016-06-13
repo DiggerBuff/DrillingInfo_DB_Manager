@@ -1,0 +1,57 @@
+ <!DOCTYPE html>
+<html>
+<body>
+
+<h2>JSON Object Creation in JavaScript</h2>
+
+<p id="demo"></p>
+
+<script>
+	function scan() {
+		alert("Scanning");
+			
+		var xhr = new XMLHttpRequest();
+				
+		xhr.open('GET', "http://138.67.186.221:9898", true);
+		xhr.send();
+		
+		xhr.addEventListener("readystatechange", processRequest, false);
+		
+		xhr.onreadystatechange = processRequest;
+			
+		function processRequest(e) {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+						
+				alert("Correct state and status");
+						
+    			var jars = JSON.parse(xhr.responseText);
+    			
+				var select = document.getElementById("oldJars"); 
+
+				for(var i = 0; i < jars.length; i++) {
+				    var jar = jars[i];
+				    var el = document.createElement("option");
+				    el.textContent = jar.name;
+				    el.value = jar.name;
+				    select.appendChild(el);
+				}
+			}
+		}
+	}	
+</script>
+
+<div>
+	<h1>Scan/Update</h1>
+		<p>{{panel.description}}</p>
+		<button onclick="scan();")>
+			Scan For Update
+		</button>
+	
+		<!-- DROPDOWN MENU -->
+		<select id="oldJars">
+    		<option>Old jars to update</option>
+  		</select>
+</div>
+
+</body>
+</html>
