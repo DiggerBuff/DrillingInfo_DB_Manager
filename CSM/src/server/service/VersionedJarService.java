@@ -43,8 +43,8 @@ public class VersionedJarService {
 	 * @return The String for the response body.
 	 */
 	public String detectAll() {
-		Map<String, ObjectMetadata> dbJarMap = dbConnector.getAllJars();
 		Map<String, ArrayList<String>> localJars = getLocalJars();
+		Map<String, ObjectMetadata> dbJarMap = dbConnector.getAllJars();
 
 		Iterator<Entry<String, ObjectMetadata>> it = dbJarMap.entrySet().iterator();
 		while (it.hasNext()) {

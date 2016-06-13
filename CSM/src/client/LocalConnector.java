@@ -17,6 +17,9 @@ import java.util.jar.Attributes.Name;
 
 import org.apache.tools.ant.DirectoryScanner;
 
+import control.GenericExceptionMapper;
+import exception.LocalFileError;
+
 /**
  * The name is a bit of a misnomer since it doesn't actually connect to something.
  *
@@ -42,6 +45,10 @@ public class LocalConnector {
 		String pluginDir = getPath(baseDir);
 		long stop = System.currentTimeMillis();
 		System.out.println("Dir search end. Elapsed time : " + (stop - start) + " ms\n" );
+		
+		if(pluginDir == null) {
+			throw new LocalFileError("Unable to find local Transform files.");
+		}
 		
 		DirectoryScanner scanner = setUpScanner(pluginDir);
 		System.out.println("Plugin search start");

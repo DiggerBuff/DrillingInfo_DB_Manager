@@ -45,7 +45,8 @@ public class DBConnector {
 	public  Map<String,ObjectMetadata> getAllJars() {
 		
 		Map<String,ObjectMetadata> jars = new HashMap<String,ObjectMetadata>();
-
+		System.out.println("\nDB search start");
+		long start = System.currentTimeMillis();
 		try {
 			for (S3ObjectSummary objectSummary : S3Objects.withPrefix(s3client, bucketName, prefix)) {
 				if(!objectSummary.getKey().replaceFirst(prefix, "").equals("")) {
@@ -63,6 +64,8 @@ public class DBConnector {
 			Fred.logger.error("Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.");
 			Fred.logger.error("Error Message: " + ace.getMessage());
 		}
+		long stop = System.currentTimeMillis();
+		System.out.println("DB search end. Elapsed time : " + (stop - start) + " ms\n" );
 		return jars;
 	}
 
