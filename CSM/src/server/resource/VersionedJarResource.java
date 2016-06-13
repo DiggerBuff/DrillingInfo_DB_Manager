@@ -38,7 +38,7 @@ public class VersionedJarResource {
 */	
 	@GET
 	public Response detectAll(@Context UriInfo uriInfo) {
-		ArrayList<String> response = versionedJarService.detectAll();
+		ArrayList<VersionedJar> response = versionedJarService.detectAll();
 		
 		if (response == null) {
 			return Response.status(Response.Status.NO_CONTENT).build();

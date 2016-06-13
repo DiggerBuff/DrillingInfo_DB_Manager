@@ -23,6 +23,8 @@
 			if (xhr.readyState == 4 && xhr.status == 200) {
 						
 				alert("Correct state and status");
+				
+				alert(xhr.responseText);
 						
     			var jars = JSON.parse(xhr.responseText);
     			
