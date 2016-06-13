@@ -56,8 +56,8 @@
 					}
 				}
 			}, 
-		canShow : true
-		
+			canShowButton : true,
+			canShowDropDown : true
 		
 	}, 
 	{
@@ -101,8 +101,8 @@
 					}
 				}
 			}, 
-		canShow : true
-		
+			canShowButton : true,
+			canShowDropDown : true
 	},
 	{
 		name : 'System Control',
@@ -142,7 +142,8 @@
 				}
 			
 			} , 
-		canShow : true
+		canShowButton : true,
+		canShowDropDown : true
 		
 	}];
 	

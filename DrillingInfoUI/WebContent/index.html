@@ -46,14 +46,14 @@
 	
 			<!--  This DIRECTIVE is telling our button to only show if the value of our expression is true-->
 			<!-- BUTTON -->
-			<button ng-show="panel.canShow" id= "panel.buttonID" ng-click ="panel.doStuff();">
+			<button ng-show="panel.canShowButton" id= "panel.buttonID" ng-click ="panel.doStuff();">
 				{{panel.buttonLabel}}
 			</button>
 			
 			
 	
 			<!-- DROPDOWN MENU -->
-			<select id="myList" onchange="getJarMap()">
+			<select id="myList" ng-show="panel.canShowDropDown" onchange="getJarMap()">
 				<option disabled selected>{{panel.buttonID}} </option>
 				<option>One</option>
 				<option>Two</option>
