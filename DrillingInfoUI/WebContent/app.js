@@ -24,10 +24,9 @@
 						Great - let’s look at the jars in it and see if any newer versions (or perhaps brand new jars) are available.  \
 						Either display to the user that they are fully up-to-date or they need to download and install newer jars. \
 						Give them a button of some form to do that. This would replace the older version jars in Transform/plugins folder.',
-		buttonID : 'Button One',
+		buttonID : 'List Of Updates',
 		buttonName : 'One' ,
-		buttonLabel : 'First',
-		dropDownLabel : "List Of Jars",
+		buttonLabel : 'Scan For Updates',		
 		doStuff : function() {
 			alert('hello1');
 						
@@ -43,17 +42,22 @@
 			function processRequest(e) 
 				{
 				
-					if (xhr.readyState == 4 && xhr.status == 200) 
-					{
-									
-						alert("Correct state and status");	
+alert("Correct state and status");
+				
+				alert(xhr.responseText);
 						
-						alert(xhr.responseText);	
-						
-    					obj = JSON.parse(xhr.responseText);
-    					
-						alert(obj.name);
-					}
+    			var jars = JSON.parse(xhr.responseText);
+    			
+				var select = document.getElementById("oldJars"); 
+
+				for(var i = 0; i < jars.length; i++) {
+				    var jar = jars[i];
+				    var el = document.createElement("option");
+				    el.textContent = jar.name;
+				    el.value = jar.name;
+				    select.appendChild(el);
+					
+				}
 				}
 			}, 
 			canShowButton : true,
@@ -70,13 +74,12 @@
 		buttonID : 'Button Two',
 		buttonName : 'Two' ,
 		buttonLabel : 'Second',
-		dropDownLabel : "List Of Jars",
 		doStuff : function() {
 			alert('hello2');
 			
 			var xhr = new XMLHttpRequest();
 			
-			xhr.open('GET', "http://138.67.186.220:54591/", true);
+			xhr.open('GET', "http://138.67.186.220:9898/", true);
 			xhr.send();
 			
 			xhr.addEventListener("readystatechange", processRequest, false);
@@ -85,20 +88,22 @@
 			
 			function processRequest(e) 
 				{
+alert("Correct state and status");
 				
-					if (xhr.readyState == 4 && xhr.status == 200) 
-					{
-						var response = JSON.parse(xhr.responseText);
-						alert(response.ip);
+				alert(xhr.responseText);
 						
-						alert("Correct state and status");
-						
-						alert(xhr.responseText);
-							
-    					obj = JSON.parse(xhr.responseText);
+    			var jars = JSON.parse(xhr.responseText);
+    			
+				var select = document.getElementById("oldJars"); 
 
-						alert(obj.name);
-					}
+				for(var i = 0; i < jars.length; i++) {
+				    var jar = jars[i];
+				    var el = document.createElement("option");
+				    el.textContent = jar.name;
+				    el.value = jar.name;
+				    select.appendChild(el);
+					
+				}
 				}
 			}, 
 			canShowButton : true,
@@ -110,13 +115,12 @@
 		buttonID : 'Button Three',
 		buttonName : 'Three' ,
 		buttonLabel : 'Third',
-		dropDownLabel : "List Of Jars",
 		doStuff : function() {
 			alert('hello3');
 			
 			var xhr = new XMLHttpRequest();
 			
-			xhr.open('GET', "http://138.67.186.221:50986/", true);
+			xhr.open('GET', "http://138.67.186.220:9898/", true);
 			xhr.send();
 			
 			xhr.addEventListener("readystatechange", processRequest, false);
@@ -125,23 +129,24 @@
 			
 			function processRequest(e) 
 				{
+alert("Correct state and status");
 				
-					if (xhr.readyState == 4 && xhr.status == 200) 
-					{
-						var response = JSON.parse(xhr.responseText);
-						alert(response.ip);
+				alert(xhr.responseText);
 						
-						alert("Correct state and status");
-						
-						alert(xhr.responseText);
-							
-    					obj = JSON.parse(xhr.responseText);
+    			var jars = JSON.parse(xhr.responseText);
+    			
+				var select = document.getElementById("oldJars"); 
 
-						alert(obj.name);
-					}
+				for(var i = 0; i < jars.length; i++) {
+				    var jar = jars[i];
+				    var el = document.createElement("option");
+				    el.textContent = jar.name;
+				    el.value = jar.name;
+				    select.appendChild(el);
+					
 				}
-			
-			} , 
+				}
+			}, 
 		canShowButton : true,
 		canShowDropDown : true
 		
