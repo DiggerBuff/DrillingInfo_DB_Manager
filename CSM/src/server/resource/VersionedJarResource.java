@@ -1,5 +1,10 @@
 package server.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import server.model.VersionedJar;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
