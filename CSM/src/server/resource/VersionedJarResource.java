@@ -9,6 +9,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import exception.LocalFileError;
+
 import server.service.VersionedJarService;
 
 
@@ -36,7 +38,7 @@ public class VersionedJarResource {
 		String response = versionedJarService.detectAll();
 		
 		if (response == null) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			throw new LocalFileError("");
 		}
 		else {
 			return Response.status(Response.Status.OK).entity(response).build();
