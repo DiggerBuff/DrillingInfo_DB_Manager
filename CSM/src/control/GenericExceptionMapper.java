@@ -15,16 +15,13 @@ import exception.SecurityError;
 import exception.ServerError;
 
 /**
- * TODO Flesh out exception handlers
- * 
  * Register the exception handlers.
  */
-
 public class GenericExceptionMapper
 {
 
 	/**
-	 * Register the exception handlers with the config.
+	 * Register the exception handlers with the ResourceConfig.
 	 *
 	 * @param   config    The <code>ResourceConfig</code>.
 	 */
@@ -37,7 +34,7 @@ public class GenericExceptionMapper
 	}
 
 	/**
-	 * Catch all handler.
+	 * Catch all handler. Puts a 404 error code.
 	 */
 	@Provider
 	public static class ThrowableMapper implements ExceptionMapper<Throwable>
@@ -49,7 +46,10 @@ public class GenericExceptionMapper
 			return Response.status(errorMessage.getErrorCode()).entity(errorMessage).build();
 		}
 	}
-
+	
+	/**
+	 * Catch the local file errors such as unable to write to file.
+	 */
 	@Provider
 	public static class LocalFilesMapper implements ExceptionMapper<LocalFileError>
 	{
@@ -59,7 +59,10 @@ public class GenericExceptionMapper
 			return Response.status(errorMessage.getErrorCode()).entity(errorMessage).build();
 		}
 	}
-
+	
+	/**
+	 * Catch the Amazon Server errors such as invalid credentials.
+	 */
 	@Provider
 	public static class AmazonServiceMapper implements ExceptionMapper<AmazonServiceException>
 	{
@@ -70,7 +73,10 @@ public class GenericExceptionMapper
 			return Response.status(errorMessage.getErrorCode()).entity(errorMessage).build();
 		}
 	}
-
+	
+	/**
+	 * Catch the Amazon Client errors such as unable to connect to S3.
+	 */
 	@Provider
 	public static class AmazonClientMapper implements ExceptionMapper<AmazonClientException>
 	{
@@ -82,6 +88,9 @@ public class GenericExceptionMapper
 		}
 	}
 	
+	/**
+	 * Catch the Security errors such as unable to match the MD5 checksum.
+	 */
 	@Provider
 	public static class SecurityErrorMapper implements ExceptionMapper<SecurityError>
 	{
@@ -92,6 +101,9 @@ public class GenericExceptionMapper
 		}
 	}
 	
+	/**
+	 * Catch the Server errors such as unable to create the server.
+	 */
 	@Provider
 	public static class ServerErrorMapper implements ExceptionMapper<ServerError>
 	{

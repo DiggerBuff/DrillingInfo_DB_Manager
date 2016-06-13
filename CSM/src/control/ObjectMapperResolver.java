@@ -5,13 +5,10 @@ import javax.ws.rs.ext.Provider;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.core.MediaType;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
- * TODO what is this...
- * 
  * Provider of the Jackson <code>ObjectMapper</code>.
  *
  * @version      $Rev$
