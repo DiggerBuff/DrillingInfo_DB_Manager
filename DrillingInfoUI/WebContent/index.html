@@ -1,105 +1,100 @@
 <!doctype html>
 <!-- The ng-app DIRECTIVE creates an Angular application by running this module when the document loads -->
 <html ng-app="interface">
-<head>
-<title>DrillingInfo UI</title>
 
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/
-3.3.6/css/bootstrap.min.css"
-	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-	crossorigin="anonymous">
-
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/
-bootstrap-theme.min.css"
-	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
-	crossorigin="anonymous">
-
-<link href="main.css" rel="stylesheet">
-
-<!-- Function for dropdown manue -->
-<script>
-	function getJarList() 
-	{
-		var mylist = document.getElementById("myList");
-	}
-</script>
-
-
-<script type="text/javascript">
-function startUp()
-{
-
-window.alert("ZEPPELIN RULES!!!");
-
-var xhr = new XMLHttpRequest();
-
-xhr.open('GET', "http://ipinfo.io/json", true);
-xhr.send();
-
-xhr.addEventListener("readystatechange", processRequest, false);
-
-xhr.onreadystatechange = processRequest;
-
-function processRequest(e) 
-	{
+	<head>
+		<title>DrillingInfo UI</title>
 	
-		if (xhr.readyState == 4 && xhr.status == 200) 
-		{
-			var response = JSON.parse(xhr.responseText);
-			alert(response.ip);
-		}
-	}
-}
-
-
-</script>
-
-</head>
-
-<!--   the ng-controller DIRECTIVE allows us to attach our controller to this element in our HTML -->
-<!--   We are attaching the CONTROLLER called StoreController to this div so this limits its scope-->
-<body ng-controller="InterfaceController as ic">
-
-	<a href="http://info.drillinginfo.com/"> VISIT DRILLINGINFO
-		HOMEPAGE</a>
-	<br>
-
-	<!--   instead of this -->
-	<!--   h2 {{store.products[0].name}} /h2 -->
-	<!--   we use the repeat directive-->
-	<div ng-repeat="panel in ic.panels">
-
-		<h1>{{panel.name}}</h1>
-
-		<!--  Here the angular currency FILTER says take result of the first expression and send output into second expression (filter)-->
-		<p>{{panel.description}}</p>
-
-		<!--  This DIRECTIVE is telling our button to only show if the value of our expression is true-->
+		<link 	rel="stylesheet"
+				href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+				integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+				crossorigin="anonymous">
 		
-		<!-- BUTTON -->
-		<button ng-show="panel.canShow" id="button1" onclick="startUp();")>
+		<link 	rel="stylesheet"
+				href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+				integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+				crossorigin="anonymous">
 		
-		Scan For Update
-		</button>
-
-		<!-- DROPDOWN MENUE -->
-		<select id="myList" onchange="getJarMap()">
-			<option>One</option>
-			<option>Two</option>
-			<option>Three</option>
-
-		</select>
-
-
-		<!--  This is where we must declare our Angular.JS NDC-->
-		<script
-			src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-		<script type="text/javascript" src="app.js"></script>
-		<script
-			src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-			integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-			crossorigin="anonymous"></script>
-</body>
+		<link 	href="main.css" rel="stylesheet">
+		
+		<!-- Function for dropdown menu -->
+		<script>
+			function getJarList() 
+			{
+				var mylist = document.getElementById("myList");
+			}
+		</script>
+		
+		
+		<script type="text/javascript">
+			function startUp()
+			{
+			
+			window.alert("ZEPPELIN RULES!!!");
+			
+			var xhr = new XMLHttpRequest();
+			
+			xhr.open('GET', "http://138.67.186.221:50986/", true);
+			xhr.send();
+			
+			xhr.addEventListener("readystatechange", processRequest, false);
+			
+			xhr.onreadystatechange = processRequest;
+			
+			function processRequest(e) 
+				{
+				
+					if (xhr.readyState == 4 && xhr.status == 200) 
+					{
+						var response = JSON.parse(xhr.responseText);
+						alert(response.ip);
+					}
+				}
+			}
+		</script>
+	</head>
+	
+	<!--   the ng-controller DIRECTIVE allows us to attach our controller to this element in our HTML -->
+	<!--   We are attaching the CONTROLLER called StoreController to this div so this limits its scope-->
+	<body ng-controller="InterfaceController as ic">
+	
+		<a href="http://info.drillinginfo.com/"> VISIT DRILLINGINFO HOMEPAGE </a>
+		<br>
+		
+		<!--   instead of this -->
+		<!--   h2 {{store.products[0].name}} /h2 -->
+		<!--   we use the repeat directive-->
+		<div ng-repeat="panel in ic.panels">
+	
+			<h1>{{panel.name}}</h1>
+	
+			<!--  Here the angular currency FILTER says take result of the first expression and send output into second expression (filter)-->
+			<p>{{panel.description}}</p>
+	
+			<!--  This DIRECTIVE is telling our button to only show if the value of our expression is true-->
+			
+			<!-- BUTTON -->
+			<button ng-show="panel.canShow" id="button1" onclick="startUp();")>
+				Scan For Update
+			</button>
+	
+			<!-- DROPDOWN MENU -->
+			<select id="myList" onchange="getJarMap()">
+				<option>One</option>
+				<option>Two</option>
+				<option>Three</option>
+			</select>
+		
+	
+	
+			<!--  This is where we must declare our Angular.JS NDC-->
+			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+			
+			<script type="text/javascript" src="app.js"></script>
+			
+			<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+					integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+					crossorigin="anonymous"></script>
+		</div>
+	</body>
 </html>
