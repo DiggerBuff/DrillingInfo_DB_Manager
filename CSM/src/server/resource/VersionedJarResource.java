@@ -47,7 +47,7 @@ public class VersionedJarResource {
 	@Path("replace/")
 	public Response replaceAll(@Context UriInfo uriInfo) {
 
-		boolean response = versionedJarService.replace();
+		boolean response = versionedJarService.replaceAll();
 		
 		if (!response) {
 			return Response.status(Response.Status.NO_CONTENT).build();

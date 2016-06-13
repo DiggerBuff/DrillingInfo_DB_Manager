@@ -40,7 +40,8 @@ import java.util.Scanner;
  */
 public class Fred
 {
-	private static final int port = getPort();
+	//private static final int port = getPort();
+	private static final int port = 9898;
 	private static String defaultUri = "http://";
 
 	public static void main(String... args) {
@@ -65,7 +66,6 @@ public class Fred
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target(defaultUri + ":" + port);
 
-		//Only allows for "update/JARNAMEHERE"
 		while (true){
 			System.out.print("Where do you want to go: ");
 			location = kb.nextLine();
@@ -93,7 +93,7 @@ public class Fred
 	 */
 	private HttpServer startServer() {
 		try {
-			URI baseUri = UriBuilder.fromUri(defaultUri).port(9898).build();
+			URI baseUri = UriBuilder.fromUri(defaultUri).port(port).build();
 			ResourceConfig config = new ResourceConfig(getClasses());
 
 			config.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);

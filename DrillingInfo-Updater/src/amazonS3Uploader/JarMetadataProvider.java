@@ -65,7 +65,7 @@ public class JarMetadataProvider implements ObjectMetadataProvider {
 				Name key = (Name) it.next();
 				String keyword = key.toString();
 				//Different types of manifest files may require a change here.
-				if (keyword.equals("Bundle-SymbolicName")){
+				if (keyword.equals("Bundle-SymbolicName") || keyword.equals("Implementation-Title")){
 					String result = (String)attributes.get(key);
 					if(result.lastIndexOf(';') != -1){
 						result = result.substring(0, result.lastIndexOf(';'));
@@ -92,7 +92,7 @@ public class JarMetadataProvider implements ObjectMetadataProvider {
 				String keyword = key.toString();
 				//System.out.println("\"" + keyword + "\"");
 				//Different types of manifest files may require a change here.
-				if (keyword.equals("Bundle-Version")){
+				if (keyword.equals("Bundle-Version") || keyword.equals("Implementation-Version")){
 					return (String) attributes.get(key);
 				}
 			}
