@@ -27,30 +27,40 @@
 		
 		
 		<script type="text/javascript">
-			function startUp()
-			{
+			function startUp() {
 			
-			window.alert("ZEPPELIN RULES!!!");
-			
-			var xhr = new XMLHttpRequest();
-			
-			xhr.open('GET', "http://138.67.186.221:50986/", true);
-			xhr.send();
-			
-			xhr.addEventListener("readystatechange", processRequest, false);
-			
-			xhr.onreadystatechange = processRequest;
-			
-			function processRequest(e) 
-				{
+				window.alert("ZEPPELIN RULES!!!");
 				
-					if (xhr.readyState == 4 && xhr.status == 200) 
-					{
-						var response = JSON.parse(xhr.responseText);
-						alert(response.ip);
+				var xhr = new XMLHttpRequest();
+				
+				xhr.open('GET', "http://138.67.186.221:9898", true);
+				xhr.send();
+				
+				xhr.addEventListener("readystatechange", processRequest, false);
+				
+				xhr.onreadystatechange = processRequest;
+			
+				function processRequest(e) {
+					if (xhr.readyState == 4 && xhr.status == 200) {
+						
+						alert("Correct state and status");
+							
+						alert(xhr.responseText);
+							
+    					obj = JSON.parse(xhr.responseText);
+
+						alert(obj.name);
 					}
 				}
-			}
+			
+				function myFunction(arr) {
+					for (i = 0; i < arr.length; i++) {
+						alert(arr[i]);
+					}
+				}
+			};
+			
+			
 		</script>
 	</head>
 	
@@ -88,7 +98,7 @@
 	
 	
 			<!--  This is where we must declare our Angular.JS NDC-->
-			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
 			
 			<script type="text/javascript" src="app.js"></script>
 			

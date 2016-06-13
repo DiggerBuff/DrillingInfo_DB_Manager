@@ -17,19 +17,19 @@
 	var panelSet = [ 
 	{
 		name : 'Scan For Updates/Replace (Our Service)',
-		description : 'The first panel deals with scanning for updates. Is there a Transform/plugins folder? 
-						Great - let’s look at the jars in it and see if any newer versions (or perhaps brand new jars) are available.  
-						Either display to the user that they are fully up-to-date or they need to download and install newer jars. 
+		description : 'The first panel deals with scanning for updates. Is there a Transform/plugins folder? \
+						Great - let’s look at the jars in it and see if any newer versions (or perhaps brand new jars) are available.  \
+						Either display to the user that they are fully up-to-date or they need to download and install newer jars. \
 						Give them a button of some form to do that. This would replace the older version jars in Transform/plugins folder.',
 		canShow : true
 		
 	}, 
 	{
 		name : 'Detect/Repair (DI Service)',
-		description : 'The second panel deals with repairs. You can use the get methods exposed in the DI service (localhost:9898/transform/repair) 
-						to find out what repairs are available. What you do next is up to you, you could present some form of a UI that allows the 
-						user to see the list and run the detect method by calling that REST api (post to /transform/repair/repair name/detect). 
-						This will return a true or false. If you get a true back then you should expose an option to run the repair for the user 
+		description : 'The second panel deals with repairs. You can use the get methods exposed in the DI service (localhost:9898/transform/repair) \
+						to find out what repairs are available. What you do next is up to you, you could present some form of a UI that allows the \
+						user to see the list and run the detect method by calling that REST api (post to /transform/repair/repair name/detect). \
+						This will return a true or false. If you get a true back then you should expose an option to run the repair for the user \
 						(post to /transform/repair/repair name/repair).',
 		canShow : true
 		

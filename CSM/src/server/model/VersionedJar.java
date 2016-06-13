@@ -1,37 +1,25 @@
 package server.model;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VersionedJar {
-	@JsonProperty("id")
-	private String version;
-	private List<Link> links = new ArrayList<>();
+	@JsonProperty("name")
+	private String name;
 		
 	public VersionedJar() {
-		
+		this.name = "Test";
 	}
-
-	public VersionedJar(@JsonProperty("id") String version, File file) {
+	
+	public VersionedJar(@JsonProperty("name") String name) {
 		super();
-		this.version = version;
-	}
-	
-	public List<Link> getLinks() {
-		return links;
-	}
-	
-	public void addLink(String url, String rel) {
-		Link link = new Link();
-		link.setLink(url);
-		link.setRel(rel);
-		links.add(link);
+		this.name = name;
 	}
 
-	public void setLinks(List<Link> links) {
-		this.links = links;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

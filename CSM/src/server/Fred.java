@@ -96,7 +96,7 @@ public class Fred
 	 */
 	private HttpServer startServer() {
 		try {
-			URI baseUri = UriBuilder.fromUri(defaultUri).port(port).build();
+			URI baseUri = UriBuilder.fromUri(defaultUri).port(9898).build();
 			ResourceConfig config = new ResourceConfig(getClasses());
 
 			config.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);
