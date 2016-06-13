@@ -33,7 +33,6 @@ public class LocalConnector {
 	 * @return A map of the local jars 
 	 * 			{key = symbolic name,
 	 * 			 value = List[version number, absolute local path]}
-	 * @throws TODO
 	 */
 	public Map<String, ArrayList<String>> getLocalJars() {
 
@@ -128,6 +127,8 @@ public class LocalConnector {
 			Manifest manifest = jarFile.getManifest();
 
 			jarFile.close();
+			
+			//System.out.println(manifest.getAttributes("Implementation-Version"));
 
 			Attributes attributes = manifest.getMainAttributes();
 
@@ -141,7 +142,7 @@ public class LocalConnector {
 			localJars.put(name,  list);
 
 		} catch (IOException e) {
-			throw new LocalFileError("Unable to create a link to the file: " + file.getName());
+			throw new LocalFileError("Unable to create a link to the file: " + file.getName() + "\n" + e.getMessage());
 		}
 	}
 
@@ -158,7 +159,7 @@ public class LocalConnector {
 			while (it.hasNext()){
 				Name key = (Name) it.next();
 				String keyword = key.toString();
-				if (keyword.equals("Bundle-SymbolicName")){
+				if (keyword.equals("Bundle-SymbolicName") || keyword.equals("Implementation-Title")){
 					String result = (String)attributes.get(key);
 					if(result.lastIndexOf(';') != -1){
 						result = result.substring(0, result.lastIndexOf(';'));
@@ -183,7 +184,7 @@ public class LocalConnector {
 			while (it.hasNext()){
 				Name key = (Name) it.next();
 				String keyword = key.toString();
-				if (keyword.equals("Bundle-Version")){
+				if (keyword.equals("Bundle-Version") || keyword.equals("Implementation-Version")){
 					return (String) attributes.get(key);
 				}
 			}

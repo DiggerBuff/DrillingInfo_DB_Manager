@@ -34,6 +34,10 @@ import security.SecurityChecksum;
 public class VersionedJarService {
 
 	private DBConnector dbConnector = new DBConnector();
+	
+	/**
+	 * This maps the old location of the jar (full path name) to the name of the new jar in S3.
+	 */
 	private Map<String, String> jarsOldToNew = new HashMap<String, String>();
 
 	/**
@@ -95,7 +99,7 @@ public class VersionedJarService {
 	 * 
 	 * @return If the replace worked or not.
 	 */
-	public boolean replace() {
+	public boolean replaceAll() {
 		boolean fileCreated = false;
 
 		Iterator<Entry<String, String>> it = jarsOldToNew.entrySet().iterator();
@@ -117,6 +121,33 @@ public class VersionedJarService {
 				throw new SecurityError("MD5 Checksums did not match.");
 			}
 		}
+		return fileCreated;
+	}
+	
+	/**
+	 * Replaces a single jar.
+	 * 
+	 * @param fileName The old location of the jar (full path name)
+	 * @return If the replace worked or not.
+	 */
+	public boolean replace(String fileName) {
+		boolean fileCreated = false;
+		
+		String localNew = fileName.substring(0, fileName.lastIndexOf(File.separatorChar) + 1);
+		localNew = localNew + jarsOldToNew.get(fileName);
+		
+		S3Object s3object = dbConnector.downloadFile(jarsOldToNew.get(fileName));
+		fileCreated = writeJar(localNew, s3object);
+
+		//Remove if we don't want to delete the old file
+		if(fileCreated) {
+			deleteFile(fileName);
+		}
+		else {
+			deleteFile(localNew);
+			throw new SecurityError("MD5 Checksums did not match.");
+		}
+		
 		return fileCreated;
 	}
 	
