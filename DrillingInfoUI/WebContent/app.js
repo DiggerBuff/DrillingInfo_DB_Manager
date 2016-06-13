@@ -101,7 +101,7 @@ alert("Correct state and status");
 				    var el = document.createElement("option");
 				    el.textContent = jar.name;
 				    el.value = jar.name;
-				    select.appendChild(el);
+				    add select.appendChild(el);
 					
 				}
 				}
