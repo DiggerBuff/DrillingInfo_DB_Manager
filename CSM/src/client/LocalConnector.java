@@ -17,7 +17,6 @@ import java.util.jar.Attributes.Name;
 
 import org.apache.tools.ant.DirectoryScanner;
 
-import control.GenericExceptionMapper;
 import exception.LocalFileError;
 
 /**
@@ -69,7 +68,7 @@ public class LocalConnector {
 				addToMap(file);
 			}
 			else {
-				System.err.println("File creation broke");
+				throw new LocalFileError("Unable to create a link to the local file: " + relativeFilePath);
 			}
 		}
 		return localJars;
@@ -96,8 +95,7 @@ public class LocalConnector {
 			stream.close();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.err.println(e.getMessage());
+			throw new LocalFileError("Unable to find local directory path: " + path);
 		}
 		return null;
 	}
@@ -121,7 +119,7 @@ public class LocalConnector {
 	 * and adds a new pair to the map.
 	 * 
 	 * @param file
-	 * @throws IOException TODO
+	 * @throws IOException
 	 */
 	private void addToMap(File file) {
 		try {
@@ -143,8 +141,7 @@ public class LocalConnector {
 			localJars.put(name,  list);
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.err.println(e.getMessage());
+			throw new LocalFileError("Unable to create a link to the file: " + file.getName());
 		}
 	}
 

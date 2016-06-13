@@ -75,29 +75,4 @@ public class DBConnector {
 	public static String getUpdatedJarName() {
 		return updatedJarName + ".jar";
 	}
-
-	/**
-	 * Tries to access a file to see if it exists. 
-	 * 
-	 * @param path The name of the file to see if it exists. 
-	 * @return True if the file exists. False otherwise. 
-	 * @throws AmazonClientException
-	 * @throws AmazonServiceException
-	 */
-	/*public boolean isValidFile(String path){
-		boolean isValidFile = true;
-		try {
-			s3client.getObjectMetadata(bucketName, path);
-		} catch (AmazonS3Exception s3e) {
-			if (s3e.getStatusCode() == 404) {
-				// i.e. 404: NoSuchKey - The specified key does not exist
-				isValidFile = false;
-			}
-			else {
-				throw s3e;    // rethrow all S3 exceptions other than 404   
-			}
-		}
-
-		return isValidFile;
-	}*/
 }
