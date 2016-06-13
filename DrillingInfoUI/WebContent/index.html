@@ -24,8 +24,8 @@
 				var mylist = document.getElementById("myList");
 			}
 		</script>
-				
-		
+			
+
 	</head>
 	
 	<!--   the ng-controller DIRECTIVE allows us to attach our controller to this element in our HTML -->
@@ -49,15 +49,18 @@
 			<button ng-show="panel.canShow" id= "panel.buttonID" ng-click ="panel.doStuff();">
 				{{panel.buttonLabel}}
 			</button>
+			
+			
 	
 			<!-- DROPDOWN MENU -->
 			<select id="myList" onchange="getJarMap()">
+				<option disabled selected>{{panel.buttonID}} </option>
 				<option>One</option>
 				<option>Two</option>
 				<option>Three</option>
-			</select>
+			
 		
-	
+	</label>
 	
 			<!--  This is where we must declare our Angular.JS NDC-->
 			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>

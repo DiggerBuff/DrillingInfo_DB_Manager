@@ -1,5 +1,8 @@
 package server.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -9,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import server.model.VersionedJar;
 import server.service.VersionedJarService;
 
 
@@ -46,6 +50,7 @@ public class VersionedJarResource {
 	@GET
 	@Path("replace/")
 	public Response replaceAll(@Context UriInfo uriInfo) {
+
 		boolean response = versionedJarService.replace();
 		
 		if (!response) {
@@ -53,7 +58,7 @@ public class VersionedJarResource {
 		}
 		else {
 			return Response.status(Response.Status.OK).entity(response).build();
-		}
+		}	
 	}
 	
 	/*

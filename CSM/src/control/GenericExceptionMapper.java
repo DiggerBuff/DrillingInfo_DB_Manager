@@ -12,6 +12,7 @@ import com.amazonaws.AmazonServiceException;
 import exception.ErrorMessage;
 import exception.LocalFileError;
 import exception.SecurityError;
+import exception.ServerError;
 
 /**
  * TODO Flesh out exception handlers
@@ -87,6 +88,16 @@ public class GenericExceptionMapper
 		@Override
 		public Response toResponse(SecurityError e) {
 			ErrorMessage errorMessage = new ErrorMessage(e.getMessage(), Response.Status.PRECONDITION_FAILED.getStatusCode(), "http://info.drillinginfo.com");
+			return Response.status(errorMessage.getErrorCode()).entity(errorMessage).build();
+		}
+	}
+	
+	@Provider
+	public static class ServerErrorMapper implements ExceptionMapper<ServerError>
+	{
+		@Override
+		public Response toResponse(ServerError e) {
+			ErrorMessage errorMessage = new ErrorMessage(e.getMessage(), 421, "http://info.drillinginfo.com");
 			return Response.status(errorMessage.getErrorCode()).entity(errorMessage).build();
 		}
 	}

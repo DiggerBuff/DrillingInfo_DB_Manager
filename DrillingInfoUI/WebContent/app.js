@@ -21,17 +21,19 @@
 	{
 		name : 'Scan For Updates/Replace (Our Service)',
 		description : 'The first panel deals with scanning for updates. Is there a Transform/plugins folder? \
-					   Great - let’s look at the jars in it and see if any newer versions (or perhaps brand new jars) are available. \   Either display to the user that they are fully up-to-date or they need to download and install newer jars.  \
+						Great - let’s look at the jars in it and see if any newer versions (or perhaps brand new jars) are available.  \
+						Either display to the user that they are fully up-to-date or they need to download and install newer jars. \
 						Give them a button of some form to do that. This would replace the older version jars in Transform/plugins folder.',
 		buttonID : 'Button One',
 		buttonName : 'One' ,
 		buttonLabel : 'First',
+		dropDownLabel : "List Of Jars",
 		doStuff : function() {
 			alert('hello1');
 						
 			var xhr = new XMLHttpRequest();
 			
-			xhr.open('GET', "http://138.67.186.221:50986/", true);
+			xhr.open('GET', "http://138.67.186.220:9898/", true);
 			xhr.send();
 			
 			xhr.addEventListener("readystatechange", processRequest, false);
@@ -43,8 +45,14 @@
 				
 					if (xhr.readyState == 4 && xhr.status == 200) 
 					{
-						var response = JSON.parse(xhr.responseText);
-						alert(response.ip);
+									
+						alert("Correct state and status");	
+						
+						alert(xhr.responseText);	
+						
+    					obj = JSON.parse(xhr.responseText);
+    					
+						alert(obj.name);
 					}
 				}
 			}, 
@@ -62,6 +70,7 @@
 		buttonID : 'Button Two',
 		buttonName : 'Two' ,
 		buttonLabel : 'Second',
+		dropDownLabel : "List Of Jars",
 		doStuff : function() {
 			alert('hello2');
 			
@@ -81,6 +90,14 @@
 					{
 						var response = JSON.parse(xhr.responseText);
 						alert(response.ip);
+						
+						alert("Correct state and status");
+						
+						alert(xhr.responseText);
+							
+    					obj = JSON.parse(xhr.responseText);
+
+						alert(obj.name);
 					}
 				}
 			}, 
@@ -93,6 +110,7 @@
 		buttonID : 'Button Three',
 		buttonName : 'Three' ,
 		buttonLabel : 'Third',
+		dropDownLabel : "List Of Jars",
 		doStuff : function() {
 			alert('hello3');
 			
@@ -112,6 +130,14 @@
 					{
 						var response = JSON.parse(xhr.responseText);
 						alert(response.ip);
+						
+						alert("Correct state and status");
+						
+						alert(xhr.responseText);
+							
+    					obj = JSON.parse(xhr.responseText);
+
+						alert(obj.name);
 					}
 				}
 			

@@ -27,9 +27,9 @@ import server.resource.VersionedJarResource;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 import control.CORSResponseFilter;
-import control.ErrorLogger;
 import control.GenericExceptionMapper;
 import control.ObjectMapperResolver;
+import exception.ServerError;
 
 import java.util.Scanner;
 
@@ -42,7 +42,6 @@ public class Fred
 {
 	private static final int port = getPort();
 	private static String defaultUri = "http://";
-	public static ErrorLogger logger = new ErrorLogger();
 
 	public static void main(String... args) {
 
@@ -50,8 +49,7 @@ public class Fred
 			String localIP = InetAddress.getLocalHost().getHostAddress();
 			defaultUri += localIP;
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServerError("Unable to get local IP to create connection.");
 		}
 		
 		Fred fred = new Fred();
@@ -66,8 +64,6 @@ public class Fred
 
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target(defaultUri + ":" + port);
-
-		//TODO Add place in URI to get jars. Make it restful
 
 		//Only allows for "update/JARNAMEHERE"
 		while (true){
@@ -97,7 +93,7 @@ public class Fred
 	 */
 	private HttpServer startServer() {
 		try {
-			URI baseUri = UriBuilder.fromUri(defaultUri).port(port).build();
+			URI baseUri = UriBuilder.fromUri(defaultUri).port(9898).build();
 			ResourceConfig config = new ResourceConfig(getClasses());
 
 			config.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);
@@ -110,9 +106,8 @@ public class Fred
 			return server;
 		}
 		catch(Throwable exp) {
-			exp.printStackTrace();
+			throw new ServerError("Unable to start local server to connect to DrillingInfo.");
 		}
-		return null;
 	}
 
 	/**
@@ -138,9 +133,7 @@ public class Fred
 			s.close();
 			return s.getLocalPort();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new ServerError("Unable to get an available port to start server.");
 		}
-		return -1;
-		//TODO Need to throw a specific exception
 	}
 }
