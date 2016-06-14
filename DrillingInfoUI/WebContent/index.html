@@ -23,7 +23,118 @@
 			{
 				var mylist = document.getElementById("myList");
 			}
-		</script>
+		</script>	
+		
+		<script>
+		function doStuff() 
+		{
+			alert('Panel One Hello');
+			
+			var xhr = new XMLHttpRequest();
+			
+			xhr.open('GET', "http://138.67.186.220:9898/", true);
+			xhr.send();
+			
+			xhr.addEventListener("readystatechange", processRequest, false);
+			
+			xhr.onreadystatechange = processRequest;
+			
+			function processRequest(e) 
+				{
+alert("Correct state and status");
+				
+				alert(xhr.responseText);
+						
+    			var jars = JSON.parse(xhr.responseText);
+    			
+				var select = document.getElementById("oldJars"); 
+
+					for(var i = 0; i < jars.length; i++) 
+					{
+				    var jar = jars[i];
+				    var el = document.createElement("option");
+				    el.textContent = jar.name;
+				    el.value = jar.name;
+				    select.appendChild(el);
+					
+					}
+				}
+			} 
+		</script>	
+		
+		<script>
+		function doStuff2() 
+		{
+			alert('Panel Two Hello');
+			
+			var xhr = new XMLHttpRequest();
+			
+			xhr.open('GET', "http://138.67.186.220:9898/", true);
+			xhr.send();
+			
+			xhr.addEventListener("readystatechange", processRequest, false);
+			
+			xhr.onreadystatechange = processRequest;
+			
+			function processRequest(e) 
+				{
+alert("Correct state and status");
+				
+				alert(xhr.responseText);
+						
+    			var jars = JSON.parse(xhr.responseText);
+    			
+				var select = document.getElementById("oldJars2"); 
+
+					for(var i = 0; i < jars.length; i++) 
+					{
+				    var jar = jars[i];
+				    var el = document.createElement("option");
+				    el.textContent = jar.name;
+				    el.value = jar.name;
+				    select.appendChild(el);
+					
+					}
+				}
+			} 
+		</script>	
+		
+		<script>
+		function doStuff3() 
+		{
+			alert('Panel Three Hello');
+			
+			var xhr = new XMLHttpRequest();
+			
+			xhr.open('GET', "http://138.67.186.220:9898/", true);
+			xhr.send();
+			
+			xhr.addEventListener("readystatechange", processRequest, false);
+			
+			xhr.onreadystatechange = processRequest;
+			
+			function processRequest(e) 
+				{
+alert("Correct state and status");
+				
+				alert(xhr.responseText);
+						
+    			var jars = JSON.parse(xhr.responseText);
+    			
+				var select = document.getElementById("oldJars3"); 
+
+					for(var i = 0; i < jars.length; i++) 
+					{
+				    var jar = jars[i];
+				    var el = document.createElement("option");
+				    el.textContent = jar.name;
+				    el.value = jar.name;
+				    select.appendChild(el);
+					
+					}
+				}
+			} 
+		</script>	
 
 	</head>
 	
@@ -33,28 +144,58 @@
 	
 		<a href="http://info.drillinginfo.com/"> VISIT DRILLINGINFO HOMEPAGE </a>
 		<br>
-				
-		<!--   instead of this -->
-		<!--   h2 {{store.products[0].name}} /h2 -->
-		<!--   we use the repeat directive-->
-		<div ng-repeat="panel in ic.panels">
+
+	<div id="Panel1">
+		<h1>One</h1>
+
+
+		<p>The first panel deals with scanning for updates. Is there a
+			Transform/plugins folder? \ Great - let’s look at the jars in it and
+			see if any newer versions (or perhaps brand new jars) are available.
+			\ Either display to the user that they are fully up-to-date or they
+			need to download and install newer jars. \ Give them a button of some
+			form to do that. This would replace the older version jars in
+			Transform/plugins folder.</p>
+
+		<button onClick="doStuff();">Scan For Updates</button>
+
+		<!-- DROPDOWN MENU -->
+		<select id="oldJars">
+			<option disabled selected>List Of Updates</option>
+		</select>
+	</div>
+	<div id="Panel2">
+	<h1>Two</h1>
 	
-			<h1>{{panel.name}}</h1>
+	<p>The second panel deals with repairs. You can use the get methods exposed in the DI service (localhost:9898/transform/repair) \
+	to find out what repairs are available. What you do next is up to you, you could present some form of a UI that allows the \
+	user to see the list and run the detect method by calling that REST api (post to /transform/repair/repair name/detect). \
+	This will return a true or false. If you get a true back then you should expose an option to run the repair for the user \
+	(post to /transform/repair/repair name/repair).	
+	</p>
 	
-			<p>{{panel.description}}</p>
+	<button onClick="doStuff2();">Scan For Updates</button>
+
+		<!-- DROPDOWN MENU -->
+		<select id="oldJars2">
+			<option disabled selected>List Of Updates</option>
+		</select>
 	
-			<!--  This DIRECTIVE is telling our button to only show if the value of our expression is true-->
-			<!-- BUTTON -->
-			<button ng-show="panel.canShowButton" id= "panel.buttonID" ng-click ="panel.doStuff();">
-				{{panel.buttonLabel}}
-			</button>
-			
-			
+	</div>
 	
-			<!-- DROPDOWN MENU -->
-			<select id="oldJars" ng-show="panel.canShowDropDown" onchange="getJarMap()">
-				<option disabled selected>{{panel.buttonID}} </option>
-						
+	<div id="Panel3">
+	<h1>Three</h1>
+	
+	<p>The third panel would deal with system control. A way to test an echo command or shutdown the services.
+	</p>
+	
+	<button onClick="doStuff3();">Scan For Updates</button>
+
+		<!-- DROPDOWN MENU -->
+		<select id="oldJars3">
+			<option disabled selected>List Of Updates</option>
+		</select>
+	</div>						
 	
 			</select>
 			<!--  This is where we must declare our Angular.JS NDC-->
