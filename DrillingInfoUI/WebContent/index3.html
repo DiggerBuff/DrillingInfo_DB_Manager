@@ -7,14 +7,18 @@
 <div>
 	<h1>Scan/Update</h1>
 		<p id="info1"></p>
-		<button onclick="updater();" id="updateButton")>
+		<button onclick="scanUpdates();" id="scanButton">
 			Scan For Update
 		</button>
-	
+		
 		<!-- DROPDOWN MENU -->
 		<select id="updates">
     		<option>--None--</option>
   		</select>
+
+  		<button onclick="getUpdates();" id="updateButton" style="visibility:hidden;")>
+			Update
+		</button>
 </div>
 
 <script type="text/javascript" src="alan.js"></script>
