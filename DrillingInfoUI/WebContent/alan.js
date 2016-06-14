@@ -1,13 +1,5 @@
-function updater(){
-	if(document.getElementById("updateButton").innerHTML != "Update") {
-		scanUpdates();
-	}
-	else {
-		getUpdates();
-	}
-}
-
 function scanUpdates() {
+	document.getElementById("updateButton").style.visibility="hidden";
 	document.getElementById("updates").innerHTML = "<option>--None--</option>";
 
 	var xmlHttp = new XMLHttpRequest();
@@ -18,6 +10,7 @@ function scanUpdates() {
 			document.getElementById("info1").innerHTML = "Updates found.";
 			var jars = JSON.parse(xmlHttp.responseText);
 			addUpdates(jars);
+			document.getElementById("updateButton").style.visibility="visible";
 		}
 		else if (xmlHttp.readyState == 4 && xmlHttp.status == 204) {
 			document.getElementById("info1").innerHTML = "No updates found.";
@@ -40,7 +33,6 @@ function addUpdates(jars) {
 	    el.value = jar.name;
 	    select.appendChild(el);
 	}
-	document.getElementById("updateButton").innerHTML = "Update";
 }
 
 function getUpdates() {
