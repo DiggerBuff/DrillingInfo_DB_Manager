@@ -88,7 +88,7 @@ alert("Correct state and status");
 			
 			function processRequest(e) 
 				{
-alert("Correct state and status");
+				alert("Correct state and status");
 				
 				alert(xhr.responseText);
 						
@@ -105,7 +105,7 @@ alert("Correct state and status");
 					
 				}
 				}
-			}, 
+			},
 			canShowButton : true,
 			canShowDropDown : true
 	},
