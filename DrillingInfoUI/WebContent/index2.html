@@ -12,7 +12,7 @@
 		<div>
 			<h3>Scan/Update</h3>
 				<p>Scan for Updates. Download updates.</p>
-				<button onclick="scan();")>
+				<button onclick="scanUpdates();" id="scanButton")>
 					Scan For Update
 				</button>
 			
@@ -20,6 +20,10 @@
 				<select id="oldJars">
 		    		<option>Old jars to update</option>
 		  		</select>
+
+		  		<button onclick="update();" id="updateButton" style="visibility:hidden")>
+					update
+				</button>
 		</div>
 
 		<div>

@@ -1,4 +1,4 @@
-function scan() {
+function scanUpdates() {
 	alert("Scanning");
 		
 	var xhr = new XMLHttpRequest();
@@ -17,6 +17,9 @@ function scan() {
 			    el.value = jar.name;
 			    select.appendChild(el);						
 			}
+
+			document.getElementById("updateButton").style.visibility = "visible";
+
 		}
 	}
 
