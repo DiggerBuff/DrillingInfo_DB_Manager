@@ -1,45 +1,59 @@
  <!DOCTYPE html>
 <html>
-<body>
+	<head>
+		<title>
+			Tranform Updater UI
+		</title>
+	</head>
 
-<h2>JSON Object Creation in JavaScript</h2>
-
-<p id="demo"></p>
-
-<script>
-	function scan() {
-		alert("Scanning");
-			
-		var xhr = new XMLHttpRequest();
-				
-		xhr.open('GET', "http://138.67.186.221:9898", true);
-		xhr.send();
-		
-		xhr.addEventListener("readystatechange", processRequest, false);
-		
-		xhr.onreadystatechange = processRequest;
-			
-		function processRequest(e) {
-			if (xhr.readyState == 4 && xhr.status == 200) {
-										
-				}
-			}
-		}
-		
-</script>
-
-<div>
-	<h1>Scan/Update</h1>
-		<p>{{panel.description}}</p>
-		<button onclick="scan();")>
-			Scan For Update
-		</button>
+	<body>
+		<h1>Tranform Plugin Updater</h1>
 	
-		<!-- DROPDOWN MENU -->
-		<select id="oldJars">
-    		<option>Old jars to update</option>
-  		</select>
-</div>
+		<div>
+			<h3>Scan/Update</h3>
+				<p>Scan for Updates. Download updates.</p>
+				<p id="info1"></p>
+				<button onclick="scanUpdates();" id="scanButton")>
+					Scan For Update
+				</button>
+			
+				<!-- DROPDOWN MENU -->
+				<select id="updates">
+		    		<option>New plugins</option>
+		  		</select>
 
-</body>
+		  		<button onclick="getUpdates();" id="updateButton" style="visibility:hidden;")>
+					Update
+				</button>
+		</div>
+
+		<div>
+			<h3>Repair</h3>
+				<p>Repair Transform to use the new downloads.</p>
+				<button onclick="scan();")>
+					Detect Repairs
+				</button>
+			
+				<!-- DROPDOWN MENU -->
+				<select id="oldJars">
+		    		<option>Old jars to update</option>
+		  		</select>
+		</div>
+
+		<div>
+			<h3>System Control</h3>
+				<p>Junk</p>
+				<button onclick="scan();")>
+					Shutdown
+				</button>
+			
+				<!-- DROPDOWN MENU -->
+				<select id="oldJars">
+		    		<option>Old jars to update</option>
+		  		</select>
+		</div>
+
+		<script src="alan.js"></script>
+
+	</body>
 </html>
