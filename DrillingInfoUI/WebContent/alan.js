@@ -45,6 +45,7 @@ function getUpdates() {
 		//alert("State change");
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 			document.getElementById("info1").innerHTML = "Updates downloaded.";
+			document.getElementById("updateButton").style.visibility="hidden";
 		}
 		else if (xmlHttp.readyState == 4 && xmlHttp.status >= 400) {
 			document.getElementById("info1").innerHTML = "Error downloading updates.";

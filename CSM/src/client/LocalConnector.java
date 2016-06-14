@@ -16,8 +16,6 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.jar.Attributes.Name;
 
-import org.apache.tools.ant.DirectoryScanner;
-
 import exception.LocalFileError;
 
 /**
@@ -49,18 +47,6 @@ public class LocalConnector {
 			throw new LocalFileError("Unable to find local Transform application.");
 		}
 
-		
-		//System.out.println(dir.list()[0]);
-		//System.out.println(pluginDir);
-		//DirectoryScanner scanner = setUpScanner(pluginDir);
-		/*System.out.println("Plugin search start");
-		start = System.currentTimeMillis();
-		scanner.scan();
-		stop = System.currentTimeMillis();
-		System.out.println("Plugin search end. Elapsed time : " + (stop - start) + " ms" );*/
-
-		//String[] relativeFilePaths = scanner.getIncludedFiles();
-		
 		File dir = new File(pluginDir);
 		GenericExtFilter filter = new GenericExtFilter(".jar");
 		String[] relativeFilePaths = dir.list(filter);
@@ -121,20 +107,6 @@ public class LocalConnector {
 			throw new LocalFileError("Unable to find local directory path: " + path);
 		}
 		return null;
-	}
-
-	/**
-	 * This sets up the DirectoryScanner to find the plugins.
-	 * 
-	 * @param baseDir the base directory from where to start scanning.
-	 * @return The DirectoryScanner object. 
-	 */
-	private DirectoryScanner setUpScanner(String baseDir) {
-		DirectoryScanner scanner = new DirectoryScanner();
-		scanner.setIncludes(new String[]{"**/*.jar"});
-		scanner.setBasedir(baseDir);
-		scanner.setCaseSensitive(false);
-		return scanner;
 	}
 
 	/**
