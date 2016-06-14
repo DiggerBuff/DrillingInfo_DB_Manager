@@ -1,6 +1,7 @@
 package client;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
@@ -37,25 +38,33 @@ public class LocalConnector {
 	public Map<String, ArrayList<String>> getLocalJars() {
 
 		String baseDir = System.getProperty("user.home");
-
-		System.out.println("\nDir search start");
+		
+		System.out.println("Dir search start.");
 		long start = System.currentTimeMillis();
 		String pluginDir = getPath(baseDir);
 		long stop = System.currentTimeMillis();
 		System.out.println("Dir search end. Elapsed time : " + (stop - start) + " ms\n" );
 
 		if(pluginDir == null) {
-			throw new LocalFileError("Unable to find local Transform files.");
+			throw new LocalFileError("Unable to find local Transform application.");
 		}
-
-		DirectoryScanner scanner = setUpScanner(pluginDir);
-		System.out.println("Plugin search start");
+		
+		File dir = new File(pluginDir);
+		//System.out.println(dir.list()[0]);
+		//System.out.println(pluginDir);
+		//DirectoryScanner scanner = setUpScanner(pluginDir);
+		/*System.out.println("Plugin search start");
 		start = System.currentTimeMillis();
 		scanner.scan();
 		stop = System.currentTimeMillis();
-		System.out.println("Plugin search end. Elapsed time : " + (stop - start) + " ms" );
+		System.out.println("Plugin search end. Elapsed time : " + (stop - start) + " ms" );*/
 
-		String[] relativeFilePaths = scanner.getIncludedFiles();
+		//String[] relativeFilePaths = scanner.getIncludedFiles();
+		GenericExtFilter filter = new GenericExtFilter(".jar");
+		String[] relativeFilePaths = dir.list(filter);
+		if (relativeFilePaths.length == 0) {
+			throw new LocalFileError("Unable to find local Transform files.");
+		}
 
 		for (String relativeFilePath : relativeFilePaths) {
 
@@ -71,6 +80,19 @@ public class LocalConnector {
 			}
 		}
 		return localJars;
+	}
+	
+	public class GenericExtFilter implements FilenameFilter {
+
+		private String ext;
+
+		public GenericExtFilter(String ext) {
+			this.ext = ext;
+		}
+
+		public boolean accept(File dir, String name) {
+			return (name.endsWith(ext));
+		}
 	}
 
 	private String getPath(String path) {
