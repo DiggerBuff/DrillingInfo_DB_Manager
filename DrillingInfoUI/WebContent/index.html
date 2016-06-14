@@ -26,8 +26,12 @@
 		</script>	
 		
 		<script>
+		var number = 0;
+		
+		
 		function scanJars() 
-		{
+		{			
+			
 			alert('Panel One Hello');
 			
 			var xhr = new XMLHttpRequest();
@@ -37,29 +41,34 @@
 			
 			xhr.addEventListener("readystatechange", processRequest, false);
 			
-			xhr.onreadystatechange = processRequest;
-			
-			function processRequest(e) 
-				{
-alert("Correct state and status");
-				
-				alert(xhr.responseText);
-						
-    			var jars = JSON.parse(xhr.responseText);
-    			
-				var select = document.getElementById("oldJars"); 
+			xhr.onreadystatechange = processRequest;			
 
-					for(var i = 0; i < jars.length; i++) 
-					{
-				    var jar = jars[i];
-				    var el = document.createElement("option");
-				    el.textContent = jar.name;
-				    el.value = jar.name;
-				    select.appendChild(el);
+			function processRequest(e) {
+				if (xhr.readyState == 4 && xhr.status == 200) {
 					
+						alert("Correct state and status");
+
+						alert(xhr.responseText);
+
+						var jars = JSON.parse(xhr.responseText);
+
+						var select = document.getElementById("oldJars");
+
+						for ( var i = 0; i < jars.length; i++) {
+							var jar = jars[i];
+							var el = document.createElement("option");
+							el.textContent = jar.name;
+							el.value = jar.name;
+							select.appendChild(el);
+							
+							number = number + 1;
+							alert(number);
+													
+						}
 					}
+				
 				}
-			} 
+			}
 		</script>	
 		
 		<script>
@@ -78,7 +87,7 @@ alert("Correct state and status");
 			
 			function processRequest(e) 
 				{
-alert("Correct state and status");
+			alert("Correct state and status");
 				
 				alert(xhr.responseText);
 						
@@ -115,7 +124,7 @@ alert("Correct state and status");
 			
 			function processRequest(e) 
 				{
-alert("Correct state and status");
+			alert("Correct state and status");
 				
 				alert(xhr.responseText);
 						
@@ -139,7 +148,7 @@ alert("Correct state and status");
 		<script>
 		function downloadJars()
 		{
-alert('Download New Jars?');
+		alert('Download New Jars?');
 			
 			var xhr = new XMLHttpRequest();
 			
