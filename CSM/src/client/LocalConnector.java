@@ -1,6 +1,7 @@
 package client;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
@@ -9,6 +10,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
@@ -38,24 +40,55 @@ public class LocalConnector {
 
 		String baseDir = System.getProperty("user.home");
 
-		System.out.println("\nDir search start");
+		/*System.out.println("Dir search start.");
 		long start = System.currentTimeMillis();
 		String pluginDir = getPath(baseDir);
 		long stop = System.currentTimeMillis();
-		System.out.println("Dir search end. Elapsed time : " + (stop - start) + " ms\n" );
+		System.out.println("Dir search end. Elapsed time : " + (stop - start) + " ms" );
 
 		if(pluginDir == null) {
-			throw new LocalFileError("Unable to find local Transform files.");
-		}
+			throw new LocalFileError("Unable to find local Transform application.");
+		}*/
 
-		DirectoryScanner scanner = setUpScanner(pluginDir);
-		System.out.println("Plugin search start");
+		
+		//System.out.println(dir.list()[0]);
+		//System.out.println(pluginDir);
+		//DirectoryScanner scanner = setUpScanner(pluginDir);
+		/*System.out.println("Plugin search start");
 		start = System.currentTimeMillis();
 		scanner.scan();
 		stop = System.currentTimeMillis();
-		System.out.println("Plugin search end. Elapsed time : " + (stop - start) + " ms" );
+		System.out.println("Plugin search end. Elapsed time : " + (stop - start) + " ms" );*/
 
-		String[] relativeFilePaths = scanner.getIncludedFiles();
+		//String[] relativeFilePaths = scanner.getIncludedFiles();
+
+		String pluginDir = "";
+		FileSearch fileSearch = new FileSearch();
+
+		//try different directory and filename :)
+		System.out.println("Dir search start.");
+		long start = System.currentTimeMillis();
+		fileSearch.searchDirectory(new File(System.getProperty("user.home")), "Transform/plugins");
+		long stop = System.currentTimeMillis();
+		System.out.println("Dir search end. Elapsed time : " + (stop - start) + " ms" );
+
+		int count = fileSearch.getResult().size();
+		if(count ==0){
+			throw new LocalFileError("Unable to find local Transform application.");
+		}
+		else if (count == 1){
+			pluginDir = fileSearch.getResult().get(0);
+		}
+		else {
+			throw new LocalFileError("Found multiple Transform folders. Try emptying your trash.");
+		}
+		
+		File dir = new File(pluginDir);
+		GenericExtFilter filter = new GenericExtFilter(".jar");
+		String[] relativeFilePaths = dir.list(filter);
+		if (relativeFilePaths.length == 0) {
+			throw new LocalFileError("Unable to find local Transform files.");
+		}
 
 		for (String relativeFilePath : relativeFilePaths) {
 
@@ -71,6 +104,19 @@ public class LocalConnector {
 			}
 		}
 		return localJars;
+	}
+
+	public class GenericExtFilter implements FilenameFilter {
+
+		private String ext;
+
+		public GenericExtFilter(String ext) {
+			this.ext = ext;
+		}
+
+		public boolean accept(File dir, String name) {
+			return (name.endsWith(ext));
+		}
 	}
 
 	private String getPath(String path) {
@@ -127,7 +173,7 @@ public class LocalConnector {
 			Manifest manifest = jarFile.getManifest();
 
 			jarFile.close();
-			
+
 			//System.out.println(manifest.getAttributes("Implementation-Version"));
 
 			Attributes attributes = manifest.getMainAttributes();
