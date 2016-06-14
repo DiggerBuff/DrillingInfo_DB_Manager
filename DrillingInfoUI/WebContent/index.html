@@ -26,7 +26,7 @@
 		</script>	
 		
 		<script>
-		function doStuff() 
+		function scanJars() 
 		{
 			alert('Panel One Hello');
 			
@@ -63,7 +63,7 @@ alert("Correct state and status");
 		</script>	
 		
 		<script>
-		function doStuff2() 
+		function scanJars2() 
 		{
 			alert('Panel Two Hello');
 			
@@ -100,7 +100,7 @@ alert("Correct state and status");
 		</script>	
 		
 		<script>
-		function doStuff3() 
+		function scanJars3() 
 		{
 			alert('Panel Three Hello');
 			
@@ -135,6 +135,24 @@ alert("Correct state and status");
 				}
 			} 
 		</script>	
+		
+		<script>
+		function downloadJars()
+		{
+alert('Download New Jars?');
+			
+			var xhr = new XMLHttpRequest();
+			
+			xhr.open('GET', "http://138.67.186.220:9898/replace", true);
+			xhr.send();
+			
+			xhr.addEventListener("readystatechange", processRequest, false);
+			
+			xhr.onreadystatechange = processRequest;
+						
+		}
+		
+		</script>
 
 	</head>
 	
@@ -157,12 +175,16 @@ alert("Correct state and status");
 			form to do that. This would replace the older version jars in
 			Transform/plugins folder.</p>
 
-		<button onClick="doStuff();">Scan For Updates</button>
+		<!--  BUTTON FOR SCAN -->
+		<button onClick="scanJars();">Scan For Updates</button>
 
 		<!-- DROPDOWN MENU -->
 		<select id="oldJars">
 			<option disabled selected>List Of Updates</option>
 		</select>
+		
+		<!--  BUTTON FOR DOWNLOAD -->
+		<button onClick="downloadJars();">Download New Jars</button>
 	</div>
 	<div id="Panel2">
 	<h1>Two</h1>
@@ -174,7 +196,8 @@ alert("Correct state and status");
 	(post to /transform/repair/repair name/repair).	
 	</p>
 	
-	<button onClick="doStuff2();">Scan For Updates</button>
+	<!--  BUTTON FOR SCAN -->
+	<button onClick="scanJars2();">Scan For Updates</button>
 
 		<!-- DROPDOWN MENU -->
 		<select id="oldJars2">
@@ -189,7 +212,8 @@ alert("Correct state and status");
 	<p>The third panel would deal with system control. A way to test an echo command or shutdown the services.
 	</p>
 	
-	<button onClick="doStuff3();">Scan For Updates</button>
+	<!--  BUTTON FOR SCAN -->
+	<button onClick="scanJars3();">Scan For Updates</button>
 
 		<!-- DROPDOWN MENU -->
 		<select id="oldJars3">
