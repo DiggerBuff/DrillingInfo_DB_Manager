@@ -38,20 +38,15 @@
 			
 			xhr.open('GET', "http://138.67.186.220:9898/", true);
 			xhr.send();
-			
-			xhr.addEventListener("readystatechange", processRequest, false);
-			
+		
 			xhr.onreadystatechange = processRequest;			
 
 			function processRequest(e) {
 				if (xhr.readyState == 4 && xhr.status == 200) {
 					
 						alert("Correct state and status");
-
 						alert(xhr.responseText);
-
 						var jars = JSON.parse(xhr.responseText);
-
 						var select = document.getElementById("oldJars");
 
 						for ( var i = 0; i < jars.length; i++) {
