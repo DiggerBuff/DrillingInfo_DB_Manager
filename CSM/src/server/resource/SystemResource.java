@@ -31,9 +31,8 @@ public class SystemResource
 	
 	@GET
 	@Path("restart")
-	public String restart() throws Exception
+	public Response restart() throws Exception
 	{
-		systemService.restartDIServer();
-		return "Restart";
+		return systemService.restartDIServer();
 	}
 }
