@@ -18,70 +18,87 @@
 
 	<body onload="startDIServer();">	
 	
-	
+	<div>	
 	<a href="http://info.drillinginfo.com/">
-	<img src="DrillingInfo.png"  style ="width:156px;height:56px;">
-	</a>
-	
-	
+	<img src="DrillingInfo.png"  style ="width:260px;height:100px;">
+	</a>	
 		
-	<h1>Tranform Plugin Updater</h1>
+	<h1>Transform Plugin Updater</h1>
 	<br>
-	
-	<div id="wrapper">
-		<div class="underline">
+	</div>
+
+	<div class="panels">
+		<div class="margin">
 			<h3>Scan/Update</h3>
-				<p>Scan for Updates. Download updates.</p>
-				<p id="info1"></p>
-				<button onclick="scanUpdates();" id="scanButton")>
-					Scan For Update
-				</button>
-			
-				<!-- DROPDOWN MENU -->
-				<select id="updates">
-		    		<option>New plugins</option>
-		  		</select>
+			<p>Scan for Updates. Download updates.</p>
+			<p id="info1"></p>
 
-		  		<button onclick="getUpdates();" id="updateButton" style="visibility:hidden;")>
-					Update
-				</button>
+			<nav class="nav-main">
+				<ul class="nav-item">
+					<li>
+						<!--BUTTON--> <a class="button" href="#" onclick="scanUpdates();"
+						id="scanButton")> Scan For Update </a>
+					</li>
+					<li>
+						<!-- DROPDOWN MENU --> <a href="#" class="dropdownbutton"
+						id="updates"> New Plugins </a>
+						<div class="nav-content">
+							<div class="nav-sub">
+								<ul>
+									<li>first</li>
+									<li>2nd</li>
+									<li>third</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</nav>
+
+			<button onclick="getUpdates();" id="updateButton"
+				style="visibility: hidden;")>Update</button>
 		</div>
+	</div>
 
-		<div class="underline">
+	<div class="whitespace"></div>
+
+	<div class="panels">
+		<div class="margin">
 			<h3>Repair</h3>
 				<p>Repair Transform to use the new downloads.</p>
 				<p id="info2"></p>
-				<button onclick="getRepairs();")>
+				<a class="button" onclick="getRepairs();")>
 					Get Repairs
-				</button>
+				</a>
 				
-			
 				<!-- DROPDOWN MENU -->
 				<select id="repairs" onchange="loadDetectRepar(this.value)">
 		    		<option value='0'>--None--</option>
 		  		</select>
 
-		  		<button id="detect" onclick="detect();" id="updateButton" style="visibility:hidden;")>
+		  		<a class="button" id="detect" onclick="detect();" id="updateButton" style="visibility:hidden;")>
 					Detect
-				</button>
+				</a>
 
-				<button id="repair" onclick="repair();" id="updateButton" style="visibility:hidden;")>
+				<a class="button" id="repair" onclick="repair();" id="updateButton" style="visibility:hidden;")>
 					Repair
-				</button>
+				</a>
 		</div>
+	</div>
 
-		<div class="underline">
+	<div class="whitespace"></div>
+
+	<div class="panels">
+		<div class="margin">
 			<h3>System Control</h3>
 				<p>Open For Implementation</p>
-				<button onclick="shutdown();")>
+				<a class="button" onclick="shutdown();")>
 					Shutdown
-				</button>
+				</a>
 		</div>
-		</div>
-	
-	
+	</div>
 
-		<script src="alan.js"></script>
+	<script src="alan.js"></script>
 
 	</body>
 </html>
