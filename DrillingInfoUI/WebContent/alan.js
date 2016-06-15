@@ -3,6 +3,8 @@ function scanUpdates() {
 	document.getElementById("updates").innerHTML = "<option>New plugins</option>";
 
 	var xmlHttp = new XMLHttpRequest();
+
+
 	var url = "http://localhost:9999/";
 
 	xmlHttp.onreadystatechange = function () {
@@ -44,6 +46,7 @@ function getUpdates() {
 	var url = "http://localhost:9999/replace/";
 	var urlShutdown = "http://localhost:9898/transform/server?shutdown=true";
 
+	restartDIServer();
 	//alert("Sent request");
 	xmlHttp.onreadystatechange = function () {
 		//alert("State change");
@@ -101,4 +104,8 @@ function addRepairs(options) {
 	    el.textContent = option;
 	    select.appendChild(el);
 	}
+}
+
+function restartDIServer() {
+	
 }
