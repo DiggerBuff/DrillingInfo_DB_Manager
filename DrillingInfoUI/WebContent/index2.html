@@ -17,68 +17,64 @@
 	</head>
 
 	<body>	
-	
-	
+		
 	<a href="http://info.drillinginfo.com/">
 	<img src="DrillingInfo.png"  style ="width:156px;height:56px;">
-	</a>
-	
-	
+	</a>	
 		
 	<h1>Tranform Plugin Updater</h1>
 	<br>
-	
-	<div id="wrapper">
-		<div class="underline">
+
+	<div class="panels">
+		<div class="margin">
 			<h3>Scan/Update</h3>
-				<p>Scan for Updates. Download updates.</p>
-				<p id="info1"></p>
-				<button onclick="scanUpdates();" id="scanButton")>
-					Scan For Update
-				</button>
-			
-				<!-- DROPDOWN MENU -->
-				<select id="updates">
-		    		<option>New plugins</option>
-		  		</select>
+			<p>Scan for Updates. Download updates.</p>
+			<p id="info1"></p>
+			<a class="button" href="#" onclick="scanUpdates();" id="scanButton")>
+				Scan For Update </a>
 
-		  		<button onclick="getUpdates();" id="updateButton" style="visibility:hidden;")>
-					Update
-				</button>
+			<!-- DROPDOWN MENU -->
+			<select id="updates">
+				<option>New plugins</option>
+			</select>
+
+			<button onclick="getUpdates();" id="updateButton"
+				style="visibility: hidden;")>Update</button>
 		</div>
+	</div>
 
-		<div class="underline">
+	<div class="whitespace"></div>
+
+	<div class="panels">
+		<div class="margin">
 			<h3>Repair</h3>
-				<p>Repair Transform to use the new downloads.</p>
-				<p id="info2"></p>
-				<button onclick="getRepairs();")>
-					Detect Repairs
-				</button>
-				
-			
-				<!-- DROPDOWN MENU -->
-				<select id="repairs">
-		    		<option>--None--</option>
-		  		</select>
-		</div>
+			<p>Repair Transform to use the new downloads.</p>
+			<p id="info2"></p>
+			<a class="button" onclick="getRepairs();")> Detect Repairs </a>
 
-		<div class="underline">
+			<!-- DROPDOWN MENU -->
+			<select id="repairs">
+				<option>--None--</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="whitespace"></div>
+
+	<div class="panels">
+		<div class="margin">
 			<h3>System Control</h3>
-				<p>Junk</p>
-				<button onclick="scan();")>
-					Shutdown
-				</button>
-			
-				<!-- DROPDOWN MENU -->
-				<select id="oldJars">
-		    		<option>Old jars to update</option>
-		  		</select>
-		</div>
-		</div>
-	
-	
+			<p>Junk</p>
+			<a class="button" onclick="scan();")> Shutdown </a>
 
-		<script src="alan.js"></script>
+			<!-- DROPDOWN MENU -->
+			<select id="oldJars">
+				<option>Old jars to update</option>
+			</select>
+		</div>
+	</div>
+
+	<script src="alan.js"></script>
 
 	</body>
 </html>
