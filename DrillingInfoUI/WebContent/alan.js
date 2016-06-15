@@ -42,6 +42,8 @@ function getUpdates() {
 	var xmlHttp = new XMLHttpRequest();
 	var url = "http://localhost:9999/replace/";
 
+
+	restartDIServer();
 	//alert("Sent request");
 	xmlHttp.onreadystatechange = function () {
 		//alert("State change");
@@ -96,4 +98,8 @@ function addRepairs(options) {
 	    el.textContent = option;
 	    select.appendChild(el);
 	}
+}
+
+function restartDIServer() {
+	
 }
