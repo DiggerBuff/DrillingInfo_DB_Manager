@@ -3,7 +3,7 @@ function scanUpdates() {
 	document.getElementById("updates").innerHTML = "<option>New plugins</option>";
 
 	var xmlHttp = new XMLHttpRequest();
-	var url = "http://138.67.186.222:9898/";
+	var url = "http://localhost:9999/";
 
 	xmlHttp.onreadystatechange = function () {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -40,7 +40,7 @@ function addUpdates(jars) {
 function getUpdates() {
 	//alert("Sending request");
 	var xmlHttp = new XMLHttpRequest();
-	var url = "http://138.67.186.222:9898/replace/";
+	var url = "http://localhost:9999/replace/";
 
 	//alert("Sent request");
 	xmlHttp.onreadystatechange = function () {
@@ -48,6 +48,9 @@ function getUpdates() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 			document.getElementById("info1").innerHTML = "Updates downloaded.";
 			document.getElementById("updateButton").style.visibility="hidden";
+			
+			//This is where we likely need to restart the DI_Code server/script
+			
 			document.getElementById("updates").innerHTML = "<option>--None--</option>";
 		}
 		else if (xmlHttp.readyState == 4 && xmlHttp.status >= 400) {
