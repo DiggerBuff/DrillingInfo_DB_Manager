@@ -46,16 +46,18 @@ function getUpdates() {
 	var url = "http://localhost:9999/replace/";
 	var urlShutdown = "http://localhost:9898/transform/server?shutdown=true";
 
+	xmlShutdown.open("POST", urlShutdown, true);
+	xmlShutdown.send();
+
 	//alert("Sent request");
 	xmlHttp.onreadystatechange = function () {
 		//alert("State change");
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 			document.getElementById("info1").innerHTML = "Updates downloaded.";
 			document.getElementById("updateButton").style.visibility="hidden";
-			
-			xmlShutdown.open("POST", urlShutdown, true);
-			xmlShutdown.send();
-			setTimeout(startDIServer(), 8000);
+			document.getElementById("repairs").innerHTML = "<option>--None--</option>";
+			document.getElementById("info2").innerHTML = "Finding new repairs.";
+			setTimeout(startDIServer, 6000);
 			
 			document.getElementById("updates").innerHTML = "<option>--None--</option>";
 		}
@@ -77,7 +79,7 @@ function getRepairs() {
 
 	xmlHttp.onreadystatechange = function () {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			document.getElementById("repairs").innerHTML = "";
+			document.getElementById("repairs").innerHTML = "<option value='0'>--None--</option>";
 			document.getElementById("info2").innerHTML = "Repair options found.";
 			var options = JSON.parse(xmlHttp.responseText);
 			addRepairs(options);
@@ -85,7 +87,7 @@ function getRepairs() {
 		}
 		else if (xmlHttp.readyState == 4 && xmlHttp.status == 204) {
 			document.getElementById("info2").innerHTML = "No repair options found.";
-			document.getElementById("repairs").innerHTML = "<option>--None--</option>";
+			document.getElementById("repairs").innerHTML = "<option value='0'>--None--</option>";
 
 		}
 	}
@@ -100,6 +102,8 @@ function addRepairs(options) {
 	{
 	    var option = options[i];
 	    var el = document.createElement("option");
+	    el.id
+	    el.value = i + 1;
 	    el.textContent = option;
 	    select.appendChild(el);
 	}
@@ -113,6 +117,76 @@ function startDIServer() {
 
 	xmlHttp.onreadystatechange = function () {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			//alert("DIServer started");
+		}
+		else if (xmlHttp.readyState == 4 && xmlHttp.status == 500) {
+			var options = JSON.parse(xmlHttp.responseText);
+			document.getElementById("info1").innerHTML = options;
+		}
+	}
+
+	xmlHttp.open("GET", url, true);
+	xmlHttp.send();
+}
+
+function loadDetectRepar(value) {
+	if (value != 0) {
+		document.getElementById("detect").style.visibility="visible";
+		document.getElementById("repair").style.visibility="visible";
+	}
+	else {
+		document.getElementById("detect").style.visibility="hidden";
+		document.getElementById("repair").style.visibility="hidden";
+	}
+}
+
+function detect() {
+	var xmlHttp = new XMLHttpRequest();
+	var repairs = document.getElementById("repairs");
+	var text = repairs.options[repairs.selectedIndex].text;
+
+	var url = "http://localhost:9898/transform/repair/" + text +"/detect";
+	xmlHttp.onreadystatechange = function () {
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			var options = JSON.parse(xmlHttp.responseText);
+			alert(options);
+		}
+		else if (xmlHttp.readyState == 4 && xmlHttp.status == 404) {
+			document.getElementById("info2").innerHTML = "Detect not found";
+		}
+	}
+
+	xmlHttp.open("POST", url, true);
+	xmlHttp.send();
+}
+
+function repair() {
+	var xmlHttp = new XMLHttpRequest();
+	var repairs = document.getElementById("repairs");
+	var text = repairs.options[repairs.selectedIndex].text;
+
+	var url = "http://localhost:9898/transform/repair/" + text +"/repair";
+	xmlHttp.onreadystatechange = function () {
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			var options = JSON.parse(xmlHttp.responseText);
+			alert(options);
+		}
+		else if (xmlHttp.readyState == 4 && xmlHttp.status == 404) {
+			document.getElementById("info2").innerHTML = "Repair not found";
+		}
+	}
+
+	xmlHttp.open("POST", url, true);
+	xmlHttp.send();
+}
+
+function shutdown() {
+	var xmlHttp = new XMLHttpRequest();
+
+	var url = "http://localhost:9999/system/shutdown";
+
+	xmlHttp.onreadystatechange = function () {
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 			alert("DIServer started");
 		}
 		else if (xmlHttp.readyState == 4 && xmlHttp.status == 500) {
@@ -123,5 +197,4 @@ function startDIServer() {
 
 	xmlHttp.open("GET", url, true);
 	xmlHttp.send();
-	document.getElementById("info1").innerHTML = "Scanning for updates...";
 }

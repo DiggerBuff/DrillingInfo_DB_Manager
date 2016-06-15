@@ -16,7 +16,7 @@
 		<link 	href="main.css" rel="stylesheet">				
 	</head>
 
-	<body>	
+	<body onload="startDIServer();">	
 	
 	
 	<a href="http://info.drillinginfo.com/">
@@ -52,27 +52,30 @@
 				<p>Repair Transform to use the new downloads.</p>
 				<p id="info2"></p>
 				<button onclick="getRepairs();")>
-					Detect Repairs
+					Get Repairs
 				</button>
 				
 			
 				<!-- DROPDOWN MENU -->
-				<select id="repairs">
-		    		<option>--None--</option>
+				<select id="repairs" onchange="loadDetectRepar(this.value)">
+		    		<option value='0'>--None--</option>
 		  		</select>
+
+		  		<button id="detect" onclick="detect();" id="updateButton" style="visibility:hidden;")>
+					Detect
+				</button>
+
+				<button id="repair" onclick="repair();" id="updateButton" style="visibility:hidden;")>
+					Repair
+				</button>
 		</div>
 
 		<div class="underline">
 			<h3>System Control</h3>
-				<p>Junk</p>
-				<button onclick="scan();")>
+				<p>Open For Implementation</p>
+				<button onclick="shutdown();")>
 					Shutdown
 				</button>
-			
-				<!-- DROPDOWN MENU -->
-				<select id="oldJars">
-		    		<option>Old jars to update</option>
-		  		</select>
 		</div>
 		</div>
 	
