@@ -68,6 +68,7 @@ function getRepairs() {
 
 	xmlHttp.onreadystatechange = function () {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			document.getElementById("repairs").innerHTML = "";
 			document.getElementById("info2").innerHTML = "Repair options found.";
 			var options = JSON.parse(xmlHttp.responseText);
 			addRepairs(options);
