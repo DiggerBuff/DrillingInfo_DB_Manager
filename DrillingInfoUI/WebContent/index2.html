@@ -17,26 +17,43 @@
 	</head>
 
 	<body>	
-		
+	
+	<div>	
 	<a href="http://info.drillinginfo.com/">
-	<img src="DrillingInfo.png"  style ="width:156px;height:56px;">
+	<img src="DrillingInfo.png"  style ="width:260px;height:100px;">
 	</a>	
 		
 	<h1>Tranform Plugin Updater</h1>
 	<br>
+	</div>
 
 	<div class="panels">
 		<div class="margin">
 			<h3>Scan/Update</h3>
 			<p>Scan for Updates. Download updates.</p>
 			<p id="info1"></p>
-			<a class="button" href="#" onclick="scanUpdates();" id="scanButton")>
-				Scan For Update </a>
 
-			<!-- DROPDOWN MENU -->
-			<select id="updates">
-				<option>New plugins</option>
-			</select>
+			<nav class="nav-main">
+				<ul class="nav-item">
+					<li>
+						<!--BUTTON--> <a class="button" href="#" onclick="scanUpdates();"
+						id="scanButton")> Scan For Update </a>
+					</li>
+					<li>
+						<!-- DROPDOWN MENU --> <a href="#" class="dropdownbutton"
+						id="updates"> New Plugins </a>
+						<div class="nav-content">
+							<div class="nav-sub">
+								<ul>
+									<li>first</li>
+									<li>2nd</li>
+									<li>third</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</nav>
 
 			<button onclick="getUpdates();" id="updateButton"
 				style="visibility: hidden;")>Update</button>
@@ -50,6 +67,7 @@
 			<h3>Repair</h3>
 			<p>Repair Transform to use the new downloads.</p>
 			<p id="info2"></p>
+			<!--BUTTON-->
 			<a class="button" onclick="getRepairs();")> Detect Repairs </a>
 
 			<!-- DROPDOWN MENU -->
@@ -65,6 +83,7 @@
 		<div class="margin">
 			<h3>System Control</h3>
 			<p>Junk</p>
+			<!--BUTTON-->
 			<a class="button" onclick="scan();")> Shutdown </a>
 
 			<!-- DROPDOWN MENU -->
