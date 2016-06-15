@@ -1,10 +1,6 @@
 package server;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.URI;
-import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +17,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 
-import server.resource.TestRes;
+import server.resource.SystemResource;
 import server.resource.VersionedJarResource;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
@@ -120,7 +116,7 @@ public class Fred
 	 */
 	private Set<Class<?>> getClasses() {
 		Set<Class<?>> classes = new HashSet<>();
-		classes.add(TestRes.class);
+		classes.add(SystemResource.class);
 		classes.add(VersionedJarResource.class);
 		return classes;
 	}
@@ -130,7 +126,7 @@ public class Fred
 	 *
 	 * @return    The port. -1 if there was an error. 
 	 */
-	private static int getPort() {
+	/*private static int getPort() {
 		try {
 			ServerSocket s = new ServerSocket(0);
 			s.close();
@@ -138,5 +134,5 @@ public class Fred
 		} catch (IOException e) {
 			throw new ServerError("Unable to get an available port to start server.");
 		}
-	}
+	}*/
 }

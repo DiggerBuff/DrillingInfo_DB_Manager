@@ -40,7 +40,9 @@ function addUpdates(jars) {
 function getUpdates() {
 	//alert("Sending request");
 	var xmlHttp = new XMLHttpRequest();
+	var xmlShutdown = new XMLHttpRequest();
 	var url = "http://localhost:9999/replace/";
+	var urlShutdown = "http://localhost:9898/transform/server?shutdown=true";
 
 
 	restartDIServer();
@@ -52,6 +54,8 @@ function getUpdates() {
 			document.getElementById("updateButton").style.visibility="hidden";
 			
 			//This is where we likely need to restart the DI_Code server/script
+			xmlShutdown.open("POST", urlShutdown, true);
+			xmlShutdown.send();
 			
 			document.getElementById("updates").innerHTML = "<option>--None--</option>";
 		}
@@ -73,6 +77,7 @@ function getRepairs() {
 
 	xmlHttp.onreadystatechange = function () {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			document.getElementById("repairs").innerHTML = "";
 			document.getElementById("info2").innerHTML = "Repair options found.";
 			var options = JSON.parse(xmlHttp.responseText);
 			addRepairs(options);
