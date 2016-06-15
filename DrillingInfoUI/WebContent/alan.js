@@ -46,7 +46,6 @@ function getUpdates() {
 	var url = "http://localhost:9999/replace/";
 	var urlShutdown = "http://localhost:9898/transform/server?shutdown=true";
 
-	restartDIServer();
 	//alert("Sent request");
 	xmlHttp.onreadystatechange = function () {
 		//alert("State change");
@@ -54,9 +53,9 @@ function getUpdates() {
 			document.getElementById("info1").innerHTML = "Updates downloaded.";
 			document.getElementById("updateButton").style.visibility="hidden";
 			
-			//This is where we likely need to restart the DI_Code server/script
 			xmlShutdown.open("POST", urlShutdown, true);
 			xmlShutdown.send();
+			startDIServer();
 			
 			document.getElementById("updates").innerHTML = "<option>--None--</option>";
 		}
@@ -106,6 +105,23 @@ function addRepairs(options) {
 	}
 }
 
-function restartDIServer() {
-	
+function startDIServer() {
+
+	var xmlHttp = new XMLHttpRequest();
+
+	var url = "http://localhost:9999/system/restart";
+
+	xmlHttp.onreadystatechange = function () {
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			alert("DIServer started");
+		}
+		else if (xmlHttp.readyState == 4 && xmlHttp.status == 500) {
+			var options = JSON.parse(xmlHttp.responseText);
+			document.getElementById("info1").innerHTML = options;
+		}
+	}
+
+	xmlHttp.open("GET", url, true);
+	xmlHttp.send();
+	document.getElementById("info1").innerHTML = "Scanning for updates...";
 }
