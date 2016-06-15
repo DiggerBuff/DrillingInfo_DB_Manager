@@ -41,17 +41,20 @@ import java.util.Scanner;
 public class Fred
 {
 	//private static final int port = getPort();
-	private static final int port = 9898;
+	private static final int port = 9999;
 	private static String defaultUri = "http://";
 
 	public static void main(String... args) {
-
+		// Gets local ip. Commented out so that we just use localhost
+		/*
 		try {
 			String localIP = InetAddress.getLocalHost().getHostAddress();
 			defaultUri += localIP;
 		} catch (UnknownHostException e) {
 			throw new ServerError("Unable to get local IP to create connection.");
 		}
+		*/
+		defaultUri += "localhost";
 		
 		Fred fred = new Fred();
 		Scanner kb = new Scanner(System.in);
