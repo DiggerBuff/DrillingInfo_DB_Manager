@@ -1,6 +1,6 @@
 function scanUpdates() {
 	document.getElementById("updateButton").style.visibility="hidden";
-	document.getElementById("updates").innerHTML = "<option>--None--</option>";
+	document.getElementById("updates").innerHTML = "<option>New plugins</option>";
 
 	var xmlHttp = new XMLHttpRequest();
 	var url = "http://localhost:9999/";
@@ -14,12 +14,14 @@ function scanUpdates() {
 		}
 		else if (xmlHttp.readyState == 4 && xmlHttp.status == 204) {
 			document.getElementById("info1").innerHTML = "No updates found.";
+			document.getElementById("updates").innerHTML = "<option>--None--</option>";
+
 		}
 	}
 
 	xmlHttp.open("GET", url, true);
 	xmlHttp.send();
-	document.getElementById("info1").innerHTML = "Scanning for updates..."
+	document.getElementById("info1").innerHTML = "Scanning for updates...";
 }
 
 function addUpdates(jars) {
@@ -46,9 +48,10 @@ function getUpdates() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 			document.getElementById("info1").innerHTML = "Updates downloaded.";
 			document.getElementById("updateButton").style.visibility="hidden";
-
+			
 			//This is where we likely need to restart the DI_Code server/script
 			
+			document.getElementById("updates").innerHTML = "<option>--None--</option>";
 		}
 		else if (xmlHttp.readyState == 4 && xmlHttp.status >= 400) {
 			document.getElementById("info1").innerHTML = "Error downloading updates.";
@@ -59,4 +62,38 @@ function getUpdates() {
 	xmlHttp.send();
 
 	//alert("ended");
+}
+
+function getRepairs() {
+	//alert("aoenut");
+	var xmlHttp = new XMLHttpRequest();
+	var url = "http://localhost:9898/transform/repair/";
+
+	xmlHttp.onreadystatechange = function () {
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			document.getElementById("info2").innerHTML = "Repair options found.";
+			var options = JSON.parse(xmlHttp.responseText);
+			addRepairs(options);
+			//document.getElementById("updateButton").style.visibility="visible";
+		}
+		else if (xmlHttp.readyState == 4 && xmlHttp.status == 204) {
+			document.getElementById("info2").innerHTML = "No repair options found.";
+			document.getElementById("repairs").innerHTML = "<option>--None--</option>";
+
+		}
+	}
+
+	xmlHttp.open("GET", url, true);
+	xmlHttp.send();
+}
+
+function addRepairs(options) {
+	var select = document.getElementById("repairs");
+	for(var i = 0; i < options.length; i++) 
+	{
+	    var option = options[i];
+	    var el = document.createElement("option");
+	    el.textContent = option;
+	    select.appendChild(el);
+	}
 }
