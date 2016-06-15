@@ -55,7 +55,7 @@ function getUpdates() {
 			
 			xmlShutdown.open("POST", urlShutdown, true);
 			xmlShutdown.send();
-			startDIServer();
+			setTimeout(startDIServer(), 8000);
 			
 			document.getElementById("updates").innerHTML = "<option>--None--</option>";
 		}
