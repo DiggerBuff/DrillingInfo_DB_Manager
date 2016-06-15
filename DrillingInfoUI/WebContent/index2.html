@@ -1,15 +1,35 @@
  <!DOCTYPE html>
 <html>
 	<head>
-		<title>
-			Tranform Updater UI
-		</title>
+		<title>	Tranform Updater UI	</title>
+		
+		<link 	rel="stylesheet"
+				href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+				integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+				crossorigin="anonymous">
+		
+		<link 	rel="stylesheet"
+				href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+				integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+				crossorigin="anonymous">
+		
+		<link 	href="main.css" rel="stylesheet">				
 	</head>
 
-	<body>
-		<h1>Tranform Plugin Updater</h1>
+	<body>	
 	
-		<div>
+	
+	<a href="http://info.drillinginfo.com/">
+	<img src="DrillingInfo.png"  style ="width:156px;height:56px;">
+	</a>
+	
+	
+		
+	<h1>Tranform Plugin Updater</h1>
+	<br>
+	
+	<div id="wrapper">
+		<div class="underline">
 			<h3>Scan/Update</h3>
 				<p>Scan for Updates. Download updates.</p>
 				<p id="info1"></p>
@@ -27,7 +47,7 @@
 				</button>
 		</div>
 
-		<div>
+		<div class="underline">
 			<h3>Repair</h3>
 				<p>Repair Transform to use the new downloads.</p>
 				<button onclick="scan();")>
@@ -40,7 +60,7 @@
 		  		</select>
 		</div>
 
-		<div>
+		<div class="underline">
 			<h3>System Control</h3>
 				<p>Junk</p>
 				<button onclick="scan();")>
@@ -52,6 +72,9 @@
 		    		<option>Old jars to update</option>
 		  		</select>
 		</div>
+		</div>
+	
+	
 
 		<script src="alan.js"></script>
 

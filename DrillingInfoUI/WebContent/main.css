@@ -1,4 +1,40 @@
 @CHARSET "UTF-8";
-h1{
-	background:#999;
+
+body, head{
+	font-family: arial, serif;
 }
+
+a{
+	display: block;
+	margin: 10px;
+	padding: 0px;
+	border: 0px;
+}
+
+#wrapper{
+	background:#0a9ed3;
+	border-bottom: 10px solid #78be20;
+	border-top: 10px solid #78be20;
+	color: white;
+}
+
+h1{
+	color = black;	
+}
+
+}
+
+h3{
+	border-bottom: 1px solid black;
+}
+
+button, select{
+	color: black;
+}
+
+
+
+.underline{
+	/*text-decoration: underline;*/
+}
+

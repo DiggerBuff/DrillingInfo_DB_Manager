@@ -3,7 +3,7 @@ function scanUpdates() {
 	document.getElementById("updates").innerHTML = "<option>--None--</option>";
 
 	var xmlHttp = new XMLHttpRequest();
-	var url = "http://138.67.186.221:9898/";
+	var url = "http://138.67.186.220:9898/";
 
 	xmlHttp.onreadystatechange = function () {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -38,7 +38,7 @@ function addUpdates(jars) {
 function getUpdates() {
 	//alert("Sending request");
 	var xmlHttp = new XMLHttpRequest();
-	var url = "http://138.67.186.221:9898/replace/";
+	var url = "http://138.67.186.220:9898/replace/";
 
 	//alert("Sent request");
 	xmlHttp.onreadystatechange = function () {
