@@ -31,11 +31,7 @@ h1{
 	display: inline-block;
 	box-shadow: rgba(0, 0, 0, 0.5) 0 2px 1px;
 	
-	border-radius: 0px !important;
-	border-top-left-radius: 0px;
-	border-top-right-radius: 0px;
-	border-bottom-right-radius: 0px;
-	border-bottom-left-radius: 0px;
+	border-radius: 5px;
 }
 
 .button:hover{
@@ -103,28 +99,29 @@ select{
 	text-align: center;
 	color: white;
 	text-transform: uppercase;
-	padding: 7px 10px 7px 10px;
+	/*padding: 7px 10px 7px 10px;*/
 	background: #78be20;
 	display: inline-block;
 	box-shadow: rgba(0, 0, 0, 0.5) 0 2px 1px;
 
-    overflow:hidden;
-    width:350px;
-    background: url("http://i62.tinypic.com/15xvbd5.png") no-repeat scroll 319px center;
-      
+	overflow:hidden;
+	width:100%;
+	background: url("http://i62.tinypic.com/15xvbd5.png") no-repeat scroll 96% center;
+
 }
 
 .dropdownmenu select {
-   border: 0;
-   color: #EEE;
-   background: transparent;
-   font-size: 20px;
-   font-weight: bold;
-   padding: 2px 10px;
-   width: 378px;
-   *width: 350px;
-   *background: #58B14C;
-   -webkit-appearance: none;
+	border: 0;
+	color: #EEE;
+	background: transparent;
+	font-size: 20px;
+	font-weight: bold;
+	padding: 5px 30px 7px 0px;
+	width: 100%;
+	*width: 378px;
+	*background: #58B14C;
+	-webkit-appearance: none;
+	-moz-appearance:none;
 }
 
 .nav-main > ul {

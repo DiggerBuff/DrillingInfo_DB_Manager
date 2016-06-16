@@ -48,11 +48,15 @@
 							</select>
 						</div>
 					</li>
+					<li style ="padding:0px 0px 0px 20px;">
+					<a class="button" href="#" onclick="getUpdates();"
+							id="updateButton" style="visibility: hidden;")> Update </a>
+					</li>
 				</ul>
 			</nav>
 
-			<button onclick="getUpdates();" id="updateButton"
-				style="visibility: hidden;")>Update</button>
+			<!-- <button onclick="getUpdates();" id="updateButton"
+				style="visibility: hidden;")>Update</button> -->
 		</div>
 	</div>
 
@@ -63,22 +67,36 @@
 			<h3>Repair</h3>
 				<p>Repair Transform to use the new downloads.</p>
 				<p id="info2"></p>
-				<a class="button" onclick="getRepairs();")>
-					Get Repairs
-				</a>
-				
-				<!-- DROPDOWN MENU -->
-				<select id="repairs" onchange="loadDetectRepar(this.value)">
-		    		<option value='0'>--None--</option>
-		  		</select>
 
-		  		<a class="button" id="detect" onclick="detect();" id="updateButton" style="visibility:hidden;")>
-					Detect
-				</a>
+				<nav class="nav-main">
+				<ul class="nav-item">
+					<li>
+						<!--BUTTON--> 
+						<a class="button" onclick="getRepairs();")>
+							Get Repairs
+						</a>
+					</li>
+					<li>
+						<!-- DROPDOWN MENU --> 
+						<div href="#" class="dropdownmenu gray semi-square">
+							<select id="repairs"  onchange="loadDetectRepar(this.value)">
+								<option value='0'> --None-- </option>
+							</select>
+						</div>
+					</li>
+					<li style ="padding:0px 0px 0px 20px;">
+						<a class="button" id="detect" onclick="detect();" id="updateButton" style="visibility:hidden;")>
+							Detect
+						</a>
 
-				<a class="button" id="repair" onclick="repair();" id="updateButton" style="visibility:hidden;")>
-					Repair
-				</a>
+						<a class="button" id="repair" onclick="repair();" id="updateButton" style="visibility:hidden;")>
+							Repair
+						</a>
+					</li>
+				</ul>
+				</nav>
+
+		  		
 		</div>
 	</div>
 

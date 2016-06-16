@@ -1,6 +1,6 @@
 function scanUpdates() {
 	document.getElementById("updateButton").style.visibility="hidden";
-	document.getElementById("updates").innerHTML = "<option>New plugins</option>";
+	document.getElementById("updates").innerHTML = "<option>New Plugins</option>";
 
 	var xmlHttp = new XMLHttpRequest();
 
