@@ -122,6 +122,19 @@ select{
 	*background: #58B14C;
 	-webkit-appearance: none;
 	-moz-appearance:none;
+	outline: none;
+}
+
+.dropdownmenu  select option {
+  background: #666666; 
+  color: #EEE; 
+  outline: none;
+  box-shadow: inset 100% 100% #EEE
+} 
+
+.dropdownmenu select option:checked {
+  box-shadow: 0 0 10px 100px #78be20 inset;
+  outline: none;
 }
 
 .nav-main > ul {
