@@ -1,10 +1,8 @@
-<!doctype html>
-<!-- The ng-app DIRECTIVE creates an Angular application by running this module when the document loads -->
-<html ng-app="myModule">
-
+ <!DOCTYPE html>
+<html>
 	<head>
-		<title>DrillingInfo UI</title>
-	
+		<title>	Tranform Updater UI	</title>
+		
 		<link 	rel="stylesheet"
 				href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
 				integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
@@ -15,225 +13,106 @@
 				integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
 				crossorigin="anonymous">
 		
-		<link 	href="main.css" rel="stylesheet">
-		
-		<!-- Function for dropdown menu -->
-		<script>
-			function getJarList() 
-			{
-				var mylist = document.getElementById("myList");
-			}
-		</script>	
-		
-		<script>
-		var number = 0;
-		
-		
-		function scanJars() 
-		{			
-			
-			alert('Panel One Hello');
-			
-			var xhr = new XMLHttpRequest();
-			
-			xhr.open('GET', "http://138.67.186.220:9898/", true);
-			xhr.send();
-		
-			xhr.onreadystatechange = processRequest;			
-
-			function processRequest(e) {
-				if (xhr.readyState == 4 && xhr.status == 200) {
-					
-						alert("Correct state and status");
-						alert(xhr.responseText);
-						var jars = JSON.parse(xhr.responseText);
-						var select = document.getElementById("oldJars");
-
-						for ( var i = 0; i < jars.length; i++) {
-							var jar = jars[i];
-							var el = document.createElement("option");
-							el.textContent = jar.name;
-							el.value = jar.name;
-							select.appendChild(el);
-							
-							number = number + 1;
-							alert(number);
-													
-						}
-					}
-				
-				}
-			}
-		</script>	
-		
-		<script>
-		function scanJars2() 
-		{
-			alert('Panel Two Hello');
-			
-			var xhr = new XMLHttpRequest();
-			
-			xhr.open('GET', "http://138.67.186.220:9898/", true);
-			xhr.send();
-			
-			xhr.addEventListener("readystatechange", processRequest, false);
-			
-			xhr.onreadystatechange = processRequest;
-			
-			function processRequest(e) 
-				{
-			alert("Correct state and status");
-				
-				alert(xhr.responseText);
-						
-    			var jars = JSON.parse(xhr.responseText);
-    			
-				var select = document.getElementById("oldJars2"); 
-
-					for(var i = 0; i < jars.length; i++) 
-					{
-				    var jar = jars[i];
-				    var el = document.createElement("option");
-				    el.textContent = jar.name;
-				    el.value = jar.name;
-				    select.appendChild(el);
-					
-					}
-				}
-			} 
-		</script>	
-		
-		<script>
-		function scanJars3() 
-		{
-			alert('Panel Three Hello');
-			
-			var xhr = new XMLHttpRequest();
-			
-			xhr.open('GET', "http://138.67.186.220:9898/", true);
-			xhr.send();
-			
-			xhr.addEventListener("readystatechange", processRequest, false);
-			
-			xhr.onreadystatechange = processRequest;
-			
-			function processRequest(e) 
-				{
-			alert("Correct state and status");
-				
-				alert(xhr.responseText);
-						
-    			var jars = JSON.parse(xhr.responseText);
-    			
-				var select = document.getElementById("oldJars3"); 
-
-					for(var i = 0; i < jars.length; i++) 
-					{
-				    var jar = jars[i];
-				    var el = document.createElement("option");
-				    el.textContent = jar.name;
-				    el.value = jar.name;
-				    select.appendChild(el);
-					
-					}
-				}
-			} 
-		</script>	
-		
-		<script>
-		function downloadJars()
-		{
-		alert('Download New Jars?');
-			
-			var xhr = new XMLHttpRequest();
-			
-			xhr.open('GET', "http://138.67.186.220:9898/replace", true);
-			xhr.send();
-			
-			xhr.addEventListener("readystatechange", processRequest, false);
-			
-			xhr.onreadystatechange = processRequest;
-						
-		}
-		
-		</script>
-
+		<link 	href="main.css" rel="stylesheet">				
 	</head>
+
+	<body onload="startDIServer();">	
 	
-	<!--   the ng-controller DIRECTIVE allows us to attach our controller to this element in our HTML -->
-	<!--   We are attaching the CONTROLLER called StoreController to this div so this limits its scope-->
-	<body ng-controller="MyController as ic">
-	
-		<a href="http://info.drillinginfo.com/"> VISIT DRILLINGINFO HOMEPAGE </a>
-		<br>
-
-	<div id="Panel1">
-		<h1>One</h1>
-
-
-		<p>The first panel deals with scanning for updates. Is there a
-			Transform/plugins folder? \ Great - let’s look at the jars in it and
-			see if any newer versions (or perhaps brand new jars) are available.
-			\ Either display to the user that they are fully up-to-date or they
-			need to download and install newer jars. \ Give them a button of some
-			form to do that. This would replace the older version jars in
-			Transform/plugins folder.</p>
-
-		<!--  BUTTON FOR SCAN -->
-		<button onClick="scanJars();">Scan For Updates</button>
-
-		<!-- DROPDOWN MENU -->
-		<select id="oldJars">
-			<option disabled selected>List Of Updates</option>
-		</select>
+	<div>	
+	<a href="http://info.drillinginfo.com/" style="width: 260px">
+	<img src="DrillingInfo.png"  style ="width:260px;height:100px;">
+	</a>	
 		
-		<!--  BUTTON FOR DOWNLOAD -->
-		<button onClick="downloadJars();">Download New Jars</button>
+	<h1>Transform Plugin Updater</h1>
+	<br>
 	</div>
-	<div id="Panel2">
-	<h1>Two</h1>
-	
-	<p>The second panel deals with repairs. You can use the get methods exposed in the DI service (localhost:9898/transform/repair) \
-	to find out what repairs are available. What you do next is up to you, you could present some form of a UI that allows the \
-	user to see the list and run the detect method by calling that REST api (post to /transform/repair/repair name/detect). \
-	This will return a true or false. If you get a true back then you should expose an option to run the repair for the user \
-	(post to /transform/repair/repair name/repair).	
-	</p>
-	
-	<!--  BUTTON FOR SCAN -->
-	<button onClick="scanJars2();">Scan For Updates</button>
 
-		<!-- DROPDOWN MENU -->
-		<select id="oldJars2">
-			<option disabled selected>List Of Updates</option>
-		</select>
-	
-	</div>
-	
-	<div id="Panel3">
-	<h1>Three</h1>
-	
-	<p>The third panel would deal with system control. A way to test an echo command or shutdown the services.
-	</p>
-	
-	<!--  BUTTON FOR SCAN -->
-	<button onClick="scanJars3();">Scan For Updates</button>
+	<div class="panels">
+		<div class="margin">
+			<h3>Scan/Update</h3>
+			<p id="info1">Scan for Updates. Download updates.</p>
 
-		<!-- DROPDOWN MENU -->
-		<select id="oldJars3">
-			<option disabled selected>List Of Updates</option>
-		</select>
-	</div>						
-	
-			</select>
-			<!--  This is where we must declare our Angular.JS NDC-->
-			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
-			
-			<script type="text/javascript" src="app.js"></script>
-			
-			<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-					integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-					crossorigin="anonymous"></script>
+			<nav class="nav-main">
+				<ul class="nav-item">
+					<li>
+						<!--BUTTON--> 
+						<a class="button" href="#" onclick="scanUpdates();"
+							id="scanButton")> Scan For Update 
+						</a>
+					</li>
+					<li>
+						<!-- DROPDOWN MENU --> 
+						<div href="#" class="dropdownmenu gray semi-square">
+							<select id="updates">
+								<option value='0'> New Plugins </option>
+							</select>
+						</div>
+					</li>
+					<li style ="padding:0px 0px 0px 20px;">
+					<a class="button" href="#" onclick="getUpdates();"
+							id="updateButton" style="visibility: hidden;")> Update </a>
+					</li>
+				</ul>
+			</nav>
+
+			<!-- <button onclick="getUpdates();" id="updateButton"
+				style="visibility: hidden;")>Update</button> -->
 		</div>
+	</div>
+
+	<div class="whitespace"></div>
+
+	<div class="panels">
+		<div class="margin">
+			<h3>Repair</h3>
+				<p>Repair Transform to use the new downloads.</p>
+				<p id="info2"></p>
+
+				<nav class="nav-main">
+				<ul class="nav-item">
+					<li>
+						<!--BUTTON--> 
+						<a class="button" onclick="getRepairs();")>
+							Get Repairs
+						</a>
+					</li>
+					<li>
+						<!-- DROPDOWN MENU --> 
+						<div href="#" class="dropdownmenu gray semi-square">
+							<select id="repairs"  onchange="loadDetectRepar(this.value)">
+								<option value='0'> --None-- </option>
+							</select>
+						</div>
+					</li>
+					<li style ="padding:0px 0px 0px 20px;">
+						<a class="button" id="detect" onclick="detect();" id="updateButton" style="visibility:hidden;")>
+							Detect
+						</a>
+
+						<a class="button" id="repair" onclick="repair();" id="updateButton" style="visibility:hidden;")>
+							Repair
+						</a>
+					</li>
+				</ul>
+				</nav>
+
+		  		
+		</div>
+	</div>
+
+	<div class="whitespace"></div>
+
+	<div class="panels">
+		<div class="margin">
+			<h3>System Control</h3>
+				<p>Open For Implementation</p>
+				<a class="button" onclick="shutdown();")>
+					Shutdown
+				</a>
+		</div>
+	</div>
+
+	<script src="app.js"></script>
+
 	</body>
 </html>
