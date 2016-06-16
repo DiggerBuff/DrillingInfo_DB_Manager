@@ -108,9 +108,10 @@ select{
 	display: inline-block;
 	box-shadow: rgba(0, 0, 0, 0.5) 0 2px 1px;
 
-   overflow:hidden;
-   width:350px;
-   background: url("http://i62.tinypic.com/15xvbd5.png") no-repeat scroll 319px center;
+    overflow:hidden;
+    width:350px;
+    background: url("http://i62.tinypic.com/15xvbd5.png") no-repeat scroll 319px center;
+      
 }
 
 .dropdownmenu select {
@@ -153,6 +154,21 @@ select{
    -webkit-border-radius: 5px;
    -moz-border-radius: 5px;
    border-radius: 5px;
+   
+  
+	font-size: 15px;
+	text-align: center;
+	color: white;
+	text-transform: uppercase;
+	
+	height: 35px;
+	padding: 0px 5px 5px 5px;
+	border: 0;
+	margin: 10px;
+	
+	
+	box-shadow: rgba(0, 0, 0, 0.5) 0 2px 1px;
+  
 }
 
 /* -------------------- Colors: Background */
