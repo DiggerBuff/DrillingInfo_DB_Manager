@@ -84,11 +84,7 @@ select{
 	display: inline-block;
 	box-shadow: rgba(0, 0, 0, 0.5) 0 2px 1px;
 	
-	border-radius: 0px !important;
-	border-top-left-radius: 0px;
-	border-top-right-radius: 0px;
-	border-bottom-right-radius: 0px;
-	border-bottom-left-radius: 0px;
+	border-radius: 5px;
 }
 
 .dropdownmenu {
@@ -104,10 +100,10 @@ select{
 	display: inline-block;
 	box-shadow: rgba(0, 0, 0, 0.5) 0 2px 1px;
 
-	overflow:hidden;
-	width:100%;
-	background: url("http://i62.tinypic.com/15xvbd5.png") no-repeat scroll 96% center;
-
+    overflow:hidden;
+    width:100%;
+    background: url("http://i62.tinypic.com/15xvbd5.png") no-repeat scroll 96% center;
+      
 }
 
 .dropdownmenu select {
@@ -163,7 +159,7 @@ select{
 .semi-square {
    -webkit-border-radius: 5px;
    -moz-border-radius: 5px;
-   border-radius: 5px;
+    border-radius: 5px;
    
   
 	font-size: 15px;
