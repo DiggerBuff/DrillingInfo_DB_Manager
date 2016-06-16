@@ -13,7 +13,9 @@ a{
 
 
 h1{
-	color = black;	
+	color : white;
+	background-color:#666666;
+	padding: 7px 10px 7px 10px;
 }
 
 .button{
@@ -93,11 +95,35 @@ select{
 	border-bottom-left-radius: 0px;
 }
 
-.dropdownbutton:hover{
-	color: #FFFFFF;
-	background: #86d424;
-	text-decoration: none;
-	cursor: pointer;    
+.dropdownmenu {
+	font-family: "UniversLTStdCondensed", sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	text-align: center;
+	color: white;
+	text-transform: uppercase;
+	padding: 7px 10px 7px 10px;
+	background: #78be20;
+	display: inline-block;
+	box-shadow: rgba(0, 0, 0, 0.5) 0 2px 1px;
+
+   overflow:hidden;
+   width:350px;
+   background: url("http://i62.tinypic.com/15xvbd5.png") no-repeat scroll 319px center;
+}
+
+.dropdownmenu select {
+   border: 0;
+   color: #EEE;
+   background: transparent;
+   font-size: 20px;
+   font-weight: bold;
+   padding: 2px 10px;
+   width: 378px;
+   *width: 350px;
+   *background: #58B14C;
+   -webkit-appearance: none;
 }
 
 .nav-main > ul {
@@ -122,7 +148,28 @@ select{
 	color: white;
 }
 
+/* -------------------- Rounded Corners */
+.semi-square {
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+}
+
+/* -------------------- Colors: Background */
+.slate   { background-color: #ddd; }
+.green   { background-color: #779126; }
+.blue    { background-color: #3b8ec2; }
+.yellow  { background-color: #eec111; }
+.black   { background-color: #000; }
+.gray	{ background-color:#666666; }
+
+/* -------------------- Colors: Text */
+.slate select   { color: #000; }
+.green select   { color: #fff; }
+.blue select    { color: #fff; }
+.yellow select  { color: #000; }
+.black select   { color: #fff; }
 
 
-
-
+/* -------------------- Select Box Styles: danielneumann.com Method */
+/* -------------------- Source: http://danielneumann.com/blog/how-to-style-dropdown-with-css-only/ */
