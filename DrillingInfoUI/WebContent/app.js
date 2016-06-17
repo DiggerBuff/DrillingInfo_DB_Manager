@@ -9,7 +9,7 @@ function scanUpdates() {
 
 	xmlHttp.onreadystatechange = function () {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			document.getElementById("info1").innerHTML = "Updates found.";
+			document.getElementById("info1").innerHTML = "Updates found. Click to get updates.";
 			var jars = JSON.parse(xmlHttp.responseText);
 			addUpdates(jars);
 			document.getElementById("updateButton").style.visibility="visible";
@@ -42,15 +42,19 @@ function addUpdates(jars) {
 function getUpdates() {
 	var xmlShutdown = new XMLHttpRequest();
 	var urlShutdown = "http://localhost:9898/transform/server?shutdown=true";
+	document.getElementById("detect").style.visibility="hidden";
+	document.getElementById("repair").style.visibility="hidden";
 
 	xmlShutdown.onreadystatechange = function () {
 		if (xmlShutdown.readyState == 4 && xmlShutdown.status == 200) {
-			setTimeout(getUpdatesPart2, 6000); /* Needed this wait because the DIServer takes 5 seconds to shut down*/
+			setTimeout(getUpdatesPart2, 5500); /* Needed this wait because the DIServer takes 5 seconds to shut down*/
 		}
 	}
 
 	xmlShutdown.open("POST", urlShutdown, true);
 	xmlShutdown.send();
+	document.getElementById("info1").innerHTML = "Downloading updates...";
+	document.getElementById("info2").innerHTML = "Downloading updates...";
 }
 
 function getUpdatesPart2() {
@@ -59,12 +63,14 @@ function getUpdatesPart2() {
 
 	xmlHttp.onreadystatechange = function () {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			startDIServer();
+
 			document.getElementById("info1").innerHTML = "Updates downloaded.";
 			document.getElementById("updateButton").style.visibility="hidden";
+			document.getElementById("detect").style.visibility="hidden";
+			document.getElementById("repair").style.visibility="hidden";
 			document.getElementById("repairs").innerHTML = "<option>--None--</option>";
-			document.getElementById("info2").innerHTML = "Finding new repairs.";
-			startDIServer();
-			
+			document.getElementById("info2").innerHTML = "Click to get new repairs.";		
 			document.getElementById("updates").innerHTML = "<option>--None--</option>";
 		}
 		else if (xmlHttp.readyState == 4 && xmlHttp.status >= 400) {
@@ -197,6 +203,13 @@ function repair() {
 }
 
 function shutdown() {
+	document.getElementById("info1").innerHTML = "Shut Down Completed";
+	document.getElementById("info2").innerHTML = "Shut Down Completed";
+	document.getElementById("info3").innerHTML = "Shut Down Completed";
+	document.getElementById("updates").innerHTML = "<option>--None--</option>";
+	document.getElementById("repairs").innerHTML = "<option>--None--</option>";
+	document.getElementById("detect").style.visibility="hidden";
+		document.getElementById("repair").style.visibility="hidden";
 	shutdownDIServer();
 	var xmlHttp = new XMLHttpRequest();
 
@@ -204,7 +217,6 @@ function shutdown() {
 
 	xmlHttp.onreadystatechange = function () {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-
 		}
 		else if (xmlHttp.readyState == 4 && xmlHttp.status == 500) {
 			var options = JSON.parse(xmlHttp.responseText);
