@@ -15,7 +15,7 @@ public class SystemService {
 				Runtime.getRuntime().exec("java -cp ..\\production\\Transform\\plugins\\* com.drillinginfo.rest.DIServer");
 			}
 			else {
-				Runtime.getRuntime().exec("../jre/bin/java -cp * com.drillinginfo.rest.DIServer");
+				Runtime.getRuntime().exec("../production/Transform/jre/bin/java -cp ../production/Transform/plugins/* com.drillinginfo.rest.DIServer");
 			}
 		} catch (Exception e) {
 			Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Unable to start DI Server").build();
