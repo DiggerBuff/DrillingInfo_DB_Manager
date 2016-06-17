@@ -77,13 +77,11 @@ function getUpdatesPart2() {
 }
 
 function getRepairs() {
-	//alert("aoenut");
 	var xmlHttp = new XMLHttpRequest();
 	var url = "http://localhost:9898/transform/repair/";
 
 	xmlHttp.onreadystatechange = function () {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			alert("aoenut");
 			document.getElementById("repairs").innerHTML = "<option value='0'>--None--</option>";
 			document.getElementById("info2").innerHTML = "Repair options found.";
 			var options = JSON.parse(xmlHttp.responseText);
@@ -115,7 +113,6 @@ function addRepairs(options) {
 }
 
 function startDIServer() {
-	alert("startDIServer");
 	var xmlHttp = new XMLHttpRequest();
 
 	var url = "http://localhost:9999/system/restart";
@@ -200,14 +197,14 @@ function repair() {
 }
 
 function shutdown() {
-	/*shutdownDIServer();*/
+	shutdownDIServer();
 	var xmlHttp = new XMLHttpRequest();
 
 	var url = "http://localhost:9999/system/shutdown";
 
 	xmlHttp.onreadystatechange = function () {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			alert("DIServer started");
+
 		}
 		else if (xmlHttp.readyState == 4 && xmlHttp.status == 500) {
 			var options = JSON.parse(xmlHttp.responseText);
