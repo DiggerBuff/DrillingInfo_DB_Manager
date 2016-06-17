@@ -36,10 +36,13 @@ public class LocalConnector {
 	public Map<String, ArrayList<String>> getLocalJars() {
 
 		String baseDir = System.getProperty("user.home");
+		//String baseDir = "C:\\Users\\Harry\\Documents\\DrillingInfo_DB_Manager";
+		System.out.println(baseDir);
 
 		System.out.println("Dir search start.");
 		long start = System.currentTimeMillis();
 		String pluginDir = getPath(baseDir);
+		System.out.println(pluginDir);
 		long stop = System.currentTimeMillis();
 		System.out.println("Dir search end. Elapsed time : " + (stop - start) + " ms" );
 
@@ -90,7 +93,7 @@ public class LocalConnector {
 
 			for (Path local : stream) {
 				File newFile = new File(path + File.separatorChar + local.getFileName().toString());
-				if(newFile.isDirectory() && !(newFile.getName().charAt(0) == '.') && newFile.canRead()){
+				if(newFile.isDirectory() && !(newFile.getName().charAt(0) == '.') && newFile.canRead() && !newFile.getName().equals("Application Data") && !newFile.isHidden()){
 					if(newFile.getAbsolutePath().contains("Transform" + File.separatorChar + "plugins")) {
 						System.out.println("Found Transform/plugins directory");
 						return newFile.getAbsolutePath();
