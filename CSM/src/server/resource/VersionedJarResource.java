@@ -22,19 +22,7 @@ import server.service.VersionedJarService;
 public class VersionedJarResource {
 
 	private static VersionedJarService versionedJarService = new VersionedJarService();
-/*
-	@GET
-	@Path("/{vjName}")
-	public Response detect(@PathParam("vjName") String vjName, @Context UriInfo uriInfo) {
-		String response = versionedJarService.detect(vjName);
-		if (response == null) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		}
-		else {
-			return Response.status(Response.Status.OK).entity(response).build();
-		}
-	}
-*/	
+
 	@GET
 	public Response detectAll(@Context UriInfo uriInfo) {
 		ArrayList<VersionedJar> response = versionedJarService.detectAll();

@@ -11,8 +11,6 @@ import org.apache.commons.codec.binary.Hex;
 /**
  * This class creates a checksum using md5.
  * 
- * TODO add a comparison method to improve code readability.
- *
  */
 public class SecurityChecksum {
 	/**
@@ -43,13 +41,11 @@ public class SecurityChecksum {
 		md.reset();
 		byte[] bytes = new byte[md.getDigestLength()];
 		int numBytes;
-		//try {
-			while ((numBytes = is.read(bytes)) != -1) {
-				md.update(bytes, 0, numBytes);
-			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		
+		while ((numBytes = is.read(bytes)) != -1) {
+			md.update(bytes, 0, numBytes);
+		}
+		
 		byte[] digest = md.digest();
 		String result = new String(Hex.encodeHex(digest));
 		return result;

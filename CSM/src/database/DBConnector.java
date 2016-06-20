@@ -19,7 +19,6 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
 public class DBConnector {
 
 	private static String bucketName     = "drilling-info-bucket";
-	private static String updatedJarName = "";
 	private static String prefix = "DrillingInfo_Updates/";
 	private final AmazonS3 s3client;
 
@@ -65,14 +64,5 @@ public class DBConnector {
 		//if (s3object == null) return null;
 
 		return s3object;
-	}
-
-	/**
-	 * Get the name of the jar that is wanted
-	 * 
-	 * @return the name of the jar with the .jar at the end. 
-	 */
-	public static String getUpdatedJarName() {
-		return updatedJarName + ".jar";
 	}
 }

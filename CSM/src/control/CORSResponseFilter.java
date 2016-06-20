@@ -8,8 +8,6 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.MultivaluedMap;
 
 /**
- * TODO get a better understanding of ContainerResponseFilter
- * 
  * This seems like it auto-adds the relevant headers that we need.
  *
  */

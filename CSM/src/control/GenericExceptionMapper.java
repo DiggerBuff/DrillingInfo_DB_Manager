@@ -39,7 +39,6 @@ public class GenericExceptionMapper
 	@Provider
 	public static class ThrowableMapper implements ExceptionMapper<Throwable>
 	{
-		//Implements:  ExceptionMapper	
 		@Override
 		public Response toResponse(Throwable exp) {
 			ErrorMessage errorMessage = new ErrorMessage(exp.getMessage(), 404, "http://info.drillinginfo.com");

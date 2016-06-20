@@ -1,7 +1,5 @@
 package server.service;
 
-import java.io.File;
-
 import javax.ws.rs.core.Response;
 
 public class SystemService {
