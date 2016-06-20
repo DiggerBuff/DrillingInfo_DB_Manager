@@ -58,7 +58,6 @@ public class LocalConnector {
 		}
 
 		for (String relativeFilePath : relativeFilePaths) {
-
 			System.out.println("\nFound Local Jar : " + relativeFilePath);
 
 			File file = new File(pluginDir, relativeFilePath);
@@ -72,7 +71,11 @@ public class LocalConnector {
 		}
 		return localJars;
 	}
-
+	
+	/**
+	 * This class is just a filter to make sure we only pull in jars and not some other files. 
+	 *
+	 */
 	public class GenericExtFilter implements FilenameFilter {
 
 		private String ext;
@@ -80,12 +83,23 @@ public class LocalConnector {
 		public GenericExtFilter(String ext) {
 			this.ext = ext;
 		}
-
+		
+		@Override
 		public boolean accept(File dir, String name) {
 			return (name.endsWith(ext));
 		}
 	}
-
+	
+	/**
+	 * This is the recursive method that finds the local jars on the users computer. 
+	 * Given a base path, it searches recursively through the sub-directories. 
+	 * It ignores the following: non-folders, files that start with ".", files that cannot be read, if the file is hidden, and if the file is named "Application Data". 
+	 * That last one is for Windows specifically. 
+	 * If there is an error that causes the program to not work it is probably here or in SystemService.java in the server.service package. 
+	 * 
+	 * @param path the base path to start searching from. 
+	 * @return the directory path to the Transform/plugins folder as a String.
+	 */
 	private String getPath(String path) {
 		Path dir = FileSystems.getDefault().getPath( path );
 		try {
@@ -93,11 +107,17 @@ public class LocalConnector {
 
 			for (Path local : stream) {
 				File newFile = new File(path + File.separatorChar + local.getFileName().toString());
+				
+				//This the check to if the method should search down a specific folder. 
 				if(newFile.isDirectory() && !(newFile.getName().charAt(0) == '.') && newFile.canRead() && !newFile.getName().equals("Application Data") && !newFile.isHidden()){
+					
+					//This is to see if the folder is the Transform/plugins folder. 
 					if(newFile.getAbsolutePath().contains("Transform" + File.separatorChar + "plugins")) {
 						System.out.println("Found Transform/plugins directory");
 						return newFile.getAbsolutePath();
 					}
+					
+					//This prepares the path for the recursive call. 
 					String nextPath = getPath(path + File.separatorChar + local.getFileName());
 					if(!(nextPath == null)) {
 						return nextPath;
@@ -113,8 +133,7 @@ public class LocalConnector {
 	}
 
 	/**
-	 * This gets the appropriate data from each jar's manifest
-	 * and adds a new pair to the map.
+	 * This gets the appropriate data from each jar's manifest and adds a new pair to the map.
 	 * 
 	 * @param file
 	 * @throws IOException

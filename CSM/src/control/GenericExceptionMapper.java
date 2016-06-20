@@ -31,6 +31,7 @@ public class GenericExceptionMapper
 		config.register(new AmazonServiceMapper());
 		config.register(new AmazonClientMapper());
 		config.register(new SecurityErrorMapper());
+		config.register(new ServerErrorMapper());
 	}
 
 	/**

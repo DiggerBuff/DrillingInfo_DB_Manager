@@ -3,12 +3,19 @@ package server.service;
 import javax.ws.rs.core.Response;
 
 public class SystemService {
+	
+	/**
+	 * This restarts the DI Server so that it can take in the new updates. 
+	 * If there is an error in the program it is either here or in the LocalConnector.java file (In the client package) in the getPath method. 
+	 * 
+	 * @return the response from the HTTP request
+	 */
 	public Response restartDIServer() {
 		try {
 			System.out.println(System.getProperty("user.dir"));
 			
-			/**
-			 * We used this if else because the school computers (Linux) didn't have the correct jre but
+			/*
+			 * We used this "if else" because the school computers (Linux) didn't have the correct jre but
 			 * my laptop (Windows) does.
 			 * 
 			 * Replace the if else with this :

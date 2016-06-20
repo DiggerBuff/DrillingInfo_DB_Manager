@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class VersionedJar {
 	@JsonProperty("name")
 	private String name;
-		
+	
 	public VersionedJar() {
 		this.name = "Test";
 	}

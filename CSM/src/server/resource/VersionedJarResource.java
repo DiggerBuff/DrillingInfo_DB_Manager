@@ -22,7 +22,13 @@ import server.service.VersionedJarService;
 public class VersionedJarResource {
 
 	private static VersionedJarService versionedJarService = new VersionedJarService();
-
+	
+	/**
+	 * The base path that detects the jars that can be updated. 
+	 * 
+	 * @param uriInfo the UriInfo 
+	 * @return the response from the HTTP request
+	 */
 	@GET
 	public Response detectAll(@Context UriInfo uriInfo) {
 		ArrayList<VersionedJar> response = versionedJarService.detectAll();
@@ -35,6 +41,12 @@ public class VersionedJarResource {
 		}
 	}
 	
+	/**
+	 * The path that replaces the jars that can be updated. 
+	 * 
+	 * @param uriInfo the UriInfo
+	 * @return the response from the HTTP request
+	 */
 	@GET
 	@Path("replace/")
 	public Response replaceAll(@Context UriInfo uriInfo) {

@@ -18,7 +18,14 @@ public class SystemResource
 {
 	static SystemService systemService = new SystemService();
 
-	//This is the path for shutdown
+	/**
+	 * This is the path for shutdown
+	 * 
+	 * @param system the command that is passed in the URI
+	 * @return the response from the HTTP request
+	 * 
+	 * @throws Exception
+	 */
 	@GET
 	@Path("{command}")
 	public Response getDatatype(@PathParam("command") String system) throws Exception
@@ -29,6 +36,12 @@ public class SystemResource
 		return Response.status(Response.Status.OK).entity("Unknown Command").build();
 	}
 	
+	/**
+	 * The path to restart the DI Server.
+	 * 
+	 * @return the response from the HTTP request
+	 * @throws Exception
+	 */
 	@GET
 	@Path("restart")
 	public Response restart() throws Exception
